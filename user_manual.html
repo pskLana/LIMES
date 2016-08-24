@@ -1,0 +1,1044 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <title>TODO: completeme · GitBook</title>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.0">
+        
+        
+        
+    
+    <link rel="stylesheet" href="gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="developer_manual.html" />
+    
+    
+    <link rel="prev" href="./" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        <li class="header">Getting Started</li>
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    About this documentation
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Installation and Setup
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">User manual</li>
+        
+        
+    
+        <li class="chapter active" data-level="2.1" data-path="user_manual.html">
+            
+                <a href="user_manual.html">
+            
+                    
+                    TODO: completeme
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Developer manual</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="developer_manual.html">
+            
+                <a href="developer_manual.html">
+            
+                    
+                    TODO: completeme
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="divider"></li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    FAQ
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Examples
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.3" >
+            
+                <a target="_blank" href="https://github.com/AKSW/LIMES-dev/blob/master/CHANGES.md">
+            
+                    
+                    Release notes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="." >TODO: completeme</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <p><img alt="image" src="images/limes_logo.png"></p><h1 id="user-manual-version-100">User Manual (Version 1.0.0)</h1><h2 id="introduction">Introduction</h2><p>LIMES, the <strong>Li</strong>nk Discovery Framework for <strong>Me</strong>tric <strong>S</strong>paces, is a
+framework for discovering links between entities contained in Linked
+Data sources. LIMES is a hybrid framework that combines the mathematical
+characteristics of metric spaces as well prefix-, suffix- and position
+filtering to compute pessimistic approximations of the similarity of
+instances. These approximations are then used to filter out a large
+amount of those instance pairs that do not suffice the mapping
+conditions. By these means, LIMES can reduce the number of comparisons
+needed during the mapping process by several orders of magnitude and
+complexity without loosing a single link.</p><p><img alt="LIMES workflow" src="images/uml.png" title="fig:">
+[fig:workflow]</p><p>The general workflow implemented by the LIMES framework is depicted in
+Figure (fig:workflow). Given the source S, the target T and a link
+specification, LIMES first separates the different data types to merge.
+Strings are processed by using suffix-, prefix- and position filtering
+in the string mapper. Numeric values (and all values that can be mapped
+efficiently to a vector space) are mapped to a metric space and
+processed by the HYPPO algorithm. All other values are mapped by using
+the miscellaneous mapper. The results of all mappers processing are
+filtered and merged by using time-efficient set and filtering
+operations.</p><p><strong>TODO</strong> Axel Change according to the new workflow</p><p>The advantages of LIMES&#x2019; approach are manifold. First, it implements
+<strong>highly time-optimized</strong> mappers, making it a complexity class faster
+than other Link Discovery Frameworks. Thus, the larger the problem, the
+faster LIMES is w.r.t. other Link Discovery Frameworks. In addition,
+<strong>LIMES is guaranteed to lead to exactly the same matching as a brute
+force approach while at the same time reducing significantly the number
+of comparisons</strong>. In addition, LIMES supports a <strong>large number of input
+and output formats</strong> and can be extended very easily to fit new
+algorithms , new datatypes, new preprocessing functions and others thank
+to its modular architecture displayed in Figure [fig:architecture].</p><p><img alt="Architecture of LIMES" src="images/architecture.png" title="fig:">
+[fig:architecture]</p><p>In general, LIMES can be used to set links between two data sources,
+e.g., a novel data source created by a data publisher and existing data
+source such as DBpedia. This functionality can also be used to
+detect duplicates within one data source for knowledge curation. The
+only requirement to carry out these tasks is a simple XML-based
+configuration file. The purpose of this manual is to explicate the LIMES
+Configuration Language (LCL) that underlies these configuration files,
+so as allow users to generate their own configurations. An online
+version of LIMES is available online at
+<a href="http://limes.aksw.org" target="_blank">http://limes.aksw.org</a>.</p><h1 id="components-of-a-limes-xml-configuration-file">Components of a LIMES XML Configuration File</h1><p>A LIMES configuration file consists of ten parts, of which some are optional:</p><h2 id="metadata">Metadata</h2><p>The <code>metadata</code> tag always consists of the following bits of XML:</p><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+&lt;!DOCTYPE LIMES SYSTEM &quot;limes.dtd&quot;&gt;
+&lt;LIMES&gt;</code></pre>
+<h2 id="prefixes">Prefixes</h2><p>Defining a prefix in a LIMES file demands setting two values: 
+ The <code>namespace</code> that will be addressed by the prefix&apos;s <code>label</code></p><pre><code>&lt;PREFIX&gt;
+    &lt;NAMESPACE&gt;http://www.w3.org/1999/02/22-rdf-syntax-ns#&lt;/NAMESPACE&gt;
+    &lt;LABEL&gt;rdf&lt;/LABEL&gt;
+&lt;/PREFIX&gt;</code></pre>
+<p>Here, we set the prefix <code>rdf</code> to correspond to <code>http://www.w3.org/1999/02/22-rdf-syntax-ns\#</code>. A LIMES link specification can contain as many prefixes as required.</p><h2 id="source-data-source">Source Data Source</h2><p>LIMES computes links between items contained in two Linked Data sources dubbed source and target. An example of a configuration for a source data source is shown below.</p><pre><code>&lt;SOURCE&gt;
+    &lt;ID&gt;mesh&lt;/ID&gt;
+    &lt;ENDPOINT&gt;http://mesh.bio2rdf.org/sparql&lt;/ENDPOINT&gt;
+    &lt;VAR&gt;?y&lt;/VAR&gt;
+    &lt;PAGESIZE&gt;5000&lt;/PAGESIZE&gt;
+    &lt;RESTRICTION&gt;?y rdf:type meshr:Concept&lt;/RESTRICTION&gt;
+    &lt;PROPERTY&gt;dc:title&lt;/PROPERTY&gt;
+    &lt;TYPE&gt;sparql&lt;/TYPE&gt;
+&lt;/SOURCE&gt;</code></pre>
+<p>Six properties need to be set.</p><ul><li>Each data source must be given an ID via the tag <code>ID</code>.
+</li>
+<li><p>The endpoint of the data source needs to be explicated via the <code>ENDPOINT</code> tag.</p><ul><li>If the data is to be queried from a SPARQL end point, the <code>ENDPOINT</code> tag must be set to the corresponding SPARQL endpoint URI.
+</li>
+<li>In case the data is stored in a local file (CSV, N3, TURTLE, etc.), <code>ENDPOINT</code> tag must be set to the absolute path of the file containing the data.
+</li></ul>
+</li>
+<li><p>The <code>VAR</code> tag describes the variable associated with the aformentioned endpoint. This variable is also used later, when specifying the metric used to link the entities retrieved from the source and target endpoints.</p></li>
+<li>The fourth property is set via the <code>PAGESIZE</code> tag. This property must be set to the maximal number of triples returned by the SPARQL endpoint. For example, the <a href="http://dbpedia.org/sparql" target="_blank">DBpedia endpoint</a> returns a maximum of 1000 triples for each query. LIMES&apos; SPARQL module can still retrieve all relevant instances for the mapping even the value is set. If the SPARQL endpoint does not limit the number of triples it returns or if the input is a file, the value of <code>PAGESIZE</code> should be set to -1. 
+</li>
+<li>The restrictions on the queried data can be set via the <code>RESTRICTION</code> tag. This tag allows to constrain the entries that are retrieved the LIMES&apos; query module. In this particular example, we only instances of MESH concepts. 
+</li>
+<li>The <code>PROPERTY</code> tag allows to specify the properties that will be used during the linking. It is important to note that the property tag can also be used to specify the preprocessing on the input data. For example, setting <code>rdfs:label AS nolang</code>, one can ensure that the language tags get removed from each <code>rdfs:label</code> before it is written in the cache. Pre-processing functions can be piped into one another by using <code>-&gt;</code>. For example, <code>rdfs:label AS nolang-&gt;lowercase</code> will compute <code>lowercase(nolang(rdfs:label))</code>.
+</li></ul>
+<h3 id="pre-processing-functions">Pre-processing Functions</h3><p>Currently, LIMES supports the following set of pre-processing functions:</p><ul><li><code>nolang</code> for removing language tags
+</li>
+<li><code>lowercase</code> for converting the input string into lower case
+</li>
+<li><code>uppercase</code> for converting the input string into upper case 
+</li>
+<li><code>number</code> for ensuring that only the numeric characters, &quot;.&quot; and &quot;,&quot; are contained in the input string
+</li>
+<li><code>replace(String a,String b)</code> for replacing each occurrence of <code>a</code> with <code>b</code>
+</li>
+<li><code>regexreplace(String x,String b)</code> for replacing each occurrence the regular excepression <code>x</code> with <code>b</code>
+</li>
+<li><code>cleaniri</code> for removing all the prefixes from IRIs
+</li>
+<li><code>celsius</code> for converting Fahrenheit to Celsius
+</li>
+<li><code>fahrenheit</code> for converting Celsius to Fahrenheit
+</li>
+<li><code>removebraces</code> for removing the braces
+</li>
+<li><code>regularAlphabet</code> for removing nun-alphanumeric characters
+</li>
+<li><code>uriasstring</code> returns the last part of an URI as a String. Additional parsing <code>_</code> as space
+</li></ul>
+<p>Sometimes, generating the right link specification might either require merging property values (for example, the <code>dc:title</code> and <code>foaf:name</code> of MESH concepts) or splitting property values (for example, comparing the label and <code>foaf:homepage</code> of source instances and the <code>foaf:homepage</code> of target instances as well as <code>foaf:homepage AS cleaniri</code> of the target instances with the <code>rdfs:label</code> of target instances. To enable this, LIMES provides the <code>RENAME</code> operator which simply store either the values of a property or the results of a preprocessing into a different property field. For example, <code>foaf:homepage AS cleaniri RENAME label</code> would stored the homepage of a object without all the prefixes in the name property. The user could then access this value during the specification of the similarity measure for comparing sources and target instances. Note that the same property value can be used several times. Thus, the following specification fragment is valid and leads to the the <code>dc:title</code> and <code>foaf:name</code> of individuals)  of MESH concepts being first cast down to the lowercase and then merged to a single property.</p><pre><code>&lt;SOURCE&gt;
+    &lt;ID&gt;mesh&lt;/ID&gt;
+    &lt;ENDPOINT&gt;http://mesh.bio2rdf.org/sparql&lt;/ENDPOINT&gt;
+    &lt;VAR&gt;?y&lt;/VAR&gt;
+    &lt;PAGESIZE&gt;5000&lt;/PAGESIZE&gt;
+    &lt;RESTRICTION&gt;?y rdf:type meshr:Concept&lt;/RESTRICTION&gt;
+    &lt;PROPERTY&gt;dc:title AS lowercase RENAME name&lt;/PROPERTY&gt;
+    &lt;PROPERTY&gt;foaf:name AS lowercase RENAME name&lt;/PROPERTY&gt;
+    &lt;TYPE&gt;sparql&lt;/TYPE&gt;
+&lt;/SOURCE&gt;</code></pre>
+<p>In addition, the following allows splitting the values of <code>foaf:homepage</code> into the property values <code>name</code> and <code>homepage</code>.</p><pre><code>&lt;SOURCE&gt;
+    &lt;ID&gt;mesh&lt;/ID&gt;
+    &lt;ENDPOINT&gt;http://mesh.bio2rdf.org/sparql&lt;/ENDPOINT&gt;
+    &lt;VAR&gt;?y&lt;/VAR&gt;
+    &lt;PAGESIZE&gt;5000&lt;/PAGESIZE&gt;
+    &lt;RESTRICTION&gt;?y rdf:type meshr:Concept&lt;/RESTRICTION&gt;
+    &lt;PROPERTY&gt;foaf:homepage AS lowercase RENAME homepage&lt;/PROPERTY&gt;
+    &lt;PROPERTY&gt;foaf:homepage AS cleaniri-&gt;lowercase RENAME name&lt;/PROPERTY&gt;
+    &lt;TYPE&gt;sparql&lt;/TYPE&gt;
+&lt;/SOURCE&gt;</code></pre>
+<p>In addition, a source type can be set via <code>TYPE</code>. The default type is set to <code>SPARQL</code> (for a SPARQL endpoint) but LIMES also supports reading files directly from the hard-drive. The supported data formats are</p><ul><li><code>CSV</code>: Character-separated file can be loaded directly into LIMES. Note that the separation character is set to <code>TAB</code> as a default. The user can alter this setting programmatically. 
+</li>
+<li><code>N3</code> (which also reads <code>NT</code> files) reads files in the <code>N3</code> language.
+</li>
+<li><code>N-TRIPLE</code> reads files in W3C&apos;s core <a href="http://www.w3.org/TR/rdf-testcases/\\#ntriples" target="_blank">N-Triples format</a>
+</li>
+<li><code>TURTLE</code> allows reading files in the <code>Turtle</code> <a href="http://www.w3.org/TR/turtle/" target="_blank">syntax</a>.
+</li></ul>
+<p>Moreover, if you want to download data from a SPARQL endpoint, there is no need to set the <code>&lt;TYPE&gt;</code> tag. 
+Instead, if you want to read the source (or target) data from a file, you should fill <code>&lt;ENDPOINT&gt;</code> tag with the absolute path of the input file, e.g. <code>&lt;ENDPOINT&gt;C:/Files/dbpedia.nt&lt;/ENDPOINT&gt;</code>, and you should also set the <code>&lt;TYPE&gt;</code> tag  with the type of the input data, for example <code>&lt;TYPE&gt;NT&lt;/TYPE&gt;</code>.</p><h2 id="target-data-source">Target Data Source</h2><p>Configuring the target data source is very similar to configuring the source data source. The only difference lies in the beginning tag, i.e., <code>TARGET</code> instead of <code>SOURCE</code>. In the example shown below, we retrieve the <code>condition_name</code> of a condition from LinkedCT. We do no set the type of the source. Thus, LIMES supposes it is a SPARQL endpoint.</p><pre><code>&lt;TARGET&gt;
+    &lt;ID&gt;linkedct&lt;/ID&gt;
+    &lt;ENDPOINT&gt;http://data.linkedct.org/sparql&lt;/ENDPOINT&gt;
+    &lt;VAR&gt;?x&lt;/VAR&gt;
+    &lt;PAGESIZE&gt;5000&lt;/PAGESIZE&gt;
+    &lt;RESTRICTION&gt;?x rdf:type linkedct:condition&lt;/RESTRICTION&gt;
+    &lt;PROPERTY&gt;linkedct:condition_name&lt;/PROPERTY&gt;
+&lt;/TARGET&gt;</code></pre>
+<h2 id="metric-expression-for-similarity-measurement">Metric Expression for Similarity Measurement</h2><p>One of the core improvements of the newest LIMES kernels is the provision of a highly flexible language for the specification of complex metrics for linking (set by using the <code>METRIC</code> tag as exemplified below).</p><pre><code>&lt;METRIC&gt;
+    trigrams(y.dc:title, x.linkedct:condition_name)
+&lt;/METRIC&gt;</code></pre>
+<p>In this example, we use the <code>trigrams</code> metric to compare the <code>dc:title</code> of the instances retrieved from the source data source, with which the variable <code>y</code> is associated, with the <code>linkedct:</code> variable <code>x</code> is associated. While such simple metrics can be used in many cases, complex metrics are necessary in complex linking cases. LIMES includes a formal grammar for specifying complex configurations of arbitrary complexity. For this purpose, two categories of binary operations are supported: Metric operations and boolean operations.</p><h4 id="metric-operations">Metric operations</h4><p>Metric operations allow to combine metric values. They include the operators <code>MIN</code>, <code>MAX</code>, <code>ADD</code> and <code>MULT</code>, e.g. as follows:</p><pre><code>MAX(trigrams(x.rdfs:label,y.dc:title),euclidean(x.lat|long, y.latitude|longitude)).</code></pre>
+<p>This specification computes the maximum of 
+1 The trigram similarity of x&apos;s \texttt{rdfs:label} and y&apos;s <code>dc:title</code> 
+2 The 2-dimension euclidean distance of <code>x</code>&apos;s <code>lat</code> and <code>long</code> with <code>y</code>&apos;s <code>latitude</code> and <code>longitude</code>, i.e., <code>&#x221A;((x.lat- y.latitude)^2 + (x.long - y.longitude)^2)</code>.</p><p>Note that euclidean supports arbitrarily many dimensions. In addition, note that <code>ADD</code> allows to define weighted sums as follows:<code>ADD(0.3*trigrams(x.rdfs:label,y.dc:title), 0.7*euclidean(x.lat|x.long,y.latitude|y.longitude))</code>.</p><h4 id="boolean-operations">Boolean operations</h4><p>Boolean operations allow to combine and filter the results of metric operations and include <code>AND</code>, <code>OR</code>, <code>DIFF</code>, e.g. as <code>AND(trigrams(x.rdfs:label,y.dc:title)|0.9, euclidean(x.lat|x.long, y.latitude|y.longitude)|0.7)</code>.</p><p>This specification returns all links such that 
+1. the trigram similarity of <code>x</code>&apos;s <code>rdfs:label</code> and <code>y</code>&apos;s <code>dc:title</code> is greater or equal to 0.9 and 
+2. the 2-dimension euclidean distance of <code>x</code>&apos;s <code>lat</code> and <code>long</code> mit y&apos;s <code>latitude</code> and <code>longitude</code> is greater or equal to <code>0.7</code>.</p><p>The current version of LIMES supports the string following metrics:</p><ul><li><code>Trigrams</code>
+</li>
+<li><code>Cosine</code>
+</li>
+<li><code>Jaccard</code>  
+</li>
+<li><code>Levenshtein</code>
+</li>
+<li><code>Overlap</code> 
+</li>
+<li><code>Jaro</code> 
+</li>
+<li><code>JaroWinkler</code>
+</li>
+<li><code>MongeElkan</code> 
+</li>
+<li><code>ExactMatch</code>
+</li>
+<li><code>Qgrams</code>
+</li>
+<li><code>RatcliffObershelp</code>
+</li>
+<li><code>Soundex</code>
+</li>
+<li><code>Trigram</code>
+</li></ul>
+<p>In addition, LIMES supports comparing numeric vectors by using the</p><ul><li><code>Euclidean</code> metric 
+</li>
+<li><code>Geo_Orthodromic</code> distance 
+</li>
+<li><code>Geo_Great_Elliptic</code> distance
+</li></ul>
+<p>The similarity between polygons can be measured by using the following point-set distances:</p><ul><li><code>Geo_Orthodromic</code>
+</li>
+<li><code>Geo_NaiveHausdorff</code> 
+</li>
+<li><code>Geo_Indexed_Hausdorff</code> 
+</li>
+<li><code>Geo_Fast_Hausdorff</code> 
+</li>
+<li><code>Geo_Symmetric_Hausdorff</code>
+</li>
+<li><code>Geo_Centroid_Indexed_Hausdorff</code>
+</li>
+<li><code>Geo_Scan_Indexed_Hausdorff</code>
+</li>
+<li><code>Geo_Max</code>
+</li>
+<li><code>Geo_Min</code>
+</li>
+<li><code>Geo_Mean</code>
+</li>
+<li><code>Geo_Avg</code>
+</li>
+<li><code>Geo_Frechet</code>
+</li>
+<li><code>Geo_Link</code>
+</li>
+<li><code>Geo_Sum_Of_Min</code>
+</li>
+<li><code>Geo_Naive_Surjection</code>
+</li>
+<li><code>Geo_Fair_Surjection</code>
+</li></ul>
+<p>The temporal relations between event resources can be found by using the following relations:</p><ul><li><code>Tmp_Successor</code>
+</li>
+<li><code>Tmp_Predecessor</code>
+</li>
+<li><code>Tmp_Concurrent</code>
+</li>
+<li><code>Tmp_Before</code>
+</li>
+<li><code>Tmp_After</code>
+</li>
+<li><code>Tmp_Meets</code>
+</li>
+<li><code>Tmp_Is_Met_By</code>
+</li>
+<li><code>Tmp_Finishes</code>
+</li>
+<li><code>Tmp_Is_Finished_By</code>
+</li>
+<li><code>Tmp_Starts</code>
+</li>
+<li><code>Tmp_Is_Stared_By</code>
+</li>
+<li><code>Tmp_During</code>
+</li>
+<li><code>Tmp_During_Reverse</code>
+</li>
+<li><code>Tmp_Overlaps</code>
+</li>
+<li><code>Tmp_Is_Overlapped_By</code>
+</li>
+<li><code>Tmp_Equals</code>
+</li></ul>
+<p>The topological relations between spatial resources can be found by using the following relations:</p><ul><li><code>Top_Contains</code>
+</li>
+<li><code>Top_Crosses</code>
+</li>
+<li><code>Top_Disjoint</code>
+</li>
+<li><code>Top_Equals</code>
+</li>
+<li><code>Top_Intersects</code>
+</li>
+<li><code>Top_Overlaps</code>
+</li>
+<li><code>Top_Touches</code>
+</li>
+<li><code>Top_Within</code>
+</li></ul>
+<p>To compare sets of resources (e.g. in rdf containers), use the following relations:</p><ul><li><code>Set_Jaccard</code>
+</li></ul>
+<p>More complex distance measures are being added.</p><h2 id="machine-learning">Machine Learning</h2><p>In most cases, finding a good metric expression (i.s. one that achieve high F-Measure) is not a trivial task. Therefore, in LIMES we implemented a number of machine learning algorithm for auto-generation of metric (also called Link Specification). For using a machine learning algorithm in your configuration file use the <code>MLALGORITHM</code> tag instead of the <code>METRIC</code> tag. For example:</p><pre><code>&lt;MLALGORITHM&gt;
+    &lt;NAME&gt;wombat simple&lt;/NAME&gt;
+    &lt;TYPE&gt;supervised batch&lt;/TYPE&gt;
+    &lt;TRAINING&gt;trainingData.nt&lt;/TRAINING&gt;
+    &lt;PARAMETER&gt; 
+        &lt;NAME&gt;max execution time in minutes&lt;/NAME&gt;
+        &lt;VALUE&gt;60&lt;/VALUE&gt;
+    &lt;/PARAMETER&gt;
+&lt;/MLALGORITHM&gt;</code></pre>
+<p>In particular:</p><ul><li><p>The the tag <code>NAME</code> contains the name of the machine learning algorithm. Currently, we implemented the folowing algorithms:</p><ul><li>womabt simple
+</li>
+<li>wombat complete
+</li>
+<li>eagle
+</li></ul>
+</li>
+<li><p>The the tag <code>TYPE</code> contains the type of the machine learning algorithm, which could tak one of the values:</p><ul><li>supervised batch
+</li>
+<li>supervised active
+</li>
+<li>unsupervised
+</li></ul>
+</li>
+<li><p>The the tag <code>TRAINING</code> contains the full path to the training data file. Note that this tag is not required in case of the supervised active and unsupervised learning algorithms</p></li>
+<li>The the tag <code>PARAMETER</code> contains the the name (using the sub-tag <code>NAME</code>) and the value (using the sub-tag <code>VALUE</code>) of the used machine learning algorithm parameter. User can use as many <code>PARAMETER</code> tags as it is required. Note that LIMES uses the default values of all unspecified parameters. 
+</li></ul>
+<p>The following table contains a list of implemented algorithms together with supported implementations and parameters.</p><style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{font-family:Arial, sans-serif;font-size:14px;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg th{font-family:Arial, sans-serif;font-size:14px;font-weight:normal;padding:10px 5px;border-style:solid;border-width:1px;overflow:hidden;word-break:normal;}
+.tg .tg-baqh{text-align:center;vertical-align:top}
+.tg .tg-yw4l{vertical-align:top}
+</style>
+
+
+
+<table class="tg">
+  <tr>
+    <th class="tg-yw4l">ML Algorithm<br></th>
+    <th class="tg-yw4l">Supported types<br></th>
+    <th class="tg-yw4l">Parameter</th>
+    <th class="tg-yw4l">Default Value<br></th>
+    <th class="tg-yw4l">Note</th>
+  </tr>
+  <tr>
+    <td class="tg-baqh" rowspan="13">WOMBAT Simple<br></td>
+    <td class="tg-yw4l" rowspan="13">supervised batch, supervised active and unsupervised</td>
+    <td class="tg-yw4l">max refinement tree size</td>
+    <td class="tg-yw4l">2000</td>
+    <td class="tg-yw4l"></td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">max iterations number</td>
+    <td class="tg-yw4l">3</td>
+    <td class="tg-yw4l"></td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">max iteration time in minutes</td>
+    <td class="tg-yw4l">20</td>
+    <td class="tg-yw4l"></td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">max execution time in minutes</td>
+    <td class="tg-yw4l">600</td>
+    <td class="tg-yw4l"></td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">max fitness threshold</td>
+    <td class="tg-yw4l">1</td>
+    <td class="tg-yw4l">Range 0 to 1</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">minimum property coverage</td>
+    <td class="tg-yw4l">0.4</td>
+    <td class="tg-yw4l">Range 0 to 1</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">property learning rate</td>
+    <td class="tg-yw4l">0.9</td>
+    <td class="tg-yw4l">Range 0 to 1</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">overall penalty weight</td>
+    <td class="tg-yw4l">0.5<br></td>
+    <td class="tg-yw4l">Range 0 to 1<br></td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">children penalty weight</td>
+    <td class="tg-yw4l">1</td>
+    <td class="tg-yw4l">Range 0 to 1</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">complexity penalty weight</td>
+    <td class="tg-yw4l">1</td>
+    <td class="tg-yw4l">Range 0 to 1</td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">verbose</td>
+    <td class="tg-yw4l">false</td>
+    <td class="tg-yw4l"></td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">atomic measures</td>
+    <td class="tg-yw4l">jaccard, trigrams, cosine, qgrams</td>
+    <td class="tg-yw4l"></td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">save mapping</td>
+    <td class="tg-yw4l">true</td>
+    <td class="tg-yw4l"></td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">WOMBAT Complete<br></td>
+    <td class="tg-yw4l">supervised batch, supervised active and unsupervised</td>
+    <td class="tg-yw4l" colspan="3">Same as WOMBAT Simple<br></td>
+  </tr>
+  <tr>
+    <td class="tg-yw4l">EAGLE</td>
+    <td class="tg-yw4l">supervised batch, supervised active and unsupervised</td>
+    <td class="tg-yw4l">**TODO** Tomasso<br></td>
+    <td class="tg-yw4l"></td>
+    <td class="tg-yw4l"></td>
+  </tr>
+</table>
+
+
+
+
+<h2 id="acceptance-condition">Acceptance Condition</h2><p>Filling the acceptance condition consists of setting the threshold value to the minimum value that two instances must have in order to satisfy a relation. This can be carried out as exemplified below.</p><pre><code>&lt;ACCEPTANCE&gt;
+    &lt;THRESHOLD&gt;0.98&lt;/THRESHOLD&gt;
+    &lt;FILE&gt;accepted.nt&lt;/FILE&gt;
+    &lt;RELATION&gt;owl:sameAs&lt;/RELATION&gt;
+&lt;/ACCEPTANCE&gt;</code></pre>
+<p>By using the \verb#THRESHOLD# tag, the user can set the minimum value that two instances must have in order to satisfy the relation specified in the \verb#RELATION# tag, i.e., \verb#owl:sameAs# in our example. Setting the tag <code>&lt;FILE&gt;</code> allows to specify where the links should be written. Currently, LIMES produces output files in the N3 format.</p><p>Future versions of LIMES will allow to write the output to other streams and in other data formats.</p><h2 id="review-condition">Review Condition</h2><p>Setting the condition upon which links must be reviewed manually is very similar to setting the acceptance condition as shown below.</p><pre><code>&lt;REVIEW&gt;
+    &lt;THRESHOLD&gt;0.95&lt;/THRESHOLD&gt;
+    &lt;FILE&gt;reviewme.nt&lt;/FILE&gt;
+    &lt;RELATION&gt;owl:sameAs&lt;/RELATION&gt;
+&lt;/REVIEW&gt;</code></pre>
+<p>All instances that have a similarity between the threshold set in <code>REVIEW</code> (0.95 in our example) and the threshold set in <code>ACCEPTANCE</code> (0.98 in our example) will be written in the review file and linked via the relation set in <code>REVIEW</code>.</p><p>The LIMES configuration file should be concluded with <code>&lt;/LIMES&gt;</code></p><h2 id="granularity-optional">Granularity (optional)</h2><p>The user can choose positive integers to set the granularity of HYPPO, HR3 or ORCHID by setting</p><pre><code>&lt;GRANULARITY&gt;2&lt;/GRANULARITY&gt;.</code></pre>
+<h2 id="output-format">Output Format</h2><p>The user can choose between <code>TAB</code> and <code>N3</code> as output format by setting</p><pre><code>&lt;OUTPUT&gt;N3&lt;/OUTPUT&gt;</code></pre>
+<h2 id="execution-optional">Execution (optional)</h2><p>Three LIMES execution parameters could be set here:</p><ul><li><code>REWRITER</code>: LIMES 1.0.0 implements the <code>DEFAULT</code> rewriter.
+</li>
+<li><p><code>PLANNER</code>: the user can choose between:</p><ul><li><code>CANONICAL</code>: It generates an immutable plan in a static manner.
+</li>
+<li><code>HELIOS</code>: It generates an immutable plan in a dynamic manner.
+</li>
+<li><code>DYNAMIC</code>: It generates an mutable plan in a dynamic manner.
+</li>
+<li><code>DEFAULT</code>: same as <code>CANONICAL</code>.
+</li></ul>
+</li>
+<li><p><code>ENGINE</code>: the user can choose between:</p><ul><li><code>SIMPLE</code>: It executes each independent part of the plan sequentially.
+</li>
+<li><code>DEFAULT</code>: same as <code>SIMPLE</code>.
+</li></ul>
+</li></ul>
+<p>if not set, the <code>DEFAULT</code> value for each parameter will used be will</p><h2 id="example-of-a-configuration-files">Example of a Configuration Files</h2><p>The following shows the whole configuration file for LIMES explicated in the sections above.</p><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;!DOCTYPE LIMES SYSTEM &quot;limes.dtd&quot;&gt;
+&lt;LIMES&gt;
+&lt;PREFIX&gt;
+    &lt;NAMESPACE&gt;http://geovocab.org/geometry#&lt;/NAMESPACE&gt;
+    &lt;LABEL&gt;geom&lt;/LABEL&gt;
+&lt;/PREFIX&gt;
+&lt;PREFIX&gt;
+    &lt;NAMESPACE&gt;http://www.opengis.net/ont/geosparql#&lt;/NAMESPACE&gt;
+    &lt;LABEL&gt;geos&lt;/LABEL&gt;
+&lt;/PREFIX&gt;
+&lt;PREFIX&gt;
+    &lt;NAMESPACE&gt;http://linkedgeodata.org/ontology/&lt;/NAMESPACE&gt;
+    &lt;LABEL&gt;lgdo&lt;/LABEL&gt;
+&lt;/PREFIX&gt;
+&lt;SOURCE&gt;
+    &lt;ID&gt;linkedgeodata&lt;/ID&gt;
+    &lt;ENDPOINT&gt;http://linkedgeodata.org/sparql&lt;/ENDPOINT&gt;
+    &lt;VAR&gt;?x&lt;/VAR&gt;
+    &lt;PAGESIZE&gt;2000&lt;/PAGESIZE&gt;
+    &lt;RESTRICTION&gt;?x a lgdo:RelayBox&lt;/RESTRICTION&gt;
+    &lt;PROPERTY&gt;geom:geometry/geos:asWKT RENAME polygon&lt;/PROPERTY&gt;
+&lt;/SOURCE&gt;
+&lt;TARGET&gt;
+    &lt;ID&gt;linkedgeodata&lt;/ID&gt;
+    &lt;ENDPOINT&gt;http://linkedgeodata.org/sparql&lt;/ENDPOINT&gt;
+    &lt;VAR&gt;?y&lt;/VAR&gt;
+    &lt;PAGESIZE&gt;2000&lt;/PAGESIZE&gt;
+    &lt;RESTRICTION&gt;?y a lgdo:RelayBox&lt;/RESTRICTION&gt;
+    &lt;PROPERTY&gt;geom:geometry/geos:asWKT RENAME polygon&lt;/PROPERTY&gt;
+&lt;/TARGET&gt;
+&lt;METRIC&gt;geo_hausdorff(x.polygon, y.polygon)&lt;/METRIC&gt;
+&lt;ACCEPTANCE&gt;
+    &lt;THRESHOLD&gt;0.9&lt;/THRESHOLD&gt;
+    &lt;FILE&gt;lgd_relaybox_verynear.nt&lt;/FILE&gt;
+    &lt;RELATION&gt;lgdo:near&lt;/RELATION&gt;
+&lt;/ACCEPTANCE&gt;
+&lt;REVIEW&gt;
+    &lt;THRESHOLD&gt;0.5&lt;/THRESHOLD&gt;
+    &lt;FILE&gt;lgd_relaybox_near.nt&lt;/FILE&gt;
+    &lt;RELATION&gt;lgdo:near&lt;/RELATION&gt;
+&lt;/REVIEW&gt;
+
+&lt;EXECUTION&gt;
+    &lt;REWRITER&gt;default&lt;/REWRITER&gt;
+    &lt;PLANNER&gt;default&lt;/PLANNER&gt;
+    &lt;ENGINE&gt;default&lt;/ENGINE&gt;
+&lt;/EXECUTION&gt;
+
+&lt;OUTPUT&gt;TAB&lt;/OUTPUT&gt;</code></pre>
+<p>&lt;/LIMES&gt;</p><p>LIMES can be also configured using a RDF configuration file, the next
+listing represent the same LIMES configuration used in the previous XML
+file.</p><pre><code>@prefix geos:    &lt;http://www.opengis.net/ont/geosparql#&gt; .
+@prefix lgdo:    &lt;http://linkedgeodata.org/ontology/&gt; .
+@prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix geom:    &lt;http://geovocab.org/geometry#&gt; .
+@prefix limes:   &lt;http://limes.sf.net/ontology/&gt; .
+
+limes:linkedgeodataTOlinkedgeodataTarget
+      a       limes:TargetDataset ;
+      rdfs:label &quot;linkedgeodata&quot; ;
+      limes:endPoint &quot;http://linkedgeodata.org/sparql&quot; ;
+      limes:pageSize &quot;2000&quot; ;
+      limes:property &quot;geom:geometry/geos:asWKT&quot; ;
+      limes:restriction &quot;?y a lgdo:RelayBox&quot; ;
+      limes:variable &quot;?y&quot; .
+
+limes:linkedgeodataTOlinkedgeodata
+      a       limes:LimesSpecs ;
+      limes:hasExecutionParameters limes:executionParameters ;
+      limes:granularity &quot;2&quot; ;
+      limes:hasAcceptance limes:linkedgeodataTOlinkedgeodataAcceptance ;
+      limes:hasMetric limes:linkedgeodataTOlinkedgeodataMetric ;
+      limes:hasReview limes:linkedgeodataTOlinkedgeodataReview ;
+      limes:hasSource limes:linkedgeodataTOlinkedgeodataSource ;
+      limes:hasTarget limes:linkedgeodataTOlinkedgeodataTarget ;
+      limes:outputFormat &quot;TAB&quot; .
+
+limes:executionParameters
+      a limes:ExecutionParameters ;
+      limes:executionPlanner &quot;default&quot; ;
+      limes:executionRewriter &quot;default&quot; ;
+      limes:executionEngine &quot;default&quot; .
+
+
+limes:linkedgeodataTOlinkedgeodataReview
+      a       limes:Review ;
+      limes:file &quot;lgd_relaybox_near.nt&quot; ;
+      limes:relation &quot;lgdo:near&quot; ;
+      limes:threshold &quot;0.5&quot; .
+
+limes:linkedgeodataTOlinkedgeodataMetric
+      a       limes:Metric ;
+      limes:expression &quot;geo_hausdorff(x.polygon, y.polygon)&quot; .
+
+limes:linkedgeodataTOlinkedgeodataAcceptance
+      a       limes:Acceptance ;
+      limes:file &quot;lgd_relaybox_verynear.nt&quot; ;
+      limes:relation &quot;lgdo:near&quot; ;
+      limes:threshold &quot;0.9&quot; .
+
+limes:linkedgeodataTOlinkedgeodataSource
+      a       limes:SourceDataset ;
+      rdfs:label &quot;linkedgeodata&quot; ;
+      limes:endPoint &quot;http://linkedgeodata.org/sparql&quot; ;
+      limes:pageSize &quot;2000&quot; ;
+      limes:property &quot;geom:geometry/geos:asWKT&quot; ;
+      limes:restriction &quot;?x a lgdo:RelayBox&quot; ;
+      limes:variable &quot;?x&quot; .</code></pre>
+<p>The following configuration file uses the machine learning algorithm of the Wombat simple to find the metric expression for the same example:</p><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
+&lt;!DOCTYPE LIMES SYSTEM &quot;limes.dtd&quot;&gt;
+&lt;LIMES&gt;
+&lt;PREFIX&gt;
+    &lt;NAMESPACE&gt;http://geovocab.org/geometry#&lt;/NAMESPACE&gt;
+    &lt;LABEL&gt;geom&lt;/LABEL&gt;
+&lt;/PREFIX&gt;
+
+&lt;PREFIX&gt;
+    &lt;NAMESPACE&gt;http://www.opengis.net/ont/geosparql#&lt;/NAMESPACE&gt;
+    &lt;LABEL&gt;geos&lt;/LABEL&gt;
+&lt;/PREFIX&gt;
+
+&lt;PREFIX&gt;
+    &lt;NAMESPACE&gt;http://linkedgeodata.org/ontology/&lt;/NAMESPACE&gt;
+    &lt;LABEL&gt;lgdo&lt;/LABEL&gt;
+&lt;/PREFIX&gt;
+
+&lt;SOURCE&gt;
+    &lt;ID&gt;linkedgeodata&lt;/ID&gt;
+    &lt;ENDPOINT&gt;http://linkedgeodata.org/sparql&lt;/ENDPOINT&gt;
+    &lt;VAR&gt;?x&lt;/VAR&gt;
+    &lt;PAGESIZE&gt;2000&lt;/PAGESIZE&gt;
+    &lt;RESTRICTION&gt;?x a lgdo:RelayBox&lt;/RESTRICTION&gt;
+    &lt;PROPERTY&gt;geom:geometry/geos:asWKT RENAME polygon&lt;/PROPERTY&gt;
+&lt;/SOURCE&gt;
+
+&lt;TARGET&gt;
+    &lt;ID&gt;linkedgeodata&lt;/ID&gt;
+    &lt;ENDPOINT&gt;http://linkedgeodata.org/sparql&lt;/ENDPOINT&gt;
+    &lt;VAR&gt;?y&lt;/VAR&gt;
+    &lt;PAGESIZE&gt;2000&lt;/PAGESIZE&gt;
+    &lt;RESTRICTION&gt;?y a lgdo:RelayBox&lt;/RESTRICTION&gt;
+    &lt;PROPERTY&gt;geom:geometry/geos:asWKT RENAME polygon&lt;/PROPERTY&gt;
+&lt;/TARGET&gt;
+
+&lt;MLALGORITHM&gt;
+    &lt;NAME&gt;wombat simple&lt;/NAME&gt;
+    &lt;TYPE&gt;supervised batch&lt;/TYPE&gt;
+    &lt;TRAINING&gt;trainingData.nt&lt;/TRAINING&gt;
+    &lt;PARAMETER&gt; 
+        &lt;NAME&gt;max execution time in minutes&lt;/NAME&gt;
+        &lt;VALUE&gt;60&lt;/VALUE&gt;
+    &lt;/PARAMETER&gt;
+&lt;/MLALGORITHM&gt;
+
+&lt;ACCEPTANCE&gt;
+    &lt;THRESHOLD&gt;0.9&lt;/THRESHOLD&gt;
+    &lt;FILE&gt;lgd_relaybox_verynear.nt&lt;/FILE&gt;
+    &lt;RELATION&gt;lgdo:near&lt;/RELATION&gt;
+&lt;/ACCEPTANCE&gt;
+
+&lt;REVIEW&gt;
+    &lt;THRESHOLD&gt;0.5&lt;/THRESHOLD&gt;
+    &lt;FILE&gt;lgd_relaybox_near.nt&lt;/FILE&gt;
+    &lt;RELATION&gt;lgdo:near&lt;/RELATION&gt;
+&lt;/REVIEW&gt;
+
+&lt;EXECUTION&gt;
+    &lt;REWRITER&gt;default&lt;/REWRITER&gt;
+    &lt;PLANNER&gt;default&lt;/PLANNER&gt;
+    &lt;ENGINE&gt;default&lt;/ENGINE&gt;
+&lt;/EXECUTION&gt;
+
+&lt;OUTPUT&gt;TAB&lt;/OUTPUT&gt;</code></pre>
+<p>&lt;/LIMES&gt;</p><p>Finally, the last XML configuration file in TTL format will look like:</p><pre><code>@prefix geos:    &lt;http://www.opengis.net/ont/geosparql#&gt; .
+@prefix lgdo:    &lt;http://linkedgeodata.org/ontology/&gt; .
+@prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix geom:    &lt;http://geovocab.org/geometry#&gt; .
+@prefix limes:   &lt;http://limes.sf.net/ontology/&gt; .
+
+limes:linkedgeodataTOlinkedgeodataTarget
+      a       limes:TargetDataset ;
+      rdfs:label &quot;linkedgeodata&quot; ;
+      limes:endPoint &quot;http://linkedgeodata.org/sparql&quot; ;
+      limes:pageSize &quot;2000&quot; ;
+      limes:property &quot;geom:geometry/geos:asWKT&quot; ;
+      limes:restriction &quot;?y a lgdo:RelayBox&quot; ;
+      limes:variable &quot;?y&quot; .
+
+limes:linkedgeodataTOlinkedgeodata
+      a       limes:LimesSpecs ;
+      limes:hasExecutionParameters limes:executionParameters ;
+      limes:granularity &quot;2&quot; ;
+      limes:hasAcceptance limes:linkedgeodataTOlinkedgeodataAcceptance ;
+      limes:hasMetric limes:linkedgeodataTOlinkedgeodataMetric ;
+      limes:hasReview limes:linkedgeodataTOlinkedgeodataReview ;
+      limes:hasSource limes:linkedgeodataTOlinkedgeodataSource ;
+      limes:hasTarget limes:linkedgeodataTOlinkedgeodataTarget ;
+      limes:outputFormat &quot;TAB&quot; .
+
+limes:executionParameters
+      a limes:ExecutionParameters ;
+      limes:executionPlanner &quot;default&quot; ;
+      limes:executionRewriter &quot;default&quot; ;
+      limes:executionEngine &quot;default&quot; .
+
+
+limes:linkedgeodataTOlinkedgeodataReview
+      a       limes:Review ;
+      limes:file &quot;lgd_relaybox_near.nt&quot; ;
+      limes:relation &quot;lgdo:near&quot; ;
+      limes:threshold &quot;0.5&quot; .
+
+limes:linkedgeodataTOlinkedgeodataMetric
+      a       limes:Metric ;
+      limes:expression &quot;geo_hausdorff(x.polygon, y.polygon)&quot; .
+
+limes:linkedgeodataTOlinkedgeodataAcceptance
+      a       limes:Acceptance ;
+      limes:file &quot;lgd_relaybox_verynear.nt&quot; ;
+      limes:relation &quot;lgdo:near&quot; ;
+      limes:threshold &quot;0.9&quot; .
+
+limes:linkedgeodataTOlinkedgeodataSource
+      a       limes:SourceDataset ;
+      rdfs:label &quot;linkedgeodata&quot; ;
+      limes:endPoint &quot;http://linkedgeodata.org/sparql&quot; ;
+      limes:pageSize &quot;2000&quot; ;
+      limes:property &quot;geom:geometry/geos:asWKT&quot; ;
+      limes:restriction &quot;?x a lgdo:RelayBox&quot; ;
+      limes:variable &quot;?x&quot; .</code></pre>
+<h2 id="running-the-framework">Running the Framework</h2><h3 id="from-jar-file">From <code>jar</code> file</h3><p>Once the configuration file (dubbed <code>config.xml</code> in this manual) has
+been written, the last step consists of actually running the LIMES
+framework. For this purpose, simply run</p><p><code>java -jar LIMES.jar config.xml [OPTIONS...]</code>.</p><p>The following options and switches are available:</p><ul><li><code>-h</code> print out help
+</li>
+<li><code>-f $format</code> set format of configuration file, with <code>$format</code> being either <code>&quot;XML&quot;</code> (default) or <code>&quot;RDF&quot;</code>
+</li>
+<li><code>-g</code> run GUI version
+</li></ul>
+<p>In case your system runs out of memory, please use the <code>-Xmx</code> option (must appear before the -jar option) to
+allocate more memory to the Java Virtual Machine. Please ensure that the
+Data Type Definition file for LIMES, <code>limes.dtd</code>, is in the same folder
+as the <code>LIMES.jar</code> and everything should run just fine. Enjoy.</p><h3 id="from-java">From Java</h3><p>See <a href="https://github.com/AKSW/LIMES-dev/blob/dev/limes-core/manual/developer_manual.md" target="_blank">Developer manual</a></p><h2 id="known-issues">Known Issues</h2><p>None.</p><h2 id="change-log">Change log</h2><h4 id="version-100">Version 1.0.0</h4><ul><li>Kernel update
+</li>
+<li>Machine learning algorithm support
+</li>
+<li>Added support for several topological functions (within, intersects, ...)
+</li>
+<li>New GUI
+</li></ul>
+<h4 id="version-06rc4">Version 0.6RC4</h4><ul><li>Added support for several geo-spatial similarity functions (geomean, surjection, fairsurjection, geosumofmin, frechet, link)
+</li>
+<li>Added support for temporal geo-spatial similarity functions (daysim, datesim, yearsim)
+</li>
+<li>Added parallel implementation for ORCHID
+</li>
+<li>Added support for Jaro and Jaro-Winkler
+</li></ul>
+<h4 id="version-06rc3">Version 0.6RC3</h4><ul><li>Added support for geo-spatial similarity function based on Hausdorff distance
+</li>
+<li>Added support for geo-spatial similarity function based on symmetric Hausdorff distance
+</li>
+<li>Added support for orthodromic distance
+</li>
+<li>Implemented ORCHID for time-efficient linking of geo-spatial resources
+</li>
+<li>Added support for exact matches
+</li></ul>
+<h4 id="version-06rc2">Version 0.6RC2</h4><ul><li>Time-efficient self-configuration (genetic, linear, boolean)
+</li>
+<li>Can now read use most RDF serialization formats (RDF/XML, N3, NT, TTL) as input
+</li></ul>
+<h4 id="version-06rc1">Version 0.6RC1</h4><ul><li>Kernel update
+</li>
+<li>HR3 algorithm for vector space. Default granularity is now 4
+</li>
+<li>Update for data readers and writers.
+</li>
+<li>Genetic Learning
+</li></ul>
+<h4 id="version-05rc1">Version 0.5RC1</h4><ul><li>Kernel change, more than 4 orders of magnitude faster
+</li>
+<li>HYPPO algorithm for vector spaces
+</li>
+<li>Fast prefix, suffix and position filtering for strings
+</li>
+<li>Support for more metrics
+</li></ul>
+<h4 id="version-041">Version 0.4.1</h4><ul><li>Added support for data source type (tab-separated vectors)
+</li>
+<li>Added factory for query modules
+</li></ul>
+<h4 id="version-04">Version 0.4</h4><ul><li>Added support for data source type (Sparql, CSV)
+</li>
+<li>Added hybrid cache
+</li>
+<li>Implemented CSV reader
+</li>
+<li>Faster organizer
+</li></ul>
+<blockquote id="fn_2">
+<sup>2</sup>. <a href="http://www.w3.org/TR/rdf-testcases/#ntriples" target="_blank">http://www.w3.org/TR/rdf-testcases/#ntriples</a><a href="#reffn_2" title="Jump back to footnote [2] in the text."> &#x21A9;</a>
+</blockquote>
+<blockquote id="fn_3">
+<sup>3</sup>. <a href="http://www.w3.org/TR/turtle/" target="_blank">http://www.w3.org/TR/turtle/</a><a href="#reffn_3" title="Jump back to footnote [3] in the text."> &#x21A9;</a>
+</blockquote>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Installation and Setup">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="developer_manual.html" class="navigation navigation-next " aria-label="Next page: TODO: completeme">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"TODO: completeme","level":"2.1","depth":1,"next":{"title":"TODO: completeme","level":"3.1","depth":1,"path":"developer_manual.md","ref":"developer_manual.md","articles":[]},"previous":{"title":"Installation and Setup","level":"1.2","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual.md","mtime":"2016-08-24T11:16:54.000Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-24T11:34:00.472Z"},"basePath":".","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="gitbook/gitbook.js"></script>
+    <script src="gitbook/theme.js"></script>
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
