@@ -2,7 +2,7 @@
 <!DOCTYPE HTML>
 <html lang="" >
     <head>
-        <title>LSPipeline · GitBook</title>
+        <title>Introduction · GitBook</title>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
@@ -57,10 +57,10 @@
     <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="ml_pipeline.html" />
+    <link rel="next" href="overview.html" />
     
     
-    <link rel="prev" href="measures.html" />
+    <link rel="prev" href="../" />
     
 
     </head>
@@ -448,7 +448,7 @@
         
         
     
-        <li class="chapter " data-level="3.1" data-path="./">
+        <li class="chapter active" data-level="3.1" data-path="./">
             
                 <a href="./">
             
@@ -500,7 +500,7 @@
             
         </li>
     
-        <li class="chapter active" data-level="3.5" data-path="ls_pipeline.html">
+        <li class="chapter " data-level="3.5" data-path="ls_pipeline.html">
             
                 <a href="ls_pipeline.html">
             
@@ -589,7 +589,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href=".." >LSPipeline</a>
+        <a href=".." >Introduction</a>
     </h1>
 </div>
 
@@ -604,35 +604,7 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="lspipeline">LSPipeline</h1><p>The <code>LSPipeline</code> consists of three basic building blocks: <code>Rewriter</code>, <code>Planner</code> and <code>ExecutionEngine</code>.</p><ul><li>A <code>Rewriter</code> aims to simplify a given LS by removing potential redundancy, that eventually speeds up its execution.
-</li>
-<li>A <code>Planner</code> generates the plan of an input LS. For an <em>atomic LS</em>, it generates a simple <code>Plan</code> that consists of a <em>RUN</em> command. For a <em>complex LS</em>, it determines which <em>atomic LS</em> should be executed first, how to process intermediary results and identifies dependencies between atomic LSs. For example, a <code>Planner</code> can decide to first run some <em>atomic LS</em> and then filter the results using another <em>atomic LS</em> instead of running it independently and merging the results.
-</li>
-<li>An <code>ExecutionEngine</code> is responsible for executing the <code>Plan</code> of an input LS. It takes as input a LS and a <code>Planner</code>, it executes  the <code>Plan</code> and returns the set of links as a <code>AMapping</code>.
-</li>
-<li>All packages have the same hierarchy and they include the following set of classes:
-<ul><li>An interface i.e. <code>IExecutionEngine</code> that includes all basic functions that an engine must implement.
-</li>
-<li>An abstract class i.e. <code>ExecutionEngine</code> that implements the <code>IExecutionEngine</code> interface and must be extended by all engine classes.
-</li>
-<li>A factory class i.e. <code>ExecutionEngineFactory</code> that returns an object of an engine given an input engine name. 
-</li></ul>
-</li></ul>
-<p>This code example, taken from the <code>LSPipeline</code> class, demonstrates the usage pattern:</p><pre><code>Rewriter rw = RewriterFactory.getRewriter(rewriterType);
-LinkSpecification rwLs = rw.rewrite(ls);
-// Planning execution of the LS
-Planner planner = ExecutionPlannerFactory.getPlanner(executionPlannerType, sourceCache, targetCache);
-// Execute the ExecutionPlan obtained from the LS
-ExecutionEngine engine = ExecutionEngineFactory.getEngine(executionEngineType, sourceCache, targetCache, sourceVar, targetVar);
-return engine.execute(rwLs, planner);</code></pre>
-<ul><li><p>If you want to create a new engine or planner or rewriter class, you must follow a set of steps:</p><ul><li>The name of the new class must end with the word &quot;Engine&quot; or &quot;Planner&quot; or &quot;Rewriter&quot;.
-</li>
-<li>The new class must extend the ExecutionEngine or Planner or Rewriter abstract class and as a result implement all overriden methods from the corresponding interface. No unsupported functions are allowed.
-</li>
-<li>Go to the corresponding Factory class of the package and include a label for the new class at the enum class of allowed names. Then, create a <code>public static final</code> field of String type using the same name of engine/planner/rewriter as the one used in the enum class i.e. <code>public static final String HELIOS = &quot;helios&quot;;</code> and finally then add the choice of returing this engine/planner/rewriter at the i.e. <code>getPlannerType</code> and <code>getPlanner</code> functions following the pattern used for other engines/planners/rewriters.
-</li></ul>
-</li></ul>
-
+                                <h1 id="limes-10-developer-manual">LIMES 1.0 Developer Manual</h1><h2 id="introduction">Introduction</h2><p>This short manual is intended for developers who want to extend LIMES 1.0 and/or include it into their own software products. It aims to deliver an overview of the architecture underlying our framework, explain the core concepts and give developers entry points into the java docs for further reading.</p>
                                 
                                 </section>
                             
@@ -659,12 +631,12 @@ return engine.execute(rwLs, planner);</code></pre>
 
             
                 
-                <a href="measures.html" class="navigation navigation-prev " aria-label="Previous page: Measures">
+                <a href="../" class="navigation navigation-prev " aria-label="Previous page: Example Use Cases">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="ml_pipeline.html" class="navigation navigation-next " aria-label="Next page: MLPipeline">
+                <a href="overview.html" class="navigation navigation-next " aria-label="Next page: Overview">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -675,7 +647,7 @@ return engine.execute(rwLs, planner);</code></pre>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"LSPipeline","level":"3.5","depth":1,"next":{"title":"MLPipeline","level":"3.6","depth":1,"path":"developer_manual/ml_pipeline.md","ref":"developer_manual/ml_pipeline.md","articles":[]},"previous":{"title":"Measures","level":"3.4","depth":1,"path":"developer_manual/measures.md","ref":"developer_manual/measures.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"developer_manual/ls_pipeline.md","mtime":"2016-08-24T14:22:32.000Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-24T14:35:02.229Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Introduction","level":"3.1","depth":1,"next":{"title":"Overview","level":"3.2","depth":1,"path":"developer_manual/overview.md","ref":"developer_manual/overview.md","articles":[]},"previous":{"title":"Example Use Cases","level":"2.6","depth":1,"path":"README.md","ref":"README.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"developer_manual/index.md","mtime":"2016-08-24T14:22:32.000Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-24T14:35:02.229Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
