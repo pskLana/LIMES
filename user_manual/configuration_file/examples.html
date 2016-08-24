@@ -604,59 +604,60 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="configuration-file-examples">Configuration File Examples</h1><p>The following shows the whole configuration file for LIMES explicated in the sections above.</p><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
-&lt;!DOCTYPE LIMES SYSTEM &quot;limes.dtd&quot;&gt;
-&lt;LIMES&gt;
-&lt;PREFIX&gt;
-    &lt;NAMESPACE&gt;http://geovocab.org/geometry#&lt;/NAMESPACE&gt;
-    &lt;LABEL&gt;geom&lt;/LABEL&gt;
-&lt;/PREFIX&gt;
-&lt;PREFIX&gt;
-    &lt;NAMESPACE&gt;http://www.opengis.net/ont/geosparql#&lt;/NAMESPACE&gt;
-    &lt;LABEL&gt;geos&lt;/LABEL&gt;
-&lt;/PREFIX&gt;
-&lt;PREFIX&gt;
-    &lt;NAMESPACE&gt;http://linkedgeodata.org/ontology/&lt;/NAMESPACE&gt;
-    &lt;LABEL&gt;lgdo&lt;/LABEL&gt;
-&lt;/PREFIX&gt;
-&lt;SOURCE&gt;
-    &lt;ID&gt;linkedgeodata&lt;/ID&gt;
-    &lt;ENDPOINT&gt;http://linkedgeodata.org/sparql&lt;/ENDPOINT&gt;
-    &lt;VAR&gt;?x&lt;/VAR&gt;
-    &lt;PAGESIZE&gt;2000&lt;/PAGESIZE&gt;
-    &lt;RESTRICTION&gt;?x a lgdo:RelayBox&lt;/RESTRICTION&gt;
-    &lt;PROPERTY&gt;geom:geometry/geos:asWKT RENAME polygon&lt;/PROPERTY&gt;
-&lt;/SOURCE&gt;
-&lt;TARGET&gt;
-    &lt;ID&gt;linkedgeodata&lt;/ID&gt;
-    &lt;ENDPOINT&gt;http://linkedgeodata.org/sparql&lt;/ENDPOINT&gt;
-    &lt;VAR&gt;?y&lt;/VAR&gt;
-    &lt;PAGESIZE&gt;2000&lt;/PAGESIZE&gt;
-    &lt;RESTRICTION&gt;?y a lgdo:RelayBox&lt;/RESTRICTION&gt;
-    &lt;PROPERTY&gt;geom:geometry/geos:asWKT RENAME polygon&lt;/PROPERTY&gt;
-&lt;/TARGET&gt;
-&lt;METRIC&gt;geo_hausdorff(x.polygon, y.polygon)&lt;/METRIC&gt;
-&lt;ACCEPTANCE&gt;
-    &lt;THRESHOLD&gt;0.9&lt;/THRESHOLD&gt;
-    &lt;FILE&gt;lgd_relaybox_verynear.nt&lt;/FILE&gt;
-    &lt;RELATION&gt;lgdo:near&lt;/RELATION&gt;
-&lt;/ACCEPTANCE&gt;
-&lt;REVIEW&gt;
-    &lt;THRESHOLD&gt;0.5&lt;/THRESHOLD&gt;
-    &lt;FILE&gt;lgd_relaybox_near.nt&lt;/FILE&gt;
-    &lt;RELATION&gt;lgdo:near&lt;/RELATION&gt;
-&lt;/REVIEW&gt;
+                                <h1 id="configuration-file-examples">Configuration File Examples</h1><p>The following shows the whole configuration file for LIMES explicated in the sections above.</p><pre><code class="lang-xml"><span class="php"><span class="hljs-meta">&lt;?</span>xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span> standalone=<span class="hljs-string">&quot;no&quot;</span><span class="hljs-meta">?&gt;</span></span>
+<span class="hljs-meta">&lt;!DOCTYPE LIMES SYSTEM &quot;limes.dtd&quot;&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">LIMES</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">PREFIX</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">NAMESPACE</span>&gt;</span>http://geovocab.org/geometry#<span class="hljs-tag">&lt;/<span class="hljs-name">NAMESPACE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">LABEL</span>&gt;</span>geom<span class="hljs-tag">&lt;/<span class="hljs-name">LABEL</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">PREFIX</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">PREFIX</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">NAMESPACE</span>&gt;</span>http://www.opengis.net/ont/geosparql#<span class="hljs-tag">&lt;/<span class="hljs-name">NAMESPACE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">LABEL</span>&gt;</span>geos<span class="hljs-tag">&lt;/<span class="hljs-name">LABEL</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">PREFIX</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">PREFIX</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">NAMESPACE</span>&gt;</span>http://linkedgeodata.org/ontology/<span class="hljs-tag">&lt;/<span class="hljs-name">NAMESPACE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">LABEL</span>&gt;</span>lgdo<span class="hljs-tag">&lt;/<span class="hljs-name">LABEL</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">PREFIX</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">SOURCE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ID</span>&gt;</span>linkedgeodata<span class="hljs-tag">&lt;/<span class="hljs-name">ID</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ENDPOINT</span>&gt;</span>http://linkedgeodata.org/sparql<span class="hljs-tag">&lt;/<span class="hljs-name">ENDPOINT</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">VAR</span>&gt;</span>?x<span class="hljs-tag">&lt;/<span class="hljs-name">VAR</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">PAGESIZE</span>&gt;</span>2000<span class="hljs-tag">&lt;/<span class="hljs-name">PAGESIZE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">RESTRICTION</span>&gt;</span>?x a lgdo:RelayBox<span class="hljs-tag">&lt;/<span class="hljs-name">RESTRICTION</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">PROPERTY</span>&gt;</span>geom:geometry/geos:asWKT RENAME polygon<span class="hljs-tag">&lt;/<span class="hljs-name">PROPERTY</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">SOURCE</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">TARGET</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ID</span>&gt;</span>linkedgeodata<span class="hljs-tag">&lt;/<span class="hljs-name">ID</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ENDPOINT</span>&gt;</span>http://linkedgeodata.org/sparql<span class="hljs-tag">&lt;/<span class="hljs-name">ENDPOINT</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">VAR</span>&gt;</span>?y<span class="hljs-tag">&lt;/<span class="hljs-name">VAR</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">PAGESIZE</span>&gt;</span>2000<span class="hljs-tag">&lt;/<span class="hljs-name">PAGESIZE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">RESTRICTION</span>&gt;</span>?y a lgdo:RelayBox<span class="hljs-tag">&lt;/<span class="hljs-name">RESTRICTION</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">PROPERTY</span>&gt;</span>geom:geometry/geos:asWKT RENAME polygon<span class="hljs-tag">&lt;/<span class="hljs-name">PROPERTY</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">TARGET</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">METRIC</span>&gt;</span>geo_hausdorff(x.polygon, y.polygon)<span class="hljs-tag">&lt;/<span class="hljs-name">METRIC</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">ACCEPTANCE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">THRESHOLD</span>&gt;</span>0.9<span class="hljs-tag">&lt;/<span class="hljs-name">THRESHOLD</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">FILE</span>&gt;</span>lgd_relaybox_verynear.nt<span class="hljs-tag">&lt;/<span class="hljs-name">FILE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">RELATION</span>&gt;</span>lgdo:near<span class="hljs-tag">&lt;/<span class="hljs-name">RELATION</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ACCEPTANCE</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">REVIEW</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">THRESHOLD</span>&gt;</span>0.5<span class="hljs-tag">&lt;/<span class="hljs-name">THRESHOLD</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">FILE</span>&gt;</span>lgd_relaybox_near.nt<span class="hljs-tag">&lt;/<span class="hljs-name">FILE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">RELATION</span>&gt;</span>lgdo:near<span class="hljs-tag">&lt;/<span class="hljs-name">RELATION</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">REVIEW</span>&gt;</span>
 
-&lt;EXECUTION&gt;
-    &lt;REWRITER&gt;default&lt;/REWRITER&gt;
-    &lt;PLANNER&gt;default&lt;/PLANNER&gt;
-    &lt;ENGINE&gt;default&lt;/ENGINE&gt;
-&lt;/EXECUTION&gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">EXECUTION</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">REWRITER</span>&gt;</span>default<span class="hljs-tag">&lt;/<span class="hljs-name">REWRITER</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">PLANNER</span>&gt;</span>default<span class="hljs-tag">&lt;/<span class="hljs-name">PLANNER</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ENGINE</span>&gt;</span>default<span class="hljs-tag">&lt;/<span class="hljs-name">ENGINE</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">EXECUTION</span>&gt;</span>
 
-&lt;OUTPUT&gt;TAB&lt;/OUTPUT&gt;</code></pre>
-<p>&lt;/LIMES&gt;</p><p>LIMES can be also configured using a RDF configuration file, the next
+    <span class="hljs-tag">&lt;<span class="hljs-name">OUTPUT</span>&gt;</span>TAB<span class="hljs-tag">&lt;/<span class="hljs-name">OUTPUT</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">LIMES</span>&gt;</span></code></pre>
+<p>LIMES can be also configured using a RDF configuration file, the next
 listing represent the same LIMES configuration used in the previous XML
-file.</p><pre><code>@prefix geos:    &lt;http://www.opengis.net/ont/geosparql#&gt; .
+file.</p><pre><code class="lang-turtle">@prefix geos:    &lt;http://www.opengis.net/ont/geosparql#&gt; .
 @prefix lgdo:    &lt;http://linkedgeodata.org/ontology/&gt; .
 @prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
 @prefix geom:    &lt;http://geovocab.org/geometry#&gt; .
@@ -713,72 +714,73 @@ limes:linkedgeodataTOlinkedgeodataSource
       limes:property &quot;geom:geometry/geos:asWKT&quot; ;
       limes:restriction &quot;?x a lgdo:RelayBox&quot; ;
       limes:variable &quot;?x&quot; .</code></pre>
-<p>The following configuration file uses the machine learning algorithm of the Wombat simple to find the metric expression for the same example:</p><pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;
-&lt;!DOCTYPE LIMES SYSTEM &quot;limes.dtd&quot;&gt;
-&lt;LIMES&gt;
-&lt;PREFIX&gt;
-    &lt;NAMESPACE&gt;http://geovocab.org/geometry#&lt;/NAMESPACE&gt;
-    &lt;LABEL&gt;geom&lt;/LABEL&gt;
-&lt;/PREFIX&gt;
+<p>The following configuration file uses the machine learning algorithm of the Wombat simple to find the metric expression for the same example:</p><pre><code class="lang-xml"><span class="php"><span class="hljs-meta">&lt;?</span>xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span> standalone=<span class="hljs-string">&quot;no&quot;</span><span class="hljs-meta">?&gt;</span></span>
+<span class="hljs-meta">&lt;!DOCTYPE LIMES SYSTEM &quot;limes.dtd&quot;&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">LIMES</span>&gt;</span>
+    <span class="hljs-tag">&lt;<span class="hljs-name">PREFIX</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">NAMESPACE</span>&gt;</span>http://geovocab.org/geometry#<span class="hljs-tag">&lt;/<span class="hljs-name">NAMESPACE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">LABEL</span>&gt;</span>geom<span class="hljs-tag">&lt;/<span class="hljs-name">LABEL</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">PREFIX</span>&gt;</span>
 
-&lt;PREFIX&gt;
-    &lt;NAMESPACE&gt;http://www.opengis.net/ont/geosparql#&lt;/NAMESPACE&gt;
-    &lt;LABEL&gt;geos&lt;/LABEL&gt;
-&lt;/PREFIX&gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">PREFIX</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">NAMESPACE</span>&gt;</span>http://www.opengis.net/ont/geosparql#<span class="hljs-tag">&lt;/<span class="hljs-name">NAMESPACE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">LABEL</span>&gt;</span>geos<span class="hljs-tag">&lt;/<span class="hljs-name">LABEL</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">PREFIX</span>&gt;</span>
 
-&lt;PREFIX&gt;
-    &lt;NAMESPACE&gt;http://linkedgeodata.org/ontology/&lt;/NAMESPACE&gt;
-    &lt;LABEL&gt;lgdo&lt;/LABEL&gt;
-&lt;/PREFIX&gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">PREFIX</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">NAMESPACE</span>&gt;</span>http://linkedgeodata.org/ontology/<span class="hljs-tag">&lt;/<span class="hljs-name">NAMESPACE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">LABEL</span>&gt;</span>lgdo<span class="hljs-tag">&lt;/<span class="hljs-name">LABEL</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">PREFIX</span>&gt;</span>
 
-&lt;SOURCE&gt;
-    &lt;ID&gt;linkedgeodata&lt;/ID&gt;
-    &lt;ENDPOINT&gt;http://linkedgeodata.org/sparql&lt;/ENDPOINT&gt;
-    &lt;VAR&gt;?x&lt;/VAR&gt;
-    &lt;PAGESIZE&gt;2000&lt;/PAGESIZE&gt;
-    &lt;RESTRICTION&gt;?x a lgdo:RelayBox&lt;/RESTRICTION&gt;
-    &lt;PROPERTY&gt;geom:geometry/geos:asWKT RENAME polygon&lt;/PROPERTY&gt;
-&lt;/SOURCE&gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">SOURCE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ID</span>&gt;</span>linkedgeodata<span class="hljs-tag">&lt;/<span class="hljs-name">ID</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ENDPOINT</span>&gt;</span>http://linkedgeodata.org/sparql<span class="hljs-tag">&lt;/<span class="hljs-name">ENDPOINT</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">VAR</span>&gt;</span>?x<span class="hljs-tag">&lt;/<span class="hljs-name">VAR</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">PAGESIZE</span>&gt;</span>2000<span class="hljs-tag">&lt;/<span class="hljs-name">PAGESIZE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">RESTRICTION</span>&gt;</span>?x a lgdo:RelayBox<span class="hljs-tag">&lt;/<span class="hljs-name">RESTRICTION</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">PROPERTY</span>&gt;</span>geom:geometry/geos:asWKT RENAME polygon<span class="hljs-tag">&lt;/<span class="hljs-name">PROPERTY</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">SOURCE</span>&gt;</span>
 
-&lt;TARGET&gt;
-    &lt;ID&gt;linkedgeodata&lt;/ID&gt;
-    &lt;ENDPOINT&gt;http://linkedgeodata.org/sparql&lt;/ENDPOINT&gt;
-    &lt;VAR&gt;?y&lt;/VAR&gt;
-    &lt;PAGESIZE&gt;2000&lt;/PAGESIZE&gt;
-    &lt;RESTRICTION&gt;?y a lgdo:RelayBox&lt;/RESTRICTION&gt;
-    &lt;PROPERTY&gt;geom:geometry/geos:asWKT RENAME polygon&lt;/PROPERTY&gt;
-&lt;/TARGET&gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">TARGET</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ID</span>&gt;</span>linkedgeodata<span class="hljs-tag">&lt;/<span class="hljs-name">ID</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ENDPOINT</span>&gt;</span>http://linkedgeodata.org/sparql<span class="hljs-tag">&lt;/<span class="hljs-name">ENDPOINT</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">VAR</span>&gt;</span>?y<span class="hljs-tag">&lt;/<span class="hljs-name">VAR</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">PAGESIZE</span>&gt;</span>2000<span class="hljs-tag">&lt;/<span class="hljs-name">PAGESIZE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">RESTRICTION</span>&gt;</span>?y a lgdo:RelayBox<span class="hljs-tag">&lt;/<span class="hljs-name">RESTRICTION</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">PROPERTY</span>&gt;</span>geom:geometry/geos:asWKT RENAME polygon<span class="hljs-tag">&lt;/<span class="hljs-name">PROPERTY</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">TARGET</span>&gt;</span>
 
-&lt;MLALGORITHM&gt;
-    &lt;NAME&gt;wombat simple&lt;/NAME&gt;
-    &lt;TYPE&gt;supervised batch&lt;/TYPE&gt;
-    &lt;TRAINING&gt;trainingData.nt&lt;/TRAINING&gt;
-    &lt;PARAMETER&gt; 
-        &lt;NAME&gt;max execution time in minutes&lt;/NAME&gt;
-        &lt;VALUE&gt;60&lt;/VALUE&gt;
-    &lt;/PARAMETER&gt;
-&lt;/MLALGORITHM&gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">MLALGORITHM</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">NAME</span>&gt;</span>wombat simple<span class="hljs-tag">&lt;/<span class="hljs-name">NAME</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">TYPE</span>&gt;</span>supervised batch<span class="hljs-tag">&lt;/<span class="hljs-name">TYPE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">TRAINING</span>&gt;</span>trainingData.nt<span class="hljs-tag">&lt;/<span class="hljs-name">TRAINING</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">PARAMETER</span>&gt;</span> 
+            <span class="hljs-tag">&lt;<span class="hljs-name">NAME</span>&gt;</span>max execution time in minutes<span class="hljs-tag">&lt;/<span class="hljs-name">NAME</span>&gt;</span>
+            <span class="hljs-tag">&lt;<span class="hljs-name">VALUE</span>&gt;</span>60<span class="hljs-tag">&lt;/<span class="hljs-name">VALUE</span>&gt;</span>
+        <span class="hljs-tag">&lt;/<span class="hljs-name">PARAMETER</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">MLALGORITHM</span>&gt;</span>
 
-&lt;ACCEPTANCE&gt;
-    &lt;THRESHOLD&gt;0.9&lt;/THRESHOLD&gt;
-    &lt;FILE&gt;lgd_relaybox_verynear.nt&lt;/FILE&gt;
-    &lt;RELATION&gt;lgdo:near&lt;/RELATION&gt;
-&lt;/ACCEPTANCE&gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">ACCEPTANCE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">THRESHOLD</span>&gt;</span>0.9<span class="hljs-tag">&lt;/<span class="hljs-name">THRESHOLD</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">FILE</span>&gt;</span>lgd_relaybox_verynear.nt<span class="hljs-tag">&lt;/<span class="hljs-name">FILE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">RELATION</span>&gt;</span>lgdo:near<span class="hljs-tag">&lt;/<span class="hljs-name">RELATION</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">ACCEPTANCE</span>&gt;</span>
 
-&lt;REVIEW&gt;
-    &lt;THRESHOLD&gt;0.5&lt;/THRESHOLD&gt;
-    &lt;FILE&gt;lgd_relaybox_near.nt&lt;/FILE&gt;
-    &lt;RELATION&gt;lgdo:near&lt;/RELATION&gt;
-&lt;/REVIEW&gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">REVIEW</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">THRESHOLD</span>&gt;</span>0.5<span class="hljs-tag">&lt;/<span class="hljs-name">THRESHOLD</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">FILE</span>&gt;</span>lgd_relaybox_near.nt<span class="hljs-tag">&lt;/<span class="hljs-name">FILE</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">RELATION</span>&gt;</span>lgdo:near<span class="hljs-tag">&lt;/<span class="hljs-name">RELATION</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">REVIEW</span>&gt;</span>
 
-&lt;EXECUTION&gt;
-    &lt;REWRITER&gt;default&lt;/REWRITER&gt;
-    &lt;PLANNER&gt;default&lt;/PLANNER&gt;
-    &lt;ENGINE&gt;default&lt;/ENGINE&gt;
-&lt;/EXECUTION&gt;
+    <span class="hljs-tag">&lt;<span class="hljs-name">EXECUTION</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">REWRITER</span>&gt;</span>default<span class="hljs-tag">&lt;/<span class="hljs-name">REWRITER</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">PLANNER</span>&gt;</span>default<span class="hljs-tag">&lt;/<span class="hljs-name">PLANNER</span>&gt;</span>
+        <span class="hljs-tag">&lt;<span class="hljs-name">ENGINE</span>&gt;</span>default<span class="hljs-tag">&lt;/<span class="hljs-name">ENGINE</span>&gt;</span>
+    <span class="hljs-tag">&lt;/<span class="hljs-name">EXECUTION</span>&gt;</span>
 
-&lt;OUTPUT&gt;TAB&lt;/OUTPUT&gt;</code></pre>
-<p>&lt;/LIMES&gt;</p><p>Finally, the last XML configuration file in TTL format will look like:</p><pre><code>@prefix geos:    &lt;http://www.opengis.net/ont/geosparql#&gt; .
+    <span class="hljs-tag">&lt;<span class="hljs-name">OUTPUT</span>&gt;</span>TAB<span class="hljs-tag">&lt;/<span class="hljs-name">OUTPUT</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">LIMES</span>&gt;</span></code></pre>
+<p>Finally, the last XML configuration file in TTL format will look like:</p><pre><code class="lang-turtle">@prefix geos:    &lt;http://www.opengis.net/ont/geosparql#&gt; .
 @prefix lgdo:    &lt;http://linkedgeodata.org/ontology/&gt; .
 @prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
 @prefix geom:    &lt;http://geovocab.org/geometry#&gt; .
@@ -878,7 +880,7 @@ limes:linkedgeodataTOlinkedgeodataSource
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Examples","level":"2.2.8","depth":2,"next":{"title":"Running LIMES","level":"2.3","depth":1,"path":"user_manual/running_limes.md","ref":"user_manual/running_limes.md","articles":[]},"previous":{"title":"Review Condition","level":"2.2.7","depth":2,"path":"user_manual/configuration_file/review.md","ref":"user_manual/configuration_file/review.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/configuration_file/examples.md","mtime":"2016-08-24T14:22:32.000Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-24T14:35:02.229Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Examples","level":"2.2.8","depth":2,"next":{"title":"Running LIMES","level":"2.3","depth":1,"path":"user_manual/running_limes.md","ref":"user_manual/running_limes.md","articles":[]},"previous":{"title":"Review Condition","level":"2.2.7","depth":2,"path":"user_manual/configuration_file/review.md","ref":"user_manual/configuration_file/review.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/configuration_file/examples.md","mtime":"2016-08-24T14:30:27.000Z","type":"markdown"},"gitbook":{"version":"3.2.0","time":"2016-08-24T14:44:14.692Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
