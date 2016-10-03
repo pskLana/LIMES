@@ -7,7 +7,7 @@
         <title>Creating a new Configuration · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.1">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -692,22 +692,33 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="how-to-create-a-new-configuration">How to create a new configuration</h1><h2 id="endpoint-configuration">Endpoint configuration</h2><p>After clicking on <em>File</em> -&gt; <em>New</em> a window pops up in which the source and target endpoints of the new configuration can be configured
-<img src="../../../images/EditEndpointView.png" width="800" alt="Endpoint Configuration Window"></p><ul><li><em>EndpointURL</em>: Either a URL of a SPARQL Endpoint is entered here, or the filepath to a local endpoint. 
-Files can also be entered more easily by pressing the little green button with the file symbol which opens a file chooser dialog.
-</li>
-<li><em>ID/Namespace</em>: Source/Target Endpoint can be given a name (optional)
-</li>
-<li><em>Graph</em>: <strong>TODO</strong> what does this actually do???
-</li>
-<li><em>Page size</em>: How many pages of the endpoint should be fetched? (-1 = all)
-</li></ul>
+                                <h1 id="how-to-create-a-new-configuration">How to create a new configuration</h1>
+<h2 id="endpoint-configuration">Endpoint configuration</h2>
+<p>After clicking on <em>File</em> -&gt; <em>New</em> a window pops up in which the source and target endpoints of the new configuration can be configured
+<img src="../../../images/EditEndpointView.png" width="800" alt="Endpoint Configuration Window"></p>
+<ul>
+<li><em>EndpointURL</em>: Either a URL of a SPARQL Endpoint is entered here, or the filepath to a local endpoint. 
+Files can also be entered more easily by pressing the little green button with the file symbol which opens a file chooser dialog.</li>
+<li><em>ID/Namespace</em>: Source/Target Endpoint can be given a name (optional)</li>
+<li><em>Graph</em>: <strong>TODO</strong> what does this actually do???</li>
+<li><em>Page size</em>: How many pages of the endpoint should be fetched? (-1 = all)</li>
+</ul>
 <p>Let&apos;s use <code>http://dbpedia.org/sparql</code> as source endpoint and <code>http://linkedgeodata.org/sparql</code> as target endpoint URL.
-We enter <code>dbpedia</code> as source ID and <code>lgd</code> as target ID.</p><p>Pressing <em>Next</em> gets you to the next step:</p><h2 id="class-matching">Class matching</h2><p><img src="../../../images/EditClassMatchingView.png" width="800" alt="Class Matching Configuration Window"></p><p>A source and target class must be selected by clicking on it to continue. Some classes have subclasses which can be accessed by clicking on the arrow besides them.
+We enter <code>dbpedia</code> as source ID and <code>lgd</code> as target ID.</p>
+<p>Pressing <em>Next</em> gets you to the next step:</p>
+<h2 id="class-matching">Class matching</h2>
+<p><img src="../../../images/EditClassMatchingView.png" width="800" alt="Class Matching Configuration Window"></p>
+<p>A source and target class must be selected by clicking on it to continue. Some classes have subclasses which can be accessed by clicking on the arrow besides them.
 We click on <code>HistoricPlace</code> from dbpedia and <code>HistoricThing</code> from lgd.
-The <em>Next</em> step is:</p><h2 id="property-matching">Property Matching</h2><p><img src="../../../images/EditPropertyMatchingView.png" width="800" alt="Property Matching Configuration Window"></p><p>Clicking on the available properties moves them to the bottom container, where the already added properties can be seen. If you
+The <em>Next</em> step is:</p>
+<h2 id="property-matching">Property Matching</h2>
+<p><img src="../../../images/EditPropertyMatchingView.png" width="800" alt="Property Matching Configuration Window"></p>
+<p>Clicking on the available properties moves them to the bottom container, where the already added properties can be seen. If you
 change your mind, clicking on added properties moves them back up. Alternatively all available properties can be added with the button <em>Add All</em>.
-At least one source and one target property has to be added.</p><p>Let&apos;s take <code>rdfs:label</code> for both. Since the properties are alphabetically sorted you can find those towards the bottom of each list.</p><p>Press <em>Finish</em> and you are now ready to build a metric!</p>
+At least one source and one target property has to be added.</p>
+<p>Let&apos;s take <code>rdfs:label</code> for both. Since the properties are alphabetically sorted you can find those towards the bottom of each list.</p>
+<p>Press <em>Finish</em> and you are now ready to build a metric!</p>
+
                                 
                                 </section>
                             
@@ -750,7 +761,7 @@ At least one source and one target property has to be added.</p><p>Let&apos;s ta
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Creating a new Configuration","level":"2.4.1","depth":2,"next":{"title":"Creating a new Metric","level":"2.4.2","depth":2,"path":"user_manual/gui/new_config/new_metric.md","ref":"user_manual/gui/new_config/new_metric.md","articles":[]},"previous":{"title":"Using the GUI","level":"2.4","depth":1,"path":"user_manual/gui/overview.md","ref":"user_manual/gui/overview.md","articles":[{"title":"Creating a new Configuration","level":"2.4.1","depth":2,"path":"user_manual/gui/new_config/create_new_config.md","ref":"user_manual/gui/new_config/create_new_config.md","articles":[]},{"title":"Creating a new Metric","level":"2.4.2","depth":2,"path":"user_manual/gui/new_config/new_metric.md","ref":"user_manual/gui/new_config/new_metric.md","articles":[]},{"title":"Active Learning with the GUI","level":"2.4.3","depth":2,"path":"user_manual/gui/machine_learning/active_learning.md","ref":"user_manual/gui/machine_learning/active_learning.md","articles":[]},{"title":"Batch Learning with the GUI","level":"2.4.4","depth":2,"path":"user_manual/gui/machine_learning/batch_learning.md","ref":"user_manual/gui/machine_learning/batch_learning.md","articles":[]},{"title":"Unsupervised Learning with the GUI","level":"2.4.5","depth":2,"path":"user_manual/gui/machine_learning/unsupervised_learning.md","ref":"user_manual/gui/machine_learning/unsupervised_learning.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/gui/new_config/create_new_config.md","mtime":"2016-09-30T16:39:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.1","time":"2016-09-30T17:03:26.491Z"},"basePath":"../../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Creating a new Configuration","level":"2.4.1","depth":2,"next":{"title":"Creating a new Metric","level":"2.4.2","depth":2,"path":"user_manual/gui/new_config/new_metric.md","ref":"user_manual/gui/new_config/new_metric.md","articles":[]},"previous":{"title":"Using the GUI","level":"2.4","depth":1,"path":"user_manual/gui/overview.md","ref":"user_manual/gui/overview.md","articles":[{"title":"Creating a new Configuration","level":"2.4.1","depth":2,"path":"user_manual/gui/new_config/create_new_config.md","ref":"user_manual/gui/new_config/create_new_config.md","articles":[]},{"title":"Creating a new Metric","level":"2.4.2","depth":2,"path":"user_manual/gui/new_config/new_metric.md","ref":"user_manual/gui/new_config/new_metric.md","articles":[]},{"title":"Active Learning with the GUI","level":"2.4.3","depth":2,"path":"user_manual/gui/machine_learning/active_learning.md","ref":"user_manual/gui/machine_learning/active_learning.md","articles":[]},{"title":"Batch Learning with the GUI","level":"2.4.4","depth":2,"path":"user_manual/gui/machine_learning/batch_learning.md","ref":"user_manual/gui/machine_learning/batch_learning.md","articles":[]},{"title":"Unsupervised Learning with the GUI","level":"2.4.5","depth":2,"path":"user_manual/gui/machine_learning/unsupervised_learning.md","ref":"user_manual/gui/machine_learning/unsupervised_learning.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/gui/new_config/create_new_config.md","mtime":"2016-10-03T10:01:39.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-10-03T10:15:37.345Z"},"basePath":"../../..","book":{"language":""}});
         });
     </script>
 </div>

@@ -7,7 +7,7 @@
         <title>Review Condition · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.1">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -692,12 +692,16 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="review-condition">Review Condition</h1><p>Setting the condition upon which links must be reviewed manually is very similar to setting the acceptance condition as shown below.</p><pre><code>&lt;REVIEW&gt;
+                                <h1 id="review-condition">Review Condition</h1>
+<p>Setting the condition upon which links must be reviewed manually is very similar to setting the acceptance condition as shown below.</p>
+<pre><code>&lt;REVIEW&gt;
     &lt;THRESHOLD&gt;0.95&lt;/THRESHOLD&gt;
     &lt;FILE&gt;reviewme.nt&lt;/FILE&gt;
     &lt;RELATION&gt;owl:sameAs&lt;/RELATION&gt;
-&lt;/REVIEW&gt;</code></pre>
-<p>All instances that have a similarity between the threshold set in <code>REVIEW</code> (0.95 in our example) and the threshold set in <code>ACCEPTANCE</code> (0.98 in our example) will be written in the review file and linked via the relation set in <code>REVIEW</code>.</p><p>The LIMES configuration file should be concluded with <code>&lt;/LIMES&gt;</code></p>
+&lt;/REVIEW&gt;
+</code></pre><p>All instances that have a similarity between the threshold set in <code>REVIEW</code> (0.95 in our example) and the threshold set in <code>ACCEPTANCE</code> (0.98 in our example) will be written in the review file and linked via the relation set in <code>REVIEW</code>. </p>
+<p>The LIMES configuration file should be concluded with <code>&lt;/LIMES&gt;</code></p>
+
                                 
                                 </section>
                             
@@ -740,7 +744,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Review Condition","level":"2.2.7","depth":2,"next":{"title":"Examples","level":"2.2.8","depth":2,"path":"user_manual/configuration_file/examples.md","ref":"user_manual/configuration_file/examples.md","articles":[]},"previous":{"title":"Acceptance Condition","level":"2.2.6","depth":2,"path":"user_manual/configuration_file/acceptance.md","ref":"user_manual/configuration_file/acceptance.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/configuration_file/review.md","mtime":"2016-09-30T16:39:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.1","time":"2016-09-30T17:03:26.491Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Review Condition","level":"2.2.7","depth":2,"next":{"title":"Examples","level":"2.2.8","depth":2,"path":"user_manual/configuration_file/examples.md","ref":"user_manual/configuration_file/examples.md","articles":[]},"previous":{"title":"Acceptance Condition","level":"2.2.6","depth":2,"path":"user_manual/configuration_file/acceptance.md","ref":"user_manual/configuration_file/acceptance.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/configuration_file/review.md","mtime":"2016-10-03T10:01:39.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-10-03T10:15:37.345Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

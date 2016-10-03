@@ -7,7 +7,7 @@
         <title>MLPipeline · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.1">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -692,33 +692,42 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="mlpipeline">MLPipeline</h1><p>The <code>MLPipeline</code> acts as a simple facade for the three <code>MLImplementationType</code>s of <code>MLAlgorithms</code> LIMES 1.0 offers: <code>UNSUPERVISED</code>, <code>SUPERVISED_BATCH</code>, <code>SUPERVISED_ACTIVE</code>.
+                                <h1 id="mlpipeline">MLPipeline</h1>
+<p>The <code>MLPipeline</code> acts as a simple facade for the three <code>MLImplementationType</code>s of <code>MLAlgorithms</code> LIMES 1.0 offers: <code>UNSUPERVISED</code>, <code>SUPERVISED_BATCH</code>, <code>SUPERVISED_ACTIVE</code>.
 In the following the patten for invoking a <code>MLAlgorithm</code> is presented.
 Because many algorithms can support more than one <code>MLImplementationType</code>, to minimize redundant code, <code>MLAlgorithm</code>&apos;s should be implemented by extending the abstract class <code>ACoreMLAlgorithm</code>. <code>ACoreMLAlgorithm</code>&apos;s interface covers all three types, but not all three need to be implemented.
-For each <code>MLImplementationType</code> there is a decorator class extending <code>AMLAlgorithm</code>. To use any <code>MLAlgorithm</code> in a safe way, pass its class type to the constructor of the decorator class corresponding to the <code>MLImplementationType</code>, e.g.:</p><pre><code>Class&lt;? extends ACoreMLAlgorithm&gt; clazz = WombatComplete.class;
-UnsupervisedMLAlgorithm mlu = new UnsupervisedMLAlgorithm(clazz);</code></pre>
-<p>There also exists an <code>MLAlgorithmFactory</code> which offers a method <code>getAlgorithmType(String name)</code> to retrieve class types of algorithms from their names .
-The usage patterns for the <code>MLImplementationType</code>s are as follows:</p><h2 id="unsupervised-learning">Unsupervised Learning</h2><p>In unsupervised learning, predictions are made based on the structure of existing data. A helpful concept for unsupervised learning of links between knowledge bases is the so called <code>Pseudo-F-measure</code> (PFM). PFMs can be defined in various ways, but generally they are used to evaluate the intermediary results of the unsupervised learning algorithm, based only on its structure.
-Initialization works the same across all cases of ML. For unsupervised learning, we then pass a PFM to the <code>learn()</code> method, which returns an instance of class <code>MLResults</code>. We can use this result as a parameter to the <code>predict</code> function, which allows us to, for example, learn on smaller subsets of our data and then apply the learned classificators to the whole dataset.</p><pre><code>UnsupervisedMLAlgorithm mlu = new UnsupervisedMLAlgorithm(clazz);
+For each <code>MLImplementationType</code> there is a decorator class extending <code>AMLAlgorithm</code>. To use any <code>MLAlgorithm</code> in a safe way, pass its class type to the constructor of the decorator class corresponding to the <code>MLImplementationType</code>, e.g.:</p>
+<pre><code>Class&lt;? extends ACoreMLAlgorithm&gt; clazz = WombatComplete.class;
+UnsupervisedMLAlgorithm mlu = new UnsupervisedMLAlgorithm(clazz);
+</code></pre><p>There also exists an <code>MLAlgorithmFactory</code> which offers a method <code>getAlgorithmType(String name)</code> to retrieve class types of algorithms from their names .
+The usage patterns for the <code>MLImplementationType</code>s are as follows:</p>
+<h2 id="unsupervised-learning">Unsupervised Learning</h2>
+<p>In unsupervised learning, predictions are made based on the structure of existing data. A helpful concept for unsupervised learning of links between knowledge bases is the so called <code>Pseudo-F-measure</code> (PFM). PFMs can be defined in various ways, but generally they are used to evaluate the intermediary results of the unsupervised learning algorithm, based only on its structure.
+Initialization works the same across all cases of ML. For unsupervised learning, we then pass a PFM to the <code>learn()</code> method, which returns an instance of class <code>MLResults</code>. We can use this result as a parameter to the <code>predict</code> function, which allows us to, for example, learn on smaller subsets of our data and then apply the learned classificators to the whole dataset.</p>
+<pre><code>UnsupervisedMLAlgorithm mlu = new UnsupervisedMLAlgorithm(clazz);
 mlu.init(learningParameters, source, target);
 mlm = mlu.learn(pfm);
-mlu.predict(source, target, mlm);</code></pre>
-<h2 id="supervised-batch-learning">Supervised Batch Learning</h2><p>In supervised batch learning, you learn to classify resp. evaluate future (a priori unknown) observations by looking at sufficiently many training examples, which are all known at the start of the algorithm.
+mlu.predict(source, target, mlm);
+</code></pre><h2 id="supervised-batch-learning">Supervised Batch Learning</h2>
+<p>In supervised batch learning, you learn to classify resp. evaluate future (a priori unknown) observations by looking at sufficiently many training examples, which are all known at the start of the algorithm.
 For this to work really good, a lot of training data is needed.
-The usage in limes is analogous to the unsupervised case, except this time, we do not pass a PFM to the <code>learn()</code> method. Instead, we pass it an instance of <code>AMapping</code> which stores our training data.</p><pre><code>SupervisedMLAlgorithm mls = new SupervisedMLAlgorithm(clazz);
+The usage in limes is analogous to the unsupervised case, except this time, we do not pass a PFM to the <code>learn()</code> method. Instead, we pass it an instance of <code>AMapping</code> which stores our training data.</p>
+<pre><code>SupervisedMLAlgorithm mls = new SupervisedMLAlgorithm(clazz);
 mls.init(learningParameters, source, target);
 mlm = mls.learn(trainingDataMap);
-mls.predict(source, target, mlm);</code></pre>
-<h2 id="supervised-active-learning">Supervised Active Learning</h2><p>Active learning is like batch learning, except that the training examples are generated on the fly, by selecting example observations upon which different intermediary results of the algorithm disagree the most. An oracle (mostly a human expert) is then prompted to evaluate the selected examples, which are then fed back into the algorithm as training examples.
+mls.predict(source, target, mlm);
+</code></pre><h2 id="supervised-active-learning">Supervised Active Learning</h2>
+<p>Active learning is like batch learning, except that the training examples are generated on the fly, by selecting example observations upon which different intermediary results of the algorithm disagree the most. An oracle (mostly a human expert) is then prompted to evaluate the selected examples, which are then fed back into the algorithm as training examples.
 This is why in LIMES an active learning algorithm&apos;s <code>activeLearn</code> method can be called without parameters, e.g. for the first step of selecting appropriate examples for user evaluation (which is actually unsupervised), or it can be called with an instance of <code>AMapping</code>, storing the training examples.
-For retrieving the examples for user evaluation, the <code>getNextExamples</code> method returns an instance of <code>AMapping</code>.</p><pre><code>ActiveMLAlgorithm mla = new ActiveMLAlgorithm(clazz);
+For retrieving the examples for user evaluation, the <code>getNextExamples</code> method returns an instance of <code>AMapping</code>.</p>
+<pre><code>ActiveMLAlgorithm mla = new ActiveMLAlgorithm(clazz);
 mla.init(learningParameters, source, target);
 mlm = mla.activeLearn(); 
 AMapping nextExamples = mla.getNextExamples(maxIterations);
 // retrieve assessments from oracle and update scores in nextExamples accordingly
 mlm = mla.activeLearn(nextExamples);
-mla.predict(source, target, mlm);</code></pre>
-
+mla.predict(source, target, mlm);
+</code></pre>
                                 
                                 </section>
                             
@@ -761,7 +770,7 @@ mla.predict(source, target, mlm);</code></pre>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"MLPipeline","level":"3.6","depth":1,"next":{"title":"FAQ","level":"4.1","depth":1,"path":"misc/faq.md","ref":"misc/faq.md","articles":[]},"previous":{"title":"LSPipeline","level":"3.5","depth":1,"path":"developer_manual/ls_pipeline.md","ref":"developer_manual/ls_pipeline.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"developer_manual/ml_pipeline.md","mtime":"2016-09-30T16:39:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.1","time":"2016-09-30T17:03:26.491Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"MLPipeline","level":"3.6","depth":1,"next":{"title":"FAQ","level":"4.1","depth":1,"path":"misc/faq.md","ref":"misc/faq.md","articles":[]},"previous":{"title":"LSPipeline","level":"3.5","depth":1,"path":"developer_manual/ls_pipeline.md","ref":"developer_manual/ls_pipeline.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"developer_manual/ml_pipeline.md","mtime":"2016-10-03T10:01:39.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-10-03T10:15:37.345Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

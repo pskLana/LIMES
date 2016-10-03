@@ -7,7 +7,7 @@
         <title>FAQ · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.1">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -690,14 +690,18 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="faq">FAQ</h1><h2 id="problems-with-javafx">Problems with JavaFX</h2><p>While Oracle Java 8 should have JavaFX included, with OpenJDK for Java 8 it depends whether the package assembler choose to 
+                                <h1 id="faq">FAQ</h1>
+<h2 id="problems-with-javafx">Problems with JavaFX</h2>
+<p>While Oracle Java 8 should have JavaFX included, with OpenJDK for Java 8 it depends whether the package assembler choose to 
 include JavaFX. And in <a href="https://github.com/AKSW/LIMES-dev/issues/56" target="_blank">some cases</a> it can happen, that neither works. 
 First thing you should do is check if you can find <code>jfxrt.jar</code>, it <em>should</em> be in <code>&lt;JRE_HOME&gt;/lib/ext/jfxrt.jar</code> (but in this
 case everything should be working just fine). If you find it somewhere else, you have to put it on the classpath. A guide
 on how to do this can be found <a href="http://askubuntu.com/a/609954" target="_blank">here</a>. If this does not work, trying to reinstall java would be a good
-idea (if you&apos;ve used OpenJDK before try Oracle Java!).</p><p>If this doesn&apos;t work, in Ubuntu versions 15.04 upwards you can install JavaFX seperately using <code>sudo apt-get install openjfx</code>.
+idea (if you&apos;ve used OpenJDK before try Oracle Java!).</p>
+<p>If this doesn&apos;t work, in Ubuntu versions 15.04 upwards you can install JavaFX seperately using <code>sudo apt-get install openjfx</code>.
 Unfortunately this package seems unavailable for lower Ubuntu versions (Although there is always the possibility to 
 <a href="https://wiki.openjdk.java.net/display/OpenJFX/Building+OpenJFX" target="_blank">build it yourself</a> or use <a href="https://wiki.openjdk.java.net/display/OpenJFX/Community+Builds" target="_blank">community builds</a>).</p>
+
                                 
                                 </section>
                             
@@ -736,7 +740,7 @@ Unfortunately this package seems unavailable for lower Ubuntu versions (Although
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"FAQ","level":"4.1","depth":1,"next":{"title":"Release notes","level":"4.2","depth":1,"url":"https://github.com/AKSW/LIMES-dev/blob/master/CHANGES.md","ref":"https://github.com/AKSW/LIMES-dev/blob/master/CHANGES.md","articles":[]},"previous":{"title":"MLPipeline","level":"3.6","depth":1,"path":"developer_manual/ml_pipeline.md","ref":"developer_manual/ml_pipeline.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"misc/faq.md","mtime":"2016-09-30T16:39:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.1","time":"2016-09-30T17:03:26.491Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"FAQ","level":"4.1","depth":1,"next":{"title":"Release notes","level":"4.2","depth":1,"url":"https://github.com/AKSW/LIMES-dev/blob/master/CHANGES.md","ref":"https://github.com/AKSW/LIMES-dev/blob/master/CHANGES.md","articles":[]},"previous":{"title":"MLPipeline","level":"3.6","depth":1,"path":"developer_manual/ml_pipeline.md","ref":"developer_manual/ml_pipeline.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"misc/faq.md","mtime":"2016-10-03T10:01:39.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-10-03T10:15:37.345Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>

@@ -7,7 +7,7 @@
         <title>Using the GUI · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.1">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -692,38 +692,48 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="overview-of-the-gui-elements">Overview of the GUI elements</h1><p><img src="../../images/LimesOverview.png" width="700" alt="Overview"></p><h2 id="menu-bar">Menu Bar</h2><p>The menu bar contains three drop-down menus:</p><ul><li><em>File</em>
-</li>
-<li><em>Layout</em>
-</li>
-<li><em>Learn</em>
-</li></ul>
-<h3 id="file">File</h3><p>The file drop-down menu gives the possibility to:</p><ul><li><em>New</em>: Create a new configuration 
-</li>
+                                <h1 id="overview-of-the-gui-elements">Overview of the GUI elements</h1>
+<p><img src="../../images/LimesOverview.png" width="700" alt="Overview"></p>
+<h2 id="menu-bar">Menu Bar</h2>
+<p>The menu bar contains three drop-down menus:</p>
+<ul>
+<li><em>File</em></li>
+<li><em>Layout</em></li>
+<li><em>Learn</em></li>
+</ul>
+<h3 id="file">File</h3>
+<p>The file drop-down menu gives the possibility to:</p>
+<ul>
+<li><em>New</em>: Create a new configuration </li>
 <li><em>Load Config</em>: Load a <a href="../configuration_file/">configuration file</a>. Since machine learning is implemented seperately 
 in the GUI, only configurations with metric expressions are accepted. If you load a configuration with machine learning 
-instructions, as much information as possible will be saved, but you have to run the machine learning through the GUI.
-</li>
-<li><em>Save Config</em>: Save a configuration to a file (only possible, after loading a configuration or creating a new configuration)
-</li>
-<li><p><em>Exit</em></p><h3 id="layout">Layout</h3><p>Handles the layout of the current <a href="../configuration_file/metric/">metric</a></p></li>
-<li><em>Refresh Layout</em>: Rearranges the nodes of the metric in a tree-like structure
-</li>
-<li><em>Delete Graph</em>: Delete the current metric leaving only an output node
-</li></ul>
-<h3 id="learn">Learn</h3><p>All the machine learning functionality of the GUI can be accessed through this drop-down menu:</p><ul><li><em><a href="user_manual/gui/machine_learning/active_learning.md">Active Learning</a></em>
-</li>
-<li><em><a href="user_manual/gui/machine_learning/batch_learning.md">Batch Learning</a></em>
-</li>
-<li><em><a href="user_manual/gui/machine_learning/unsupervised_learning.md">Unsupervised Learning</a></em>
-</li></ul>
-<p>These features are only available when a configuration is loaded</p><h3 id="toolbox">Toolbox</h3><p><img src="../../images/ToolBox.png" height="400" alt="ToolBox"></p><p>On the left you can find the toolbox containing everything you need to build your own metric after you loaded/made a configuration</p><ul><li><em>Source/Target Properties</em>: The properties you want to link (if you did not load or create a configuration these are empty)
-</li>
-<li><em>Measures</em>: All the <a href="../configuration_file/metric/measures/">measures</a> you can use to link properties
-</li>
-<li><em>Operators</em>: All the operators you can use to combine measures
-</li></ul>
-<h3 id="metric-builder">Metric Builder</h3><p><img src="../../images/MetricBuilder.png" width="600" alt="MetricBuilder"></p><p>Here you can link the various nodes to create the metric you want</p>
+instructions, as much information as possible will be saved, but you have to run the machine learning through the GUI.</li>
+<li><em>Save Config</em>: Save a configuration to a file (only possible, after loading a configuration or creating a new configuration)</li>
+<li><em>Exit</em><h3 id="layout">Layout</h3>
+Handles the layout of the current <a href="../configuration_file/metric/">metric</a> </li>
+<li><em>Refresh Layout</em>: Rearranges the nodes of the metric in a tree-like structure</li>
+<li><em>Delete Graph</em>: Delete the current metric leaving only an output node</li>
+</ul>
+<h3 id="learn">Learn</h3>
+<p>All the machine learning functionality of the GUI can be accessed through this drop-down menu:</p>
+<ul>
+<li><em><a href="user_manual/gui/machine_learning/active_learning.md">Active Learning</a></em></li>
+<li><em><a href="user_manual/gui/machine_learning/batch_learning.md">Batch Learning</a></em></li>
+<li><em><a href="user_manual/gui/machine_learning/unsupervised_learning.md">Unsupervised Learning</a></em></li>
+</ul>
+<p>These features are only available when a configuration is loaded</p>
+<h3 id="toolbox">Toolbox</h3>
+<p><img src="../../images/ToolBox.png" height="400" alt="ToolBox"></p>
+<p>On the left you can find the toolbox containing everything you need to build your own metric after you loaded/made a configuration</p>
+<ul>
+<li><em>Source/Target Properties</em>: The properties you want to link (if you did not load or create a configuration these are empty)</li>
+<li><em>Measures</em>: All the <a href="../configuration_file/metric/measures/">measures</a> you can use to link properties</li>
+<li><em>Operators</em>: All the operators you can use to combine measures</li>
+</ul>
+<h3 id="metric-builder">Metric Builder</h3>
+<p><img src="../../images/MetricBuilder.png" width="600" alt="MetricBuilder"></p>
+<p>Here you can link the various nodes to create the metric you want</p>
+
                                 
                                 </section>
                             
@@ -766,7 +776,7 @@ instructions, as much information as possible will be saved, but you have to run
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Using the GUI","level":"2.4","depth":1,"next":{"title":"Creating a new Configuration","level":"2.4.1","depth":2,"path":"user_manual/gui/new_config/create_new_config.md","ref":"user_manual/gui/new_config/create_new_config.md","articles":[]},"previous":{"title":"Running LIMES","level":"2.3","depth":1,"path":"user_manual/running_limes.md","ref":"user_manual/running_limes.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/gui/overview.md","mtime":"2016-09-30T16:39:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.1","time":"2016-09-30T17:03:26.491Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Using the GUI","level":"2.4","depth":1,"next":{"title":"Creating a new Configuration","level":"2.4.1","depth":2,"path":"user_manual/gui/new_config/create_new_config.md","ref":"user_manual/gui/new_config/create_new_config.md","articles":[]},"previous":{"title":"Running LIMES","level":"2.3","depth":1,"path":"user_manual/running_limes.md","ref":"user_manual/running_limes.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/gui/overview.md","mtime":"2016-10-03T10:01:39.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-10-03T10:15:37.345Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

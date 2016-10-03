@@ -7,7 +7,7 @@
         <title>Examples · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.1">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -692,7 +692,9 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="configuration-file-examples">Configuration File Examples</h1><p>The following shows the whole configuration file for LIMES explicated in the sections above.</p><pre><code class="lang-xml"><span class="php"><span class="hljs-meta">&lt;?</span>xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span> standalone=<span class="hljs-string">&quot;no&quot;</span><span class="hljs-meta">?&gt;</span></span>
+                                <h1 id="configuration-file-examples">Configuration File Examples</h1>
+<p>The following shows the whole configuration file for LIMES explicated in the sections above.</p>
+<pre><code class="lang-xml"><span class="php"><span class="hljs-meta">&lt;?</span>xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span> standalone=<span class="hljs-string">&quot;no&quot;</span><span class="hljs-meta">?&gt;</span></span>
 <span class="hljs-meta">&lt;!DOCTYPE LIMES SYSTEM &quot;limes.dtd&quot;&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">LIMES</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">PREFIX</span>&gt;</span>
@@ -742,10 +744,12 @@
     <span class="hljs-tag">&lt;/<span class="hljs-name">EXECUTION</span>&gt;</span>
 
     <span class="hljs-tag">&lt;<span class="hljs-name">OUTPUT</span>&gt;</span>TAB<span class="hljs-tag">&lt;/<span class="hljs-name">OUTPUT</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">LIMES</span>&gt;</span></code></pre>
+<span class="hljs-tag">&lt;/<span class="hljs-name">LIMES</span>&gt;</span>
+</code></pre>
 <p>LIMES can be also configured using a RDF configuration file, the next
 listing represent the same LIMES configuration used in the previous XML
-file.</p><pre><code class="lang-turtle">@prefix geos:    &lt;http://www.opengis.net/ont/geosparql#&gt; .
+file.</p>
+<pre><code class="lang-turtle">@prefix geos:    &lt;http://www.opengis.net/ont/geosparql#&gt; .
 @prefix lgdo:    &lt;http://linkedgeodata.org/ontology/&gt; .
 @prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
 @prefix geom:    &lt;http://geovocab.org/geometry#&gt; .
@@ -801,8 +805,10 @@ limes:linkedgeodataTOlinkedgeodataSource
       limes:pageSize &quot;2000&quot; ;
       limes:property &quot;geom:geometry/geos:asWKT&quot; ;
       limes:restriction &quot;?x a lgdo:RelayBox&quot; ;
-      limes:variable &quot;?x&quot; .</code></pre>
-<p>The following configuration file uses the machine learning algorithm of the Wombat simple to find the metric expression for the same example:</p><pre><code class="lang-xml"><span class="php"><span class="hljs-meta">&lt;?</span>xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span> standalone=<span class="hljs-string">&quot;no&quot;</span><span class="hljs-meta">?&gt;</span></span>
+      limes:variable &quot;?x&quot; .
+</code></pre>
+<p>The following configuration file uses the machine learning algorithm of the Wombat simple to find the metric expression for the same example:</p>
+<pre><code class="lang-xml"><span class="php"><span class="hljs-meta">&lt;?</span>xml version=<span class="hljs-string">&quot;1.0&quot;</span> encoding=<span class="hljs-string">&quot;UTF-8&quot;</span> standalone=<span class="hljs-string">&quot;no&quot;</span><span class="hljs-meta">?&gt;</span></span>
 <span class="hljs-meta">&lt;!DOCTYPE LIMES SYSTEM &quot;limes.dtd&quot;&gt;</span>
 <span class="hljs-tag">&lt;<span class="hljs-name">LIMES</span>&gt;</span>
     <span class="hljs-tag">&lt;<span class="hljs-name">PREFIX</span>&gt;</span>
@@ -867,8 +873,10 @@ limes:linkedgeodataTOlinkedgeodataSource
     <span class="hljs-tag">&lt;/<span class="hljs-name">EXECUTION</span>&gt;</span>
 
     <span class="hljs-tag">&lt;<span class="hljs-name">OUTPUT</span>&gt;</span>TAB<span class="hljs-tag">&lt;/<span class="hljs-name">OUTPUT</span>&gt;</span>
-<span class="hljs-tag">&lt;/<span class="hljs-name">LIMES</span>&gt;</span></code></pre>
-<p>Finally, the last XML configuration file in TTL format will look like:</p><pre><code class="lang-turtle">@prefix geos:    &lt;http://www.opengis.net/ont/geosparql#&gt; .
+<span class="hljs-tag">&lt;/<span class="hljs-name">LIMES</span>&gt;</span>
+</code></pre>
+<p>Finally, the last XML configuration file in TTL format will look like:</p>
+<pre><code class="lang-turtle">@prefix geos:    &lt;http://www.opengis.net/ont/geosparql#&gt; .
 @prefix lgdo:    &lt;http://linkedgeodata.org/ontology/&gt; .
 @prefix rdfs:    &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
 @prefix geom:    &lt;http://geovocab.org/geometry#&gt; .
@@ -924,7 +932,8 @@ limes:linkedgeodataTOlinkedgeodataSource
       limes:pageSize &quot;2000&quot; ;
       limes:property &quot;geom:geometry/geos:asWKT&quot; ;
       limes:restriction &quot;?x a lgdo:RelayBox&quot; ;
-      limes:variable &quot;?x&quot; .</code></pre>
+      limes:variable &quot;?x&quot; .
+</code></pre>
 
                                 
                                 </section>
@@ -968,7 +977,7 @@ limes:linkedgeodataTOlinkedgeodataSource
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Examples","level":"2.2.8","depth":2,"next":{"title":"Running LIMES","level":"2.3","depth":1,"path":"user_manual/running_limes.md","ref":"user_manual/running_limes.md","articles":[]},"previous":{"title":"Review Condition","level":"2.2.7","depth":2,"path":"user_manual/configuration_file/review.md","ref":"user_manual/configuration_file/review.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/configuration_file/examples.md","mtime":"2016-09-30T16:39:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.1","time":"2016-09-30T17:03:26.491Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Examples","level":"2.2.8","depth":2,"next":{"title":"Running LIMES","level":"2.3","depth":1,"path":"user_manual/running_limes.md","ref":"user_manual/running_limes.md","articles":[]},"previous":{"title":"Review Condition","level":"2.2.7","depth":2,"path":"user_manual/configuration_file/review.md","ref":"user_manual/configuration_file/review.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/configuration_file/examples.md","mtime":"2016-10-03T10:01:39.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-10-03T10:15:37.345Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>

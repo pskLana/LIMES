@@ -7,7 +7,7 @@
         <title>LSPipeline · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
-        <meta name="generator" content="GitBook 3.2.1">
+        <meta name="generator" content="GitBook 3.2.2">
         
         
         
@@ -692,34 +692,36 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="lspipeline">LSPipeline</h1><p>The <code>LSPipeline</code> consists of three basic building blocks: <code>Rewriter</code>, <code>Planner</code> and <code>ExecutionEngine</code>.</p><ul><li>A <code>Rewriter</code> aims to simplify a given LS by removing potential redundancy, that eventually speeds up its execution.
+                                <h1 id="lspipeline">LSPipeline</h1>
+<p>The <code>LSPipeline</code> consists of three basic building blocks: <code>Rewriter</code>, <code>Planner</code> and <code>ExecutionEngine</code>. </p>
+<ul>
+<li>A <code>Rewriter</code> aims to simplify a given LS by removing potential redundancy, that eventually speeds up its execution.</li>
+<li>A <code>Planner</code> generates the plan of an input LS. For an <em>atomic LS</em>, it generates a simple <code>Plan</code> that consists of a <em>RUN</em> command. For a <em>complex LS</em>, it determines which <em>atomic LS</em> should be executed first, how to process intermediary results and identifies dependencies between atomic LSs. For example, a <code>Planner</code> can decide to first run some <em>atomic LS</em> and then filter the results using another <em>atomic LS</em> instead of running it independently and merging the results.</li>
+<li>An <code>ExecutionEngine</code> is responsible for executing the <code>Plan</code> of an input LS. It takes as input a LS and a <code>Planner</code>, it executes  the <code>Plan</code> and returns the set of links as a <code>AMapping</code>.</li>
+<li>All packages have the same hierarchy and they include the following set of classes:<ul>
+<li>An interface i.e. <code>IExecutionEngine</code> that includes all basic functions that an engine must implement.</li>
+<li>An abstract class i.e. <code>ExecutionEngine</code> that implements the <code>IExecutionEngine</code> interface and must be extended by all engine classes.</li>
+<li>A factory class i.e. <code>ExecutionEngineFactory</code> that returns an object of an engine given an input engine name. </li>
+</ul>
 </li>
-<li>A <code>Planner</code> generates the plan of an input LS. For an <em>atomic LS</em>, it generates a simple <code>Plan</code> that consists of a <em>RUN</em> command. For a <em>complex LS</em>, it determines which <em>atomic LS</em> should be executed first, how to process intermediary results and identifies dependencies between atomic LSs. For example, a <code>Planner</code> can decide to first run some <em>atomic LS</em> and then filter the results using another <em>atomic LS</em> instead of running it independently and merging the results.
-</li>
-<li>An <code>ExecutionEngine</code> is responsible for executing the <code>Plan</code> of an input LS. It takes as input a LS and a <code>Planner</code>, it executes  the <code>Plan</code> and returns the set of links as a <code>AMapping</code>.
-</li>
-<li>All packages have the same hierarchy and they include the following set of classes:
-<ul><li>An interface i.e. <code>IExecutionEngine</code> that includes all basic functions that an engine must implement.
-</li>
-<li>An abstract class i.e. <code>ExecutionEngine</code> that implements the <code>IExecutionEngine</code> interface and must be extended by all engine classes.
-</li>
-<li>A factory class i.e. <code>ExecutionEngineFactory</code> that returns an object of an engine given an input engine name. 
-</li></ul>
-</li></ul>
-<p>This code example, taken from the <code>LSPipeline</code> class, demonstrates the usage pattern:</p><pre><code>Rewriter rw = RewriterFactory.getRewriter(rewriterType);
+</ul>
+<p>This code example, taken from the <code>LSPipeline</code> class, demonstrates the usage pattern:</p>
+<pre><code>Rewriter rw = RewriterFactory.getRewriter(rewriterType);
 LinkSpecification rwLs = rw.rewrite(ls);
 // Planning execution of the LS
 Planner planner = ExecutionPlannerFactory.getPlanner(executionPlannerType, sourceCache, targetCache);
 // Execute the ExecutionPlan obtained from the LS
 ExecutionEngine engine = ExecutionEngineFactory.getEngine(executionEngineType, sourceCache, targetCache, sourceVar, targetVar);
-return engine.execute(rwLs, planner);</code></pre>
-<ul><li><p>If you want to create a new engine or planner or rewriter class, you must follow a set of steps:</p><ul><li>The name of the new class must end with the word &quot;Engine&quot; or &quot;Planner&quot; or &quot;Rewriter&quot;.
+return engine.execute(rwLs, planner);
+</code></pre><ul>
+<li><p>If you want to create a new engine or planner or rewriter class, you must follow a set of steps:</p>
+<ul>
+<li>The name of the new class must end with the word &quot;Engine&quot; or &quot;Planner&quot; or &quot;Rewriter&quot;.</li>
+<li>The new class must extend the ExecutionEngine or Planner or Rewriter abstract class and as a result implement all overriden methods from the corresponding interface. No unsupported functions are allowed.</li>
+<li>Go to the corresponding Factory class of the package and include a label for the new class at the enum class of allowed names. Then, create a <code>public static final</code> field of String type using the same name of engine/planner/rewriter as the one used in the enum class i.e. <code>public static final String HELIOS = &quot;helios&quot;;</code> and finally then add the choice of returing this engine/planner/rewriter at the i.e. <code>getPlannerType</code> and <code>getPlanner</code> functions following the pattern used for other engines/planners/rewriters.</li>
+</ul>
 </li>
-<li>The new class must extend the ExecutionEngine or Planner or Rewriter abstract class and as a result implement all overriden methods from the corresponding interface. No unsupported functions are allowed.
-</li>
-<li>Go to the corresponding Factory class of the package and include a label for the new class at the enum class of allowed names. Then, create a <code>public static final</code> field of String type using the same name of engine/planner/rewriter as the one used in the enum class i.e. <code>public static final String HELIOS = &quot;helios&quot;;</code> and finally then add the choice of returing this engine/planner/rewriter at the i.e. <code>getPlannerType</code> and <code>getPlanner</code> functions following the pattern used for other engines/planners/rewriters.
-</li></ul>
-</li></ul>
+</ul>
 
                                 
                                 </section>
@@ -763,7 +765,7 @@ return engine.execute(rwLs, planner);</code></pre>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"LSPipeline","level":"3.5","depth":1,"next":{"title":"MLPipeline","level":"3.6","depth":1,"path":"developer_manual/ml_pipeline.md","ref":"developer_manual/ml_pipeline.md","articles":[]},"previous":{"title":"Measures","level":"3.4","depth":1,"path":"developer_manual/measures.md","ref":"developer_manual/measures.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"developer_manual/ls_pipeline.md","mtime":"2016-09-30T16:39:55.000Z","type":"markdown"},"gitbook":{"version":"3.2.1","time":"2016-09-30T17:03:26.491Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"LSPipeline","level":"3.5","depth":1,"next":{"title":"MLPipeline","level":"3.6","depth":1,"path":"developer_manual/ml_pipeline.md","ref":"developer_manual/ml_pipeline.md","articles":[]},"previous":{"title":"Measures","level":"3.4","depth":1,"path":"developer_manual/measures.md","ref":"developer_manual/measures.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"developer_manual/ls_pipeline.md","mtime":"2016-10-03T10:01:39.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-10-03T10:15:37.345Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
