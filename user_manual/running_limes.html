@@ -672,16 +672,15 @@
 been written, the last step consists of actually running the LIMES
 framework. For this purpose, simply run</p>
 <p><code>java -jar LIMES.jar config.xml [OPTIONS...]</code>.</p>
-<p>The following options and switches are available:</p>
+<p>The following optional command line flags and options are available:</p>
 <ul>
-<li><code>-h</code> print out help</li>
-<li><code>-f $format</code> set format of configuration file, with <code>$format</code> being either <code>&quot;XML&quot;</code> (default) or <code>&quot;RDF&quot;</code></li>
-<li><code>-g</code> run GUI version</li>
+<li><code>-f $format</code> sets the format of configuration file. Possible values for <code>$format</code> are<code>&quot;XML&quot;</code> (default) or <code>&quot;RDF&quot;</code></li>
+<li><code>-g</code> runs the GUI version</li>
+<li><code>-h</code> prints out a help message</li>
+<li><code>-o $file_path</code> sets the path of the logging file</li>
 </ul>
 <p>In case your system runs out of memory, please use the <code>-Xmx</code> option (must appear before the -jar option) to
-allocate more memory to the Java Virtual Machine. Please ensure that the
-Data Type Definition file for LIMES, <code>limes.dtd</code>, is in the same folder
-as the <code>LIMES.jar</code> and everything should run just fine. Enjoy.</p>
+allocate more memory to the Java Virtual Machine.</p>
 <h2 id="from-java">From Java</h2>
 <p>See <a href="https://github.com/AKSW/LIMES-dev/blob/dev/limes-core/manual/developer_manual/index.md" target="_blank">Developer manual</a></p>
 
@@ -727,7 +726,7 @@ as the <code>LIMES.jar</code> and everything should run just fine. Enjoy.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Running LIMES","level":"2.3","depth":1,"next":{"title":"Using the GUI","level":"2.4","depth":1,"path":"user_manual/gui/overview.md","ref":"user_manual/gui/overview.md","articles":[{"title":"Creating a new Configuration","level":"2.4.1","depth":2,"path":"user_manual/gui/new_config/create_new_config.md","ref":"user_manual/gui/new_config/create_new_config.md","articles":[]},{"title":"Creating a new Metric","level":"2.4.2","depth":2,"path":"user_manual/gui/new_config/new_metric.md","ref":"user_manual/gui/new_config/new_metric.md","articles":[]},{"title":"Machine Learning with the GUI","level":"2.4.3","depth":2,"path":"user_manual/gui/machinelearning.md","ref":"user_manual/gui/machinelearning.md","articles":[]}]},"previous":{"title":"Examples","level":"2.2.8","depth":2,"path":"user_manual/configuration_file/examples.md","ref":"user_manual/configuration_file/examples.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/running_limes.md","mtime":"2016-10-12T19:03:53.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-10-12T19:18:47.656Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Running LIMES","level":"2.3","depth":1,"next":{"title":"Using the GUI","level":"2.4","depth":1,"path":"user_manual/gui/overview.md","ref":"user_manual/gui/overview.md","articles":[{"title":"Creating a new Configuration","level":"2.4.1","depth":2,"path":"user_manual/gui/new_config/create_new_config.md","ref":"user_manual/gui/new_config/create_new_config.md","articles":[]},{"title":"Creating a new Metric","level":"2.4.2","depth":2,"path":"user_manual/gui/new_config/new_metric.md","ref":"user_manual/gui/new_config/new_metric.md","articles":[]},{"title":"Machine Learning with the GUI","level":"2.4.3","depth":2,"path":"user_manual/gui/machinelearning.md","ref":"user_manual/gui/machinelearning.md","articles":[]}]},"previous":{"title":"Examples","level":"2.2.8","depth":2,"path":"user_manual/configuration_file/examples.md","ref":"user_manual/configuration_file/examples.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/running_limes.md","mtime":"2016-10-12T19:59:19.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-10-12T20:14:51.164Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
