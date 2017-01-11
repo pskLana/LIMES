@@ -684,12 +684,51 @@
 Each configuration file gets assigned a unique <em>job_id</em>, which is also the return message from the server.
 Once the server finished executing the given job, its results can also be obtained through HTTP.</p>
 <h2 id="api">API</h2>
-<p>There are just two endpoints:</p>
+<p>The following HTTP endpoints are currently implemented:</p>
 <ul>
-<li><code>./execute/</code> <code>(POST)</code> is used to upload configuration files as multipart/form-data POST messages and returns the assigned job_id.</li>
-<li><code>./get_result/?job_id=$job_id&amp;result_type=$result_type</code> is used to obtain the resulting mapping file of type <code>$result_type</code> (either &quot;acceptance&quot; or &quot;verification&quot;) for the configuration with job_id of <code>$job_id</code>.</li>
+<li><code>./execute/</code> <strong>(POST)</strong> ---
+used to upload configuration files as multipart/form-data POST messages and returns the
+assigned <em>job_id</em>.<br><strong>Accepts XML Configuration file</strong> (See example below) </li>
+<li><code>./get_result/?job_id=$job_id&amp;result_type=$result_type</code> <strong>(GET)</strong> ---
+used to obtain the resulting mapping files for
+the configuration with <em>job_id</em> of <code>$job_id</code>.<br><strong>Query Parameters in Detail</strong>  <ul>
+<li><code>$job_id</code> is an identifier returned from the <code>./execute</code> endpoint after submitting a job.  </li>
+<li><code>$result_type</code> specifies which output file from the configuration should be returned. Possible values: <em>acceptance</em>
+or <em>review</em><br><em>Background:</em> A configuration file in LIMES allows to specify two output files for two levels of confidence:
+<a href="../configuration_file/acceptance.html">Acceptance</a> and <a href="../configuration_file/review.html">Review</a>  </li>
 </ul>
-
+</li>
+<li><code>./get_status/?job_id=$job_id</code> <strong>(GET)</strong> ---
+returns the status (a numerical code) for a given job.<br>The following statuses are currently implemented:<ul>
+<li><strong>-1 (Unknown)</strong>  - a configuration file for the given <em>job_id</em> has not been found on the server </li>
+<li><strong>0 (Scheduled)</strong> - the configuration file is present and the job is waiting for execution</li>
+<li><strong>1 (Running)</strong> - the job is currently running</li>
+<li><strong>2 (Finished)</strong> - the job is finished and its output files are ready for delivery through <code>./get_result/</code> requests</li>
+</ul>
+</li>
+</ul>
+<h2 id="example">Example</h2>
+<pre><code>// Get latest LIMES jar from our repository
+$ wget https://github.com/AKSW/LIMES-dev/archive/1.0.0.tar.gz
+$ tar -xvf 1.0.0.tar.gz
+// Run LIMES as HTTP server on port 80
+$ java -jar limes.jar -s -p 80
+// Download example XML mapping
+$ wget https://raw.githubusercontent.com/AKSW/LIMES-dev/master/limes-core/resources/lgd-lgd.xml
+// Run mapping against endpoint
+$ curl --form &quot;fileupload=@lgd-lgd.xml&quot; http://localhost/execute
+46839272943
+// Observe the status
+$ curl http://localhost/get_status?job_id=46839272943
+1
+// Get result file
+$ curl http://localhost/get_result/?job_id=46839272943&amp;result_type=acceptance
+&lt;http://linkedgeodata.org/triplify/node2806760713&gt;      &lt;http://linkedgeodata.org/triplify/node2806760713&gt;      1.0
+&lt;http://linkedgeodata.org/triplify/node2806760713&gt;      &lt;http://linkedgeodata.org/triplify/node400957326&gt;       0.9283311463354712
+&lt;http://linkedgeodata.org/triplify/node1319713883&gt;      &lt;http://linkedgeodata.org/triplify/node1319713883&gt;      1.0
+&lt;http://linkedgeodata.org/triplify/node385623871&gt;       &lt;http://linkedgeodata.org/triplify/node385623871&gt;       1.0
+...
+</code></pre>
                                 
                                 </section>
                             
@@ -732,7 +771,7 @@ Once the server finished executing the given job, its results can also be obtain
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Using the Server","level":"2.4","depth":1,"next":{"title":"Using the GUI","level":"2.5","depth":1,"path":"user_manual/gui/overview.md","ref":"user_manual/gui/overview.md","articles":[{"title":"Creating a new Configuration","level":"2.5.1","depth":2,"path":"user_manual/gui/new_config/create_new_config.md","ref":"user_manual/gui/new_config/create_new_config.md","articles":[]},{"title":"Creating a new Metric","level":"2.5.2","depth":2,"path":"user_manual/gui/new_config/new_metric.md","ref":"user_manual/gui/new_config/new_metric.md","articles":[]},{"title":"Machine Learning with the GUI","level":"2.5.3","depth":2,"path":"user_manual/gui/machinelearning.md","ref":"user_manual/gui/machinelearning.md","articles":[]}]},"previous":{"title":"Running LIMES","level":"2.3","depth":1,"path":"user_manual/running_limes.md","ref":"user_manual/running_limes.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/server/overview.md","mtime":"2016-12-20T10:45:23.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2016-12-20T10:54:28.152Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Using the Server","level":"2.4","depth":1,"next":{"title":"Using the GUI","level":"2.5","depth":1,"path":"user_manual/gui/overview.md","ref":"user_manual/gui/overview.md","articles":[{"title":"Creating a new Configuration","level":"2.5.1","depth":2,"path":"user_manual/gui/new_config/create_new_config.md","ref":"user_manual/gui/new_config/create_new_config.md","articles":[]},{"title":"Creating a new Metric","level":"2.5.2","depth":2,"path":"user_manual/gui/new_config/new_metric.md","ref":"user_manual/gui/new_config/new_metric.md","articles":[]},{"title":"Machine Learning with the GUI","level":"2.5.3","depth":2,"path":"user_manual/gui/machinelearning.md","ref":"user_manual/gui/machinelearning.md","articles":[]}]},"previous":{"title":"Running LIMES","level":"2.3","depth":1,"path":"user_manual/running_limes.md","ref":"user_manual/running_limes.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/server/overview.md","mtime":"2017-01-11T12:25:25.000Z","type":"markdown"},"gitbook":{"version":"3.2.2","time":"2017-01-11T12:32:34.337Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
