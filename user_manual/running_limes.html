@@ -683,12 +683,13 @@
 <h2 id="from-jar-file">From <code>jar</code> file</h2>
 <p>Once the configuration file (dubbed <code>config.xml</code> in this manual) has
 been written, the last step consists of actually running the LIMES
-framework. For this purpose, simply run</p>
+framework. </p>
+<h3 id="limes-core">LIMES core</h3>
+<p>For this purpose, simply run</p>
 <p><code>java -jar LIMES.jar config.xml [OPTIONS...]</code>.</p>
 <p>The following optional command line flags and options are available:</p>
 <ul>
 <li><code>-f $format</code> sets the format of configuration file. Possible values for <code>$format</code> are<code>&quot;XML&quot;</code> (default) or <code>&quot;RDF&quot;</code></li>
-<li><code>-g</code> runs the GUI version</li>
 <li><code>-s</code> runs the LIMES server</li>
 <li><code>-p $port</code> used to specify port of LIMES server, defaults to port 8080</li>
 <li><code>-h</code> prints out a help message</li>
@@ -696,6 +697,10 @@ framework. For this purpose, simply run</p>
 </ul>
 <p>In case your system runs out of memory, please use the <code>-Xmx</code> option (must appear before the -jar option) to
 allocate more memory to the Java Virtual Machine.</p>
+<h3 id="limes-gui">LIMES GUI</h3>
+<p>Go to <code>limes-gui/</code> and run 
+<code>mvn jfx:jar -Dcheckstyle.skip=true -Dmaven.test.skip=true</code> .</p>
+<p>The jar will be placed in <code>limes-gui/limes-gui/target/jfx/app/</code></p>
 <h2 id="from-java">From Java</h2>
 <p>See <a href="https://github.com/AKSW/LIMES-dev/blob/dev/limes-core/manual/developer_manual/index.md" target="_blank">Developer manual</a></p>
 
@@ -741,7 +746,7 @@ allocate more memory to the Java Virtual Machine.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Running LIMES","level":"2.3","depth":1,"next":{"title":"Using the Server","level":"2.4","depth":1,"path":"user_manual/server/overview.md","ref":"user_manual/server/overview.md","articles":[]},"previous":{"title":"Examples","level":"2.2.8","depth":2,"path":"user_manual/configuration_file/examples.md","ref":"user_manual/configuration_file/examples.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/running_limes.md","mtime":"2017-09-27T14:14:41.109Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-09-27T14:27:25.066Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Running LIMES","level":"2.3","depth":1,"next":{"title":"Using the Server","level":"2.4","depth":1,"path":"user_manual/server/overview.md","ref":"user_manual/server/overview.md","articles":[]},"previous":{"title":"Examples","level":"2.2.8","depth":2,"path":"user_manual/configuration_file/examples.md","ref":"user_manual/configuration_file/examples.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/running_limes.md","mtime":"2017-10-23T10:43:09.743Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-10-23T10:56:47.317Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
