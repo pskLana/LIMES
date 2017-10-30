@@ -704,7 +704,7 @@
 <li>unsupervised</li>
 </ul>
 </li>
-<li>The the tag <code>TRAINING</code> contains the full path to the training data file. Note that this tag is not required in case of the supervised active and unsupervised learning algorithms</li>
+<li>The the tag <code>TRAINING</code> contains the full path to the training data file. Note that this tag is not required in case of the supervised active and unsupervised learning algorithms. Usually a <code>*.ttl</code> file is used where the URIs of the entities are linked via <code>owl:sameAs</code> e.g.: <code>&lt;http://sourceexample.org/entity1&gt; &lt;http://www.w3.org/2002/07/owl#sameAs&gt;&lt;http://targetexample.org/entity1&gt;</code></li>
 <li>The the tag <code>PARAMETER</code> contains the the name (using the sub-tag <code>NAME</code>) and the value (using the sub-tag <code>VALUE</code>) of the used machine learning algorithm parameter. User can use as many <code>PARAMETER</code> tags as it is required. Note that LIMES uses the default values of all unspecified parameters. </li>
 </ul>
 <p>The following table contains a list of implemented algorithms together with supported implementations and parameters.</p>
@@ -864,6 +864,7 @@
   </tr>
 </table>
 
+
                                 
                                 </section>
                             
@@ -906,7 +907,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Machine Learning","level":"2.2.5","depth":2,"next":{"title":"Acceptance Condition","level":"2.2.6","depth":2,"path":"user_manual/configuration_file/acceptance.md","ref":"user_manual/configuration_file/acceptance.md","articles":[]},"previous":{"title":"Resource-Set Measures","level":"2.2.4.3.6","depth":4,"path":"user_manual/configuration_file/metric/measures/resource_set.md","ref":"user_manual/configuration_file/metric/measures/resource_set.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/configuration_file/machine_learning.md","mtime":"2017-10-30T10:29:31.864Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-10-30T10:40:14.561Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Machine Learning","level":"2.2.5","depth":2,"next":{"title":"Acceptance Condition","level":"2.2.6","depth":2,"path":"user_manual/configuration_file/acceptance.md","ref":"user_manual/configuration_file/acceptance.md","articles":[]},"previous":{"title":"Resource-Set Measures","level":"2.2.4.3.6","depth":4,"path":"user_manual/configuration_file/metric/measures/resource_set.md","ref":"user_manual/configuration_file/metric/measures/resource_set.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/configuration_file/machine_learning.md","mtime":"2017-10-30T14:39:34.202Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-10-30T14:51:49.893Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
