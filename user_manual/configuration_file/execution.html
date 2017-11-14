@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8">
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
-        <title>Metadata · GitBook</title>
+        <title>Execution · GitBook</title>
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="description" content="">
         <meta name="generator" content="GitBook 3.2.3">
@@ -61,10 +61,10 @@
     <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
 
     
-    <link rel="next" href="prefixes.html" />
+    <link rel="next" href="machine_learning.html" />
     
     
-    <link rel="prev" href="./" />
+    <link rel="prev" href="metric/measures/resource_set.html" />
     
 
     </head>
@@ -155,7 +155,7 @@
             <ul class="articles">
                 
     
-        <li class="chapter active" data-level="2.2.1" data-path="metadata.html">
+        <li class="chapter " data-level="2.2.1" data-path="metadata.html">
             
                 <a href="metadata.html">
             
@@ -336,7 +336,7 @@
             
         </li>
     
-        <li class="chapter " data-level="2.2.5" data-path="execution.html">
+        <li class="chapter active" data-level="2.2.5" data-path="execution.html">
             
                 <a href="execution.html">
             
@@ -703,7 +703,7 @@
     <!-- Title -->
     <h1>
         <i class="fa fa-circle-o-notch fa-spin"></i>
-        <a href="../.." >Metadata</a>
+        <a href="../.." >Execution</a>
     </h1>
 </div>
 
@@ -718,12 +718,25 @@
     
                                 <section class="normal markdown-section">
                                 
-                                <h1 id="metadata">Metadata</h1>
-<p>The <code>metadata</code> tag always consists of the following bits of XML:</p>
-<pre><code>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE LIMES SYSTEM &quot;limes.dtd&quot;&gt;
-&lt;LIMES&gt;
-</code></pre>
+                                <h1 id="execution-optional">Execution (optional)</h1>
+<p>Three LIMES execution parameters could be set here:</p>
+<ul>
+<li><code>REWRITER</code>: LIMES 1.0.0 implements the <code>DEFAULT</code> rewriter.</li>
+<li><code>PLANNER</code>: the user can choose between:<ul>
+<li><code>CANONICAL</code>: It generates an immutable plan in a static manner.</li>
+<li><code>HELIOS</code>: It generates an immutable plan in a dynamic manner.</li>
+<li><code>DYNAMIC</code>: It generates an mutable plan in a dynamic manner.</li>
+<li><code>DEFAULT</code>: same as <code>CANONICAL</code>.</li>
+</ul>
+</li>
+<li><code>ENGINE</code>: the user can choose between:<ul>
+<li><code>SIMPLE</code>: It executes each independent part of the plan sequentially.</li>
+<li><code>DEFAULT</code>: same as <code>SIMPLE</code>.</li>
+</ul>
+</li>
+</ul>
+<p>if not set, the <code>DEFAULT</code> value for each parameter will used be will</p>
+
                                 
                                 </section>
                             
@@ -750,12 +763,12 @@
 
             
                 
-                <a href="./" class="navigation navigation-prev " aria-label="Previous page: Configuration File">
+                <a href="metric/measures/resource_set.html" class="navigation navigation-prev " aria-label="Previous page: Resource-Set Measures">
                     <i class="fa fa-angle-left"></i>
                 </a>
                 
                 
-                <a href="prefixes.html" class="navigation navigation-next " aria-label="Next page: Prefixes">
+                <a href="machine_learning.html" class="navigation navigation-next " aria-label="Next page: Machine Learning">
                     <i class="fa fa-angle-right"></i>
                 </a>
                 
@@ -766,7 +779,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Metadata","level":"2.2.1","depth":2,"next":{"title":"Prefixes","level":"2.2.2","depth":2,"path":"user_manual/configuration_file/prefixes.md","ref":"user_manual/configuration_file/prefixes.md","articles":[]},"previous":{"title":"Configuration File","level":"2.2","depth":1,"path":"user_manual/configuration_file/index.md","ref":"user_manual/configuration_file/index.md","articles":[{"title":"Metadata","level":"2.2.1","depth":2,"path":"user_manual/configuration_file/metadata.md","ref":"user_manual/configuration_file/metadata.md","articles":[]},{"title":"Prefixes","level":"2.2.2","depth":2,"path":"user_manual/configuration_file/prefixes.md","ref":"user_manual/configuration_file/prefixes.md","articles":[]},{"title":"Data Sources","level":"2.2.3","depth":2,"path":"user_manual/configuration_file/data_sources.md","ref":"user_manual/configuration_file/data_sources.md","articles":[]},{"title":"Metric","level":"2.2.4","depth":2,"path":"user_manual/configuration_file/metric/index.md","ref":"user_manual/configuration_file/metric/index.md","articles":[{"title":"Metric Operations","level":"2.2.4.1","depth":3,"path":"user_manual/configuration_file/metric/metric_operations.md","ref":"user_manual/configuration_file/metric/metric_operations.md","articles":[]},{"title":"Boolean Operations","level":"2.2.4.2","depth":3,"path":"user_manual/configuration_file/metric/boolean_operations.md","ref":"user_manual/configuration_file/metric/boolean_operations.md","articles":[]},{"title":"Measures","level":"2.2.4.3","depth":3,"path":"user_manual/configuration_file/metric/measures/index.md","ref":"user_manual/configuration_file/metric/measures/index.md","articles":[{"title":"String Measures","level":"2.2.4.3.1","depth":4,"path":"user_manual/configuration_file/metric/measures/string.md","ref":"user_manual/configuration_file/metric/measures/string.md","articles":[]},{"title":"Vector Space Measures","level":"2.2.4.3.2","depth":4,"path":"user_manual/configuration_file/metric/measures/vector_space.md","ref":"user_manual/configuration_file/metric/measures/vector_space.md","articles":[]},{"title":"Point-Set Measures","level":"2.2.4.3.3","depth":4,"path":"user_manual/configuration_file/metric/measures/point_set.md","ref":"user_manual/configuration_file/metric/measures/point_set.md","articles":[]},{"title":"Topological Measures","level":"2.2.4.3.4","depth":4,"path":"user_manual/configuration_file/metric/measures/topological.md","ref":"user_manual/configuration_file/metric/measures/topological.md","articles":[]},{"title":"Temporal Measures","level":"2.2.4.3.5","depth":4,"path":"user_manual/configuration_file/metric/measures/temporal.md","ref":"user_manual/configuration_file/metric/measures/temporal.md","articles":[]},{"title":"Resource-Set Measures","level":"2.2.4.3.6","depth":4,"path":"user_manual/configuration_file/metric/measures/resource_set.md","ref":"user_manual/configuration_file/metric/measures/resource_set.md","articles":[]}]}]},{"title":"Execution","level":"2.2.5","depth":2,"path":"user_manual/configuration_file/execution.md","ref":"user_manual/configuration_file/execution.md","articles":[]},{"title":"Machine Learning","level":"2.2.6","depth":2,"path":"user_manual/configuration_file/machine_learning.md","ref":"user_manual/configuration_file/machine_learning.md","articles":[]},{"title":"Granularity","level":"2.2.7","depth":2,"path":"user_manual/configuration_file/granularity.md","ref":"user_manual/configuration_file/granularity.md","articles":[]},{"title":"Acceptance Condition","level":"2.2.8","depth":2,"path":"user_manual/configuration_file/acceptance.md","ref":"user_manual/configuration_file/acceptance.md","articles":[]},{"title":"Review Condition","level":"2.2.9","depth":2,"path":"user_manual/configuration_file/review.md","ref":"user_manual/configuration_file/review.md","articles":[]},{"title":"Output","level":"2.2.10","depth":2,"path":"user_manual/configuration_file/output.md","ref":"user_manual/configuration_file/output.md","articles":[]},{"title":"Examples","level":"2.2.11","depth":2,"path":"user_manual/configuration_file/examples.md","ref":"user_manual/configuration_file/examples.md","articles":[]}]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/configuration_file/metadata.md","mtime":"2017-11-14T15:15:31.300Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-11-14T15:28:02.677Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Execution","level":"2.2.5","depth":2,"next":{"title":"Machine Learning","level":"2.2.6","depth":2,"path":"user_manual/configuration_file/machine_learning.md","ref":"user_manual/configuration_file/machine_learning.md","articles":[]},"previous":{"title":"Resource-Set Measures","level":"2.2.4.3.6","depth":4,"path":"user_manual/configuration_file/metric/measures/resource_set.md","ref":"user_manual/configuration_file/metric/measures/resource_set.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex"],"pluginsConfig":{"katex":{},"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/configuration_file/execution.md","mtime":"2017-11-14T15:15:31.300Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2017-11-14T15:28:02.677Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
