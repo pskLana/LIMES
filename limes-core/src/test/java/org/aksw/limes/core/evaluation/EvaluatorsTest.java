@@ -53,7 +53,7 @@ public class EvaluatorsTest {
             AlgorithmsInitTest al = new AlgorithmsInitTest();
             Evaluator evaluator = new Evaluator();
 
-            Set<TaskData> tasks = ds.initializeDataSets(datasetsList);
+			List<TaskData> tasks = ds.initializeDataSets(datasetsList);
             Set<EvaluatorType> evaluators = ev.initializeEvaluators();
             List<TaskAlgorithm> algorithms = al.initializeMLAlgorithms(algorithmsListData,datasetsList.length);
 
@@ -81,14 +81,14 @@ public class EvaluatorsTest {
         AlgorithmsInitTest al = new AlgorithmsInitTest();
         Evaluator evaluator = new Evaluator();
 
-        Set<TaskData> tasks = ds.initializeDataSets(datasetsList);
+		List<TaskData> tasks = ds.initializeDataSets(datasetsList);
         Set<EvaluatorType> evaluators = ev.initializeEvaluators();
         List<TaskAlgorithm> algorithms = al.initializeMLAlgorithms(algorithmsListData,datasetsList.length);
         List<EvaluationRun> results =null;
         for (TaskAlgorithm tAlgorithm : algorithms) {
             System.out.println("testing "+tAlgorithm.getMlAlgorithm().toString());
             if(tAlgorithm.getMlAlgorithm() instanceof SupervisedMLAlgorithm)
-                results = evaluator.crossValidate(tAlgorithm.getMlAlgorithm(), null, tasks,folds, evaluators, null);
+				results = evaluator.crossValidate(ImmutableList.of(tAlgorithm), tasks, folds, evaluators);
             System.out.println(results);
         }
         assertTrue(true);
