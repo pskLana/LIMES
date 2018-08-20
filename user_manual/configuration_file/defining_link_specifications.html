@@ -1,0 +1,972 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Defining Link Specifications · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-katex/katex.min.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-anchors/plugin.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../../gitbook/gitbook-plugin-theme-api/theme-api.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="defining_link_specifications.html" />
+    
+    
+    <link rel="prev" href="configuration-file-examples.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        <li class="header">Getting Started</li>
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../../">
+            
+                <a href="../../">
+            
+                    
+                    About this documentation
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" data-path="../../getting_started/installation.html">
+            
+                <a href="../../getting_started/installation.html">
+            
+                    
+                    Installation and Setup
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">User manual</li>
+        
+        
+    
+        <li class="chapter " data-level="2.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2" data-path="../running_limes.html">
+            
+                <a href="../running_limes.html#top">
+            
+                    
+                    Running LIMES
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.2.1" data-path="../running_limes.html">
+            
+                <a href="../running_limes.html#client">
+            
+                    
+                    Using the Client
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.2" data-path="../running_limes.html">
+            
+                <a href="../running_limes.html#server">
+            
+                    
+                    Using the Server
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.3" data-path="../running_limes.html">
+            
+                <a href="../running_limes.html#gui">
+            
+                    
+                    Using the GUI
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.2.3.1" data-path="../running_limes.html">
+            
+                <a href="../running_limes.html#how-to-create-a-new-configuration">
+            
+                    
+                    Creating a New Configuration
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.3.2" data-path="../running_limes.html">
+            
+                <a href="../running_limes.html#how-to-create-a-new-link-specification">
+            
+                    
+                    Creating a New Metric
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.2.3.3" data-path="../running_limes.html">
+            
+                <a href="../running_limes.html#machine-learning-in-the-gui">
+            
+                    
+                    Machine Learning with the GUI
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3" data-path="./">
+            
+                <a href="./">
+            
+                    
+                    Writing Configuration Files
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.3.1" data-path="./">
+            
+                <a href="./#components-of-a-limes-xml-configuration-file">
+            
+                    
+                    Components of a Configuration File
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.3.1.1" data-path="./">
+            
+                <a href="./#metadata">
+            
+                    
+                    Metadata
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.1.2" data-path="./">
+            
+                <a href="./#prefixes">
+            
+                    
+                    Prefixes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.1.3" data-path="./">
+            
+                <a href="./#data-sources">
+            
+                    
+                    Data Sources
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.1.4" data-path="./">
+            
+                <a href="./#metric-expression-for-similarity-measurement">
+            
+                    
+                    Metric
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.1.5" data-path="./">
+            
+                <a href="./#execution">
+            
+                    
+                    Execution
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.1.6" data-path="./">
+            
+                <a href="./#machine-learning">
+            
+                    
+                    Machine Learning
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.1.7" data-path="./">
+            
+                <a href="./#granularity">
+            
+                    
+                    Granularity
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.1.8" data-path="./">
+            
+                <a href="./#acceptance-condition">
+            
+                    
+                    Acceptance Condition
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.1.9" data-path="./">
+            
+                <a href="./#review-condition">
+            
+                    
+                    Review Condition
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.1.10" data-path="./">
+            
+                <a href="./#output-format">
+            
+                    
+                    Output
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.2" data-path="configuration-file-examples.html">
+            
+                <a href="configuration-file-examples.html">
+            
+                    
+                    Configuration File Examples
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="2.3.3" data-path="defining_link_specifications.html">
+            
+                <a href="defining_link_specifications.html">
+            
+                    
+                    Defining Link Specifications
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.3.3.1" data-path="defining_link_specifications.html">
+            
+                <a href="defining_link_specifications.html#metric-operations">
+            
+                    
+                    Metric Operations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.3.2" data-path="defining_link_specifications.html">
+            
+                <a href="defining_link_specifications.html#boolean-operations">
+            
+                    
+                    Boolean Operations
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.3.3" data-path="defining_link_specifications.html">
+            
+                <a href="defining_link_specifications.html#implemented-measures">
+            
+                    
+                    Implemented Measures
+            
+                </a>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="2.3.3.3.1" data-path="defining_link_specifications.html">
+            
+                <a href="defining_link_specifications.html#string-measures">
+            
+                    
+                    String measures
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.3.3.2" data-path="defining_link_specifications.html">
+            
+                <a href="defining_link_specifications.html#vector-space-measures">
+            
+                    
+                    Vector space measures
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.3.3.3" data-path="defining_link_specifications.html">
+            
+                <a href="defining_link_specifications.html#point-set-measures">
+            
+                    
+                    Pointset measures
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.3.3.4" data-path="defining_link_specifications.html">
+            
+                <a href="defining_link_specifications.html#topological-measures">
+            
+                    
+                    Topological measures
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.3.3.5" data-path="defining_link_specifications.html">
+            
+                <a href="defining_link_specifications.html#temporal-measures">
+            
+                    
+                    Temporal measures
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.3.3.6" data-path="defining_link_specifications.html">
+            
+                <a href="defining_link_specifications.html#resource-set-measures">
+            
+                    
+                    Resource set measures
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="2.3.4" data-path="defining_ml_tasks.html">
+            
+                <a href="defining_ml_tasks.html">
+            
+                    
+                    Defining Machine Learning Tasks
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Developer manual</li>
+        
+        
+    
+        <li class="chapter " data-level="3.1" data-path="../../developer_manual/">
+            
+                <a href="../../developer_manual/">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.2" data-path="../../developer_manual/overview.html">
+            
+                <a href="../../developer_manual/overview.html">
+            
+                    
+                    Overview
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.3" data-path="../../developer_manual/io_classes.html">
+            
+                <a href="../../developer_manual/io_classes.html">
+            
+                    
+                    I/O Classes
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.4" data-path="../../developer_manual/measures.html">
+            
+                <a href="../../developer_manual/measures.html">
+            
+                    
+                    Measures
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.5" data-path="../../developer_manual/ls_pipeline.html">
+            
+                <a href="../../developer_manual/ls_pipeline.html">
+            
+                    
+                    LSPipeline
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="3.6" data-path="../../developer_manual/ml_pipeline.html">
+            
+                <a href="../../developer_manual/ml_pipeline.html">
+            
+                    
+                    MLPipeline
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+        
+        <li class="header">Miscellaneous</li>
+        
+        
+    
+        <li class="chapter " data-level="4.1" data-path="../../misc/faq.html">
+            
+                <a href="../../misc/faq.html">
+            
+                    
+                    FAQ
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="4.2" >
+            
+                <a target="_blank" href="https://github.com/dice-group/LIMES/blob/master/CHANGES.md">
+            
+                    
+                    Release notes
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href="../.." >Defining Link Specifications</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="defining-link-specifications"><a name="defining-link-specifications" class="plugin-anchor" href="#defining-link-specifications"><i class="fa fa-link" aria-hidden="true"></i></a>Defining Link Specifications</h1>
+<p>Links Specifications (LS) can be simple or complex.
+A simple LS just consists of the measure name together with the arguments to the measure.
+Possible arguments to a measure are all properties as defined in <a href="./#data-sources">Data Sources</a>. 
+A possible simple LS is shown in the following example:</p>
+<pre><code>&lt;METRIC&gt;trigrams(x.rdfs:label,y.dc:title)&lt;/METRIC&gt;
+</code></pre><p>While such simple metrics can be used in many cases, complex metrics are
+necessary in complex linking cases.
+LIMES includes a formal grammar for specifying complex configurations of
+arbitrary complexity.
+For this purpose, two categories of binary operations are supported:</p>
+<ol>
+<li>Metric operations and </li>
+<li>Boolean operations.</li>
+</ol>
+<h2 id="metric-operations"><a name="metric-operations" class="plugin-anchor" href="#metric-operations"><i class="fa fa-link" aria-hidden="true"></i></a>Metric operations</h2>
+<p>Metric operations allow to combine metric values. They include the operators
+<code>MIN</code>, <code>MAX</code> and <code>ADD</code> e.g. as follows:</p>
+<pre><code>MAX(trigrams(x.rdfs:label,y.dc:title)|0.3,euclidean(x.lat|long, y.latitude|longitude)|0.5).
+</code></pre><p>This specification computes the maximum of:</p>
+<ol>
+<li>The trigram similarity of x&apos;s <code>rdfs:label</code> and y&apos;s <code>dc:title</code> is greater or equal to 0.3</li>
+<li>The 2-dimension euclidean distance of <code>x</code>&apos;s <code>lat</code> and <code>long</code> with <code>y</code>&apos;s <code>latitude</code> and <code>longitude</code>, i.e.,  <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msqrt><mrow><mo>(</mo><mo>(</mo><mi>x</mi><mi mathvariant="normal">.</mi><mi>l</mi><mi>a</mi><mi>t</mi><mo>&#x2212;</mo><mi>y</mi><mi mathvariant="normal">.</mi><mi>l</mi><mi>a</mi><mi>t</mi><mi>i</mi><mi>t</mi><mi>u</mi><mi>d</mi><mi>e</mi><msup><mo>)</mo><mn>2</mn></msup><mo>+</mo><mo>(</mo><mi>x</mi><mi mathvariant="normal">.</mi><mi>l</mi><mi>o</mi><mi>n</mi><mi>g</mi><mo>&#x2212;</mo><mi>y</mi><mi mathvariant="normal">.</mi><mi>l</mi><mi>o</mi><mi>n</mi><mi>g</mi><mi>i</mi><mi>t</mi><mi>u</mi><mi>d</mi><mi>e</mi><msup><mo>)</mo><mn>2</mn></msup><mo>)</mo></mrow></msqrt></mrow><annotation encoding="application/x-tex"> \sqrt{((x.lat- y.latitude)^2 + (x.long - y.longitude)^2)} </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.9350050000000001em;"></span><span class="strut bottom" style="height:1.24001em;vertical-align:-0.3050049999999999em;"></span><span class="base textstyle uncramped"><span class="mord sqrt"><span class="sqrt-sign" style="top:-0.04500500000000007em;"><span class="style-wrap reset-textstyle textstyle uncramped"><span class="delimsizing size1">&#x221A;</span></span></span><span class="vlist"><span style="top:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:1em;">&#x200B;</span></span><span class="mord textstyle cramped"><span class="mopen">(</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mord mathrm">.</span><span class="mord mathit" style="margin-right:0.01968em;">l</span><span class="mord mathit">a</span><span class="mord mathit">t</span><span class="mbin">&#x2212;</span><span class="mord mathit" style="margin-right:0.03588em;">y</span><span class="mord mathrm">.</span><span class="mord mathit" style="margin-right:0.01968em;">l</span><span class="mord mathit">a</span><span class="mord mathit">t</span><span class="mord mathit">i</span><span class="mord mathit">t</span><span class="mord mathit">u</span><span class="mord mathit">d</span><span class="mord mathit">e</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist"><span style="top:-0.289em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle scriptstyle cramped mtight"><span class="mord mathrm mtight">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span>&#x200B;</span></span></span></span><span class="mbin">+</span><span class="mopen">(</span><span class="mord mathit">x</span><span class="mord mathrm">.</span><span class="mord mathit" style="margin-right:0.01968em;">l</span><span class="mord mathit">o</span><span class="mord mathit">n</span><span class="mord mathit" style="margin-right:0.03588em;">g</span><span class="mbin">&#x2212;</span><span class="mord mathit" style="margin-right:0.03588em;">y</span><span class="mord mathrm">.</span><span class="mord mathit" style="margin-right:0.01968em;">l</span><span class="mord mathit">o</span><span class="mord mathit">n</span><span class="mord mathit" style="margin-right:0.03588em;">g</span><span class="mord mathit">i</span><span class="mord mathit">t</span><span class="mord mathit">u</span><span class="mord mathit">d</span><span class="mord mathit">e</span><span class="mclose"><span class="mclose">)</span><span class="msupsub"><span class="vlist"><span style="top:-0.289em;margin-right:0.05em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle scriptstyle cramped mtight"><span class="mord mathrm mtight">2</span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span>&#x200B;</span></span></span></span><span class="mclose">)</span></span></span><span style="top:-0.855005em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:1em;">&#x200B;</span></span><span class="reset-textstyle textstyle uncramped sqrt-line"></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:1em;">&#x200B;</span></span>&#x200B;</span></span></span></span></span></span> is greater or equal to 0.5. </li>
+</ol>
+<p>Note that euclidean supports arbitrarily many dimensions. In addition, note that <code>ADD</code> allows to define weighted sums as follows:<code>ADD(0.3*trigrams(x.rdfs:label,y.dc:title)|0.3, 0.7*euclidean(x.lat|x.long,y.latitude|y.longitude)|0.5)</code>.</p>
+<p>We call <code>trigrams(x.rdfs:label,y.dc:title)|0.3</code> the left child of the specification and <code>euclidean(x.lat|long, y.latitude|longitude)|0.5</code> the right child of the specification. Both children specifications are simple specifications and combined with a metric operator, they create a complex specification. LIMES gives the user the opportunity to combine <strong>exactly two </strong> complex or simple spefications to create a new complex specification. Note that each child specification must be accompanied by its own threshold.</p>
+<h2 id="boolean-operations"><a name="boolean-operations" class="plugin-anchor" href="#boolean-operations"><i class="fa fa-link" aria-hidden="true"></i></a>Boolean operations</h2>
+<p>Boolean operations allow to combine and filter the results of metric operations and include <code>AND</code>, <code>OR</code>, <code>DIFF</code>, e.g. as <code>AND(trigrams(x.rdfs:label,y.dc:title)|0.9, euclidean(x.lat|x.long, y.latitude|y.longitude)|0.7)</code>.</p>
+<p>This specification returns all links such that:</p>
+<ol>
+<li>the trigram similarity of <code>x</code>&apos;s <code>rdfs:label</code> and <code>y</code>&apos;s <code>dc:title</code> is greater or equal to 0.9 and</li>
+<li>the 2-dimension euclidean distance of <code>x</code>&apos;s <code>lat</code> and <code>long</code> mit y&apos;s <code>latitude</code> and <code>longitude</code> is greater or equal to <code>0.7</code>.</li>
+</ol>
+<p>We call <code>trigrams(x.rdfs:label,y.dc:title)|0.9</code> the left child of the speficiation and <code>euclidean(x.lat|x.long, y.latitude|y.longitude)|0.7</code>the right child of the specification. Both children specifications are simple specifications and combined with a boolean operator, they create a complex specification.
+LIMES gives the user the opportunity to combine <strong>exactly two</strong> complex or simple spefications to create a new complex specification. Note that each child specification must be accompanied by its own threshold.</p>
+<h2 id="implemented-measures"><a name="implemented-measures" class="plugin-anchor" href="#implemented-measures"><i class="fa fa-link" aria-hidden="true"></i></a>Implemented Measures</h2>
+<p>Measures are organized in packages, based on the type of resource they are designed to operate with. 
+Several measure packages ship with LIMES and it is easy to extend it with your own.</p>
+<p>The current version of LIMES ships with the following measure packages included:</p>
+<ul>
+<li>string</li>
+<li>vector space</li>
+<li>pointset</li>
+<li>topological</li>
+<li>temporal</li>
+<li>resource set</li>
+</ul>
+<p>More complex distance measures are being added continuously.</p>
+<h3 id="string-measures"><a name="string-measures" class="plugin-anchor" href="#string-measures"><i class="fa fa-link" aria-hidden="true"></i></a>String Measures</h3>
+<p>The string measures package consists of the following measures: </p>
+<ul>
+<li><code>Cosine</code></li>
+<li><code>ExactMatch</code></li>
+<li><code>Jaccard</code>  </li>
+<li><code>Jaro</code></li>
+<li><code>JaroWinkler</code> </li>
+<li><code>Levenshtein</code></li>
+<li><code>MongeElkan</code> </li>
+<li><code>Overlap</code></li>
+<li><code>Qgrams</code> </li>
+<li><code>RatcliffObershelp</code></li>
+<li><code>Soundex</code></li>
+<li><code>Trigram</code></li>
+</ul>
+<p>Example of atomic LS that consists of the string measure  <code>Trigram</code> and a threshold <code>theta = 0.8</code>:</p>
+<p><code>trigram(x.label, y.title) | 0.8</code></p>
+<p>where <code>label</code> and <code>title</code> are properties of the source and target KB reps., whose values are strings. </p>
+<h3 id="vector-space-measures"><a name="vector-space-measures" class="plugin-anchor" href="#vector-space-measures"><i class="fa fa-link" aria-hidden="true"></i></a>Vector Space Measures</h3>
+<p>LIMES supports comparing numeric vectors by using the vector space measures package consisting of the following measures:</p>
+<ul>
+<li><code>Euclidean</code> metric <ul>
+<li>e.g. <code>euclidean(a.wgs84:lat|wgs84:long,b.wgs84:lat|wgs84:long)</code></li>
+</ul>
+</li>
+<li><code>Geo_Orthodromic</code> distance </li>
+<li><code>Geo_Great_Elliptic</code> distance</li>
+</ul>
+<h3 id="point-set-measures"><a name="point-set-measures" class="plugin-anchor" href="#point-set-measures"><i class="fa fa-link" aria-hidden="true"></i></a>Point-Set Measures</h3>
+<p>The similarity between polygons can be measured by using the following point-set distances:</p>
+<ul>
+<li><code>Geo_Centroid_Indexed_Hausdorff</code> </li>
+<li><code>Geo_Fast_Hausdorff</code> </li>
+<li><code>Geo_Hausdorff</code> </li>
+<li><code>Geo_Indexed_Hausdorff</code> </li>
+<li><code>Geo_Naive_Hausdorff</code></li>
+<li><code>Geo_Scan_Indexed_Hausdorff</code></li>
+<li><code>Geo_Symmetric_Hausdorff</code></li>
+<li><code>Geo_Max</code></li>
+<li><code>Geo_Min</code></li>
+<li><code>Geo_Mean</code></li>
+<li><code>Geo_Avg</code></li>
+<li><code>Geo_Frechet</code></li>
+<li><code>Geo_Link</code></li>
+<li><code>Geo_Sum_Of_Min</code></li>
+<li><code>Geo_Naive_Surjection</code></li>
+<li><code>Geo_Fair_Surjection</code></li>
+</ul>
+<p>The threshold <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>&#x3B8;</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">&#x3B8;</span></span></span></span> corresponds to the distance <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span> between two points in km via the following formula:
+<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>&#x3B8;</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mo>+</mo><mi>x</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\theta = \frac{1}{1+x}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.845108em;"></span><span class="strut bottom" style="height:1.2484389999999999em;vertical-align:-0.403331em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">&#x3B8;</span><span class="mrel">=</span><span class="mord reset-textstyle textstyle uncramped"><span class="mopen sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.345em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle scriptstyle cramped mtight"><span class="mord scriptstyle cramped mtight"><span class="mord mathrm mtight">1</span><span class="mbin mtight">+</span><span class="mord mathit mtight">x</span></span></span></span><span style="top:-0.22999999999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.394em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle scriptstyle uncramped mtight"><span class="mord scriptstyle uncramped mtight"><span class="mord mathrm mtight">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span>&#x200B;</span></span></span><span class="mclose sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span></span></span></span>.</p>
+<h3 id="topological-measures"><a name="topological-measures" class="plugin-anchor" href="#topological-measures"><i class="fa fa-link" aria-hidden="true"></i></a>Topological Measures</h3>
+<p>The topological relations between spatial resources can be found by using the following relations:</p>
+<ul>
+<li><code>Top_Contains</code></li>
+<li><code>Top_Covered_By</code></li>
+<li><code>Top_Crosses</code></li>
+<li><code>Top_Disjoint</code></li>
+<li><code>Top_Equals</code></li>
+<li><code>Top_Intersects</code></li>
+<li><code>Top_Overlaps</code></li>
+<li><code>Top_Touches</code></li>
+<li><code>Top_Within</code></li>
+</ul>
+<h3 id="temporal-measures"><a name="temporal-measures" class="plugin-anchor" href="#temporal-measures"><i class="fa fa-link" aria-hidden="true"></i></a>Temporal Measures</h3>
+<p>The temporal relations between event resources can be found by using the following relations:</p>
+<ul>
+<li><code>Tmp_Concurrent</code>: given a source and a target KB, <code>Tmp_Concurrent</code> links the source and the target events that have the same begin date and were produced by the same machine. For example: Tmp_Concurrent(x.beginDate1|machine1,y.beginDate2|machine2)|1.0 </li>
+<li><code>Tmp_Predecessor</code>: given a source and a target KB, <code>Tmp_Predecessor</code> links the source events to the set of target events that happen exactly before them. For example: Tmp_Predecessor(x.beginDate1,y.beginDate2)|1.0. If the <code>Tmp_Predecessor</code> measure is used in a complex LS, the <code>CANONICAL</code> planner should be used. </li>
+<li><code>Tmp_Successor</code>: given a source and a target KB, <code>Tmp_Successor</code> links the source events to the set of target events that happen exactly after them. For example: Tmp_Successor(x.beginDate1,y.beginDate2)|1.0. If the <code>Tmp_Successor</code> measure is used in a complex LS, the <code>CANONICAL</code> planner should be used. </li>
+</ul>
+<p>Allen&apos;s temporal relations (<a href="https://en.wikipedia.org/wiki/Allen&apos;s_interval_algebra" target="_blank">https://en.wikipedia.org/wiki/Allen&apos;s_interval_algebra</a>):</p>
+<ul>
+<li><code>Tmp_After</code></li>
+<li><code>Tmp_Before</code></li>
+<li><code>Tmp_During</code></li>
+<li><code>Tmp_During_Reverse</code></li>
+<li><code>Tmp_Equals</code></li>
+<li><code>Tmp_Finishes</code></li>
+<li><code>Tmp_Finishes</code></li>
+<li><code>Tmp_Is_Finished_By</code></li>
+<li><code>Tmp_Is_Met_By</code></li>
+<li><code>Tmp_Is_Overlapped_By</code></li>
+<li><code>Tmp_Is_Started_By</code></li>
+<li><code>Tmp_Meets</code></li>
+<li><code>Tmp_Overlaps</code></li>
+<li><code>Tmp_Starts</code></li>
+</ul>
+<p>Example of atomic LS that consists of the temporal measure  <code>Tmp_Finishes</code> and a threshold <code>theta = 1.0</code>:</p>
+<p><code>Tmp_Finishes(x.beginDate1|endDate1, y.beginDate2|endDate2) | 0.8</code></p>
+<p>where <code>beginDate1</code> and <code>beginDate2</code> are properties of the source and target KB reps. whose values indicate the begin of a temporal event instance and <code>endDate1</code> and <code>endDate2</code> are properties of the source and target KB reps. whose values indicate the end of a temporal event instance. Both begin and end properties for both source and target MUST be included in an atomic LS whose measure is temporal. Also, the acceptable values for all properties are in the format: <code>2015-04-22T11:29:51+02:00</code>.</p>
+<h3 id="resource-set-measures"><a name="resource-set-measures" class="plugin-anchor" href="#resource-set-measures"><i class="fa fa-link" aria-hidden="true"></i></a>Resource-Set Measures</h3>
+<p>To compare sets of resources (e.g. in rdf containers), use the following relations:</p>
+<ul>
+<li><code>Set_Jaccard</code></li>
+</ul>
+<p>Please note that rdf collections are not supported yet.</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Defining Link Specifications","level":"2.3.3","depth":2,"next":{"title":"Metric Operations","level":"2.3.3.1","depth":3,"anchor":"#metric-operations","path":"user_manual/configuration_file/defining_link_specifications.md","ref":"user_manual/configuration_file/defining_link_specifications.md#metric-operations","articles":[]},"previous":{"title":"Configuration File Examples","level":"2.3.2","depth":2,"path":"user_manual/configuration_file/configuration-file-examples.md","ref":"user_manual/configuration_file/configuration-file-examples.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex","anchors","theme-api"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"katex":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"theme-api":{"languages":[],"split":true,"theme":"light"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/configuration_file/defining_link_specifications.md","mtime":"2018-08-20T09:22:25.719Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-20T09:37:07.675Z"},"basePath":"../..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../../gitbook/gitbook.js"></script>
+    <script src="../../gitbook/theme.js"></script>
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+        
+        <script src="../../gitbook/gitbook-plugin-theme-api/theme-api.js"></script>
+        
+    
+
+    </body>
+</html>
+
