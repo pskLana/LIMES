@@ -756,8 +756,9 @@
 A simple LS just consists of the measure name together with the arguments to the measure.
 Possible arguments to a measure are all properties as defined in <a href="./#data-sources">Data Sources</a>. 
 A possible simple LS is shown in the following example:</p>
-<pre><code>&lt;METRIC&gt;trigrams(x.rdfs:label,y.dc:title)&lt;/METRIC&gt;
-</code></pre><p>While such simple metrics can be used in many cases, complex metrics are
+<pre><code class="lang-xml"><span class="hljs-tag">&lt;<span class="hljs-name">METRIC</span>&gt;</span>trigrams(x.rdfs:label,y.dc:title)<span class="hljs-tag">&lt;/<span class="hljs-name">METRIC</span>&gt;</span>
+</code></pre>
+<p>While such simple metrics can be used in many cases, complex metrics are
 necessary in complex linking cases.
 LIMES includes a formal grammar for specifying complex configurations of
 arbitrary complexity.
@@ -789,113 +790,192 @@ LIMES gives the user the opportunity to combine <strong>exactly two</strong> com
 <h2 id="implemented-measures"><a name="implemented-measures" class="plugin-anchor" href="#implemented-measures"><i class="fa fa-link" aria-hidden="true"></i></a>Implemented Measures</h2>
 <p>Measures are organized in packages, based on the type of resource they are designed to operate with. 
 Several measure packages ship with LIMES and it is easy to extend it with your own.</p>
-<p>The current version of LIMES ships with the following measure packages included:</p>
+<p>The current version of LIMES ships with the following measure packages:</p>
 <ul>
-<li>string</li>
-<li>vector space</li>
-<li>pointset</li>
-<li>topological</li>
-<li>temporal</li>
-<li>resource set</li>
+<li>String measures</li>
+<li>Vector space measures</li>
+<li>Point-set measures</li>
+<li>Topological measures</li>
+<li>Temporal measures</li>
+<li>Resource-set measures</li>
 </ul>
-<p>More complex distance measures are being added continuously.</p>
+<p>More complex distance measures are being added continuously.
+We give more details about each of the measure type in the following sections.</p>
 <h3 id="string-measures"><a name="string-measures" class="plugin-anchor" href="#string-measures"><i class="fa fa-link" aria-hidden="true"></i></a>String Measures</h3>
 <p>The string measures package consists of the following measures: </p>
 <ul>
-<li><code>Cosine</code></li>
-<li><code>ExactMatch</code></li>
-<li><code>Jaccard</code>  </li>
-<li><code>Jaro</code></li>
-<li><code>JaroWinkler</code> </li>
-<li><code>Levenshtein</code></li>
-<li><code>MongeElkan</code> </li>
-<li><code>Overlap</code></li>
-<li><code>Qgrams</code> </li>
-<li><code>RatcliffObershelp</code></li>
-<li><code>Soundex</code></li>
-<li><code>Trigram</code></li>
+<li><strong>Cosine</strong>: Cosine string similarity is a measure of similarity between two non-zero vectors
+representations of the two input strings of an inner product space that measures the cosine of
+the angle between them. The outcome of the Cosine string similarity is neatly bounded in <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mo>[</mo><mn>0</mn><mo separator="true">,</mo><mn>1</mn><mo>]</mo></mrow><annotation encoding="application/x-tex">[0,1]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.75em;"></span><span class="strut bottom" style="height:1em;vertical-align:-0.25em;"></span><span class="base textstyle uncramped"><span class="mopen">[</span><span class="mord mathrm">0</span><span class="mpunct">,</span><span class="mord mathrm">1</span><span class="mclose">]</span></span></span></span></li>
+<li><strong>ExactMatch</strong>: Exact match string similarity is a measure of similarity between two input
+strings that returns one in case the two input strings were identical, zero otherwise.</li>
+<li><strong>Jaccard</strong>: The Jaccard index, also known as Intersection over Union and the Jaccard similarity
+coefficient (originally coined coefficient de communaut&#xE9; by Paul Jaccard), is a statistic used for
+comparing the similarity and diversity of sample sets. The Jaccard coefficient measures similarity
+between finite sample sets, and is defined as the size of the intersection divided by the size of
+the union of the sample sets. In LIMES, we use trigrams of the input strings to generate our sample sets. </li>
+<li><strong>Overlap</strong>: The overlap coefficient or Szymkiewicz&#x2013;Simpson coefficient, is a similarity measure
+that measures the overlap between two sets. It is related to the Jaccard index and is defined as
+the size of the intersection divided by the smaller of the size of the two sets.</li>
+<li><strong>Jaro</strong>: The Jaro distance between two strings is related to the minimum number of single-character
+transpositions required to change one string into the other.</li>
+<li><strong>JaroWinkler</strong>: The Jaro&#x2013;Winkler distance is a string metric for measuring the edit
+distance between two sequences. It is a variant proposed in 1990 by William E. Winkler of the Jaro
+distance metric. The Jaro&#x2013;Winkler distance uses a prefix scale which gives more favourable
+ratings to strings that match from the beginning for a set prefix length. The lower
+the Jaro&#x2013;Winkler distance for two strings is, the more similar the strings are. The score is
+normalized such that 0 equates to no similarity and 1 is an exact match.</li>
+<li><strong>Levenshtein</strong>: The Levenshtein distance is a string metric for measuring the difference
+between two strings. Informally, the Levenshtein distance between two strings is the minimum number
+of single-character edits (insertions, deletions or substitutions) required to change one string into
+the other. It is named after the Soviet mathematician Vladimir Levenshtein, who considered this
+distance in 1965. Normalized Levenshtein distance is computed by dividing the Levenshtein distance
+by the length of the input string. Let <span class="katex"><span class="katex-mathml"><math><semantics><mrow><msub><mi>d</mi><mrow><mi>l</mi><mi>v</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">d_{lvn}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.84444em;vertical-align:-0.15em;"></span><span class="base textstyle uncramped"><span class="mord"><span class="mord mathit">d</span><span class="msupsub"><span class="vlist"><span style="top:0.15em;margin-right:0.05em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle scriptstyle cramped mtight"><span class="mord scriptstyle cramped mtight"><span class="mord mathit mtight" style="margin-right:0.01968em;">l</span><span class="mord mathit mtight" style="margin-right:0.03588em;">v</span><span class="mord mathit mtight">n</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span>&#x200B;</span></span></span></span></span></span></span> be the normalized Levenshtein distance.
+Then we define the Levenshtein similarity in LIMES as <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mo>&#x2212;</mo><msub><mi>d</mi><mrow><mi>l</mi><mi>v</mi><mi>n</mi></mrow></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{1}{1-d_{lvn}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.845108em;"></span><span class="strut bottom" style="height:1.2959679999999998em;vertical-align:-0.4508599999999999em;"></span><span class="base textstyle uncramped"><span class="mord reset-textstyle textstyle uncramped"><span class="mopen sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.345em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle scriptstyle cramped mtight"><span class="mord scriptstyle cramped mtight"><span class="mord mathrm mtight">1</span><span class="mbin mtight">&#x2212;</span><span class="mord mtight"><span class="mord mathit mtight">d</span><span class="msupsub"><span class="vlist"><span style="top:0.15122857142857138em;margin-right:0.07142857142857144em;margin-left:0em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-scriptstyle scriptscriptstyle cramped mtight"><span class="mord scriptscriptstyle cramped mtight"><span class="mord mathit mtight" style="margin-right:0.01968em;">l</span><span class="mord mathit mtight" style="margin-right:0.03588em;">v</span><span class="mord mathit mtight">n</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span>&#x200B;</span></span></span></span></span></span></span><span style="top:-0.22999999999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.394em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle scriptstyle uncramped mtight"><span class="mord scriptstyle uncramped mtight"><span class="mord mathrm mtight">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span>&#x200B;</span></span></span><span class="mclose sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span></span></span></span>.</li>
+<li><strong>MongeElkan</strong>: The Monge-Elkan similarity measure is a type of hybrid similarity measure that
+combines the benefits of sequence-based and set-based methods. This can be effective for domains
+in which more control is needed over the similarity measure. In LIMES, we use trigrams of the input
+strings to generate our sample string subsets.</li>
+<li><strong>RatcliffObershelp</strong>: In Ratcliff/Obershelp, we compute the similarity of the two input strings
+as the number of matching characters divided by the total number of characters in the two strings.
+Matching characters are those in the longest common subsequence plus, recursively, matching characters
+in the unmatched region on either side of the longest common subsequence.</li>
+<li><strong>Soundex</strong>: Soundex is a phonetic algorithm for indexing names by sound, as pronounced in English.
+The goal is for homophones to be encoded to the same representation so that they can be matched
+despite minor differences in spelling. The algorithm mainly encodes consonants, a vowel will not be
+encoded unless it is the first letter. In LIMES, we compute the Soundex distance as the reverse of
+the distance between the encoding of the two input strings. </li>
+<li><strong>Trigram</strong>: A tri-gram is a group of three consecutive characters taken from a string.
+In LIMES, we measure the similarity of two input strings by counting the number of trigrams they share.
+Formally, we compute the trigram similarity as the normalized sum of absolute differences between
+tri-gram vectors of both the input strings.</li>
+<li><strong>Qgrams</strong>: Same as trigram but using a group of <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>q</mi></mrow><annotation encoding="application/x-tex">q</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.625em;vertical-align:-0.19444em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.03588em;">q</span></span></span></span> (set to four by default) consecutive characters for generating
+the q-gram vectors of the input strings.</li>
 </ul>
-<p>Example of atomic LS that consists of the string measure  <code>Trigram</code> and a threshold <code>theta = 0.8</code>:</p>
-<p><code>trigram(x.label, y.title) | 0.8</code></p>
-<p>where <code>label</code> and <code>title</code> are properties of the source and target KB reps., whose values are strings. </p>
 <h3 id="vector-space-measures"><a name="vector-space-measures" class="plugin-anchor" href="#vector-space-measures"><i class="fa fa-link" aria-hidden="true"></i></a>Vector Space Measures</h3>
 <p>LIMES supports comparing numeric vectors by using the vector space measures package consisting of the following measures:</p>
 <ul>
-<li><code>Euclidean</code> metric <ul>
-<li>e.g. <code>euclidean(a.wgs84:lat|wgs84:long,b.wgs84:lat|wgs84:long)</code></li>
-</ul>
-</li>
-<li><code>Geo_Orthodromic</code> distance </li>
-<li><code>Geo_Great_Elliptic</code> distance</li>
+<li><strong>Euclidean</strong>: Euclidean metric is the straight-line distance between two points in Euclidean space.
+With this distance, Euclidean space becomes a metric space.
+For example, <code>euclidean(a.wgs84:lat|wgs84:long,b.wgs84:lat|wgs84:long)</code> will compute the Euclidean
+distance between the point representations of each resource from the source and target datasets.</li>
+<li><strong>Geo_Orthodromic</strong>: The great-circle distance or orthodromic distance is the shortest distance
+between two points on the surface of a sphere, measured along the surface of the sphere
+(as opposed to a straight line through the sphere&apos;s interior). The distance between two points in
+Euclidean space is the length of a straight line between them, but on the sphere, there are no
+straight lines. In spaces with curvature, straight lines are replaced by geodesics.
+Geodesics on the sphere are circles on the sphere whose centres coincide with the canter of the
+sphere and are called great circles.</li>
+<li><strong>Geo_Great_Elliptic</strong>: The great ellipse distance is the length of the ellipse passing through
+two points on a spheroid and having the same centre as that of the spheroid. Equivalently, it is
+distance of the ellipse on the surface of a spheroid and cantered on the origin, or the curve
+formed by intersecting the spheroid by a plane through its centre. The great ellipse distance is
+confedered the most accurate distance between two point In the surface of the earth.</li>
 </ul>
 <h3 id="point-set-measures"><a name="point-set-measures" class="plugin-anchor" href="#point-set-measures"><i class="fa fa-link" aria-hidden="true"></i></a>Point-Set Measures</h3>
 <p>The similarity between polygons can be measured by using the following point-set distances:</p>
 <ul>
-<li><code>Geo_Centroid_Indexed_Hausdorff</code> </li>
-<li><code>Geo_Fast_Hausdorff</code> </li>
-<li><code>Geo_Hausdorff</code> </li>
-<li><code>Geo_Indexed_Hausdorff</code> </li>
-<li><code>Geo_Naive_Hausdorff</code></li>
-<li><code>Geo_Scan_Indexed_Hausdorff</code></li>
-<li><code>Geo_Symmetric_Hausdorff</code></li>
-<li><code>Geo_Max</code></li>
-<li><code>Geo_Min</code></li>
-<li><code>Geo_Mean</code></li>
-<li><code>Geo_Avg</code></li>
-<li><code>Geo_Frechet</code></li>
-<li><code>Geo_Link</code></li>
-<li><code>Geo_Sum_Of_Min</code></li>
-<li><code>Geo_Naive_Surjection</code></li>
-<li><code>Geo_Fair_Surjection</code></li>
+<li><strong>Geo_Hausdorff</strong>: The Hausdorff distance is a measure of the maximum of the minimum distances
+between pairwise points in the two input geometries. </li>
+<li><strong>Geo_Max</strong>: The idea behind this measure is to compute the overall maximal distance between
+pairwise points of the two input geometries.</li>
+<li><strong>Geo_Min</strong>: The idea of Geo_Min is akin to that of Geo_Max and is defined as minimal distance
+between pairwise points of the two input geometries.</li>
+<li><strong>Geo_Mean</strong>: The mean distance is one of the most efficient distance measures for point sets.
+First, a mean point is computed for each point set. Then, the distance be- tween the two means is
+computed by using the orthodromic distance. </li>
+<li><strong>Geo_Avg</strong>: For computing the average point sets distance function, the orthodromic distance
+measures between all the source-target geometries&#x2019; points pairs is cumulated and divided by the
+number of points in the source-target geometries&#x2019; point pairs.</li>
+<li><strong>Geo_Frechet</strong>: The Fr&#xE9;chet distance is a measure of similarity between curves (in our case
+geometries representations of the POI resources) that takes into account the location and ordering
+of the points along the curves. </li>
+<li><strong>Geo_Sum_Of_Min</strong>: First, the closest point from the source geometry to each point to the target
+geometry is computed. The same operation is carried out with source and target reversed.
+Finally, the average of the two values is then the distance value.</li>
+<li><strong>Geo_Naive_Surjection</strong>: The surjection distance function introduced defines the distance between
+two geometries as the minimum distance between the sum of distances of the surjection of the larger
+set to the smaller one. A main drawback of the surjection is being biased toward some points ignoring
+some others in calculations. </li>
+<li><strong>Geo_Fair_Surjection</strong>: In order to fix the bias of the Geo_Naive_Surjection, the fair-surjection
+distance maps the elements of source geometry as evenly as possible to the elements of the target geometry. </li>
+<li><strong>Geo_Link</strong>: The Link distance is defined as the minimum orthodromic distance between pairwise
+points of the source and target geometries that satisfy the bijection relation. </li>
 </ul>
-<p>The threshold <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>&#x3B8;</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">&#x3B8;</span></span></span></span> corresponds to the distance <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span> between two points in km via the following formula:
-<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>&#x3B8;</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mo>+</mo><mi>x</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\theta = \frac{1}{1+x}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.845108em;"></span><span class="strut bottom" style="height:1.2484389999999999em;vertical-align:-0.403331em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">&#x3B8;</span><span class="mrel">=</span><span class="mord reset-textstyle textstyle uncramped"><span class="mopen sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.345em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle scriptstyle cramped mtight"><span class="mord scriptstyle cramped mtight"><span class="mord mathrm mtight">1</span><span class="mbin mtight">+</span><span class="mord mathit mtight">x</span></span></span></span><span style="top:-0.22999999999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.394em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle scriptstyle uncramped mtight"><span class="mord scriptstyle uncramped mtight"><span class="mord mathrm mtight">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span>&#x200B;</span></span></span><span class="mclose sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span></span></span></span>.</p>
+<p>For all the above measures, the threshold <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>&#x3B8;</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">&#x3B8;</span></span></span></span> corresponds to the distance <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.43056em;"></span><span class="strut bottom" style="height:0.43056em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit">x</span></span></span></span> between two
+points in km via <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>&#x3B8;</mi><mo>=</mo><mfrac><mrow><mn>1</mn></mrow><mrow><mn>1</mn><mo>+</mo><mi>x</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\theta = \frac{1}{1+x}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.845108em;"></span><span class="strut bottom" style="height:1.2484389999999999em;vertical-align:-0.403331em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">&#x3B8;</span><span class="mrel">=</span><span class="mord reset-textstyle textstyle uncramped"><span class="mopen sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span><span class="mfrac"><span class="vlist"><span style="top:0.345em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle scriptstyle cramped mtight"><span class="mord scriptstyle cramped mtight"><span class="mord mathrm mtight">1</span><span class="mbin mtight">+</span><span class="mord mathit mtight">x</span></span></span></span><span style="top:-0.22999999999999998em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle textstyle uncramped frac-line"></span></span><span style="top:-0.394em;"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span><span class="reset-textstyle scriptstyle uncramped mtight"><span class="mord scriptstyle uncramped mtight"><span class="mord mathrm mtight">1</span></span></span></span><span class="baseline-fix"><span class="fontsize-ensurer reset-size5 size5"><span style="font-size:0em;">&#x200B;</span></span>&#x200B;</span></span></span><span class="mclose sizing reset-size5 size5 reset-textstyle textstyle uncramped nulldelimiter"></span></span></span></span></span>.</p>
 <h3 id="topological-measures"><a name="topological-measures" class="plugin-anchor" href="#topological-measures"><i class="fa fa-link" aria-hidden="true"></i></a>Topological Measures</h3>
-<p>The topological relations between spatial resources can be found by using the following relations:</p>
+<p>The topological relations between spatial representations of POI resources can be found by using
+the following relations.
+In these relations we assume that the first POI resource has a geospatial representation in a form
+of geometry a and the target POI resource has a geospatial representation in a form of geometry b:</p>
 <ul>
-<li><code>Top_Contains</code></li>
-<li><code>Top_Covered_By</code></li>
-<li><code>Top_Crosses</code></li>
-<li><code>Top_Disjoint</code></li>
-<li><code>Top_Equals</code></li>
-<li><code>Top_Intersects</code></li>
-<li><code>Top_Overlaps</code></li>
-<li><code>Top_Touches</code></li>
-<li><code>Top_Within</code></li>
+<li><strong>Top_Contains</strong>: A geometry a contains geometry b if and only if no points of b lie in the exterior
+of a, and at least one point of the interior of b lies in the interior of a.</li>
+<li><strong>Top_Covers</strong>: A geometry a covers geometry b if and only if the geometry b lies in a. i.e. no points
+of b lie in the exterior of a, or Every point of b is a point of (the interior or boundary of) a.</li>
+<li><strong>Top_Covered_By</strong>: A geometry a is covered by a geometry b if and only if every point of a is a
+point of b, and the interiors of the two geometries have at least one point in common. Note that
+Top_Covered_By is the reverse relation of Top_Covers.</li>
+<li><strong>Top_Crosses</strong>: A geometry a crosses a geometry b if and only if they have some but not all
+interior points in common, and the dimension of the intersection is less than that of at least one of them. </li>
+<li><strong>Top_Disjoint</strong>: Two geometries a and b are disjoint if and only if they have no point in common.
+They form a set of disconnected geometries.</li>
+<li><strong>Top_Equals</strong>: Two geometries a and b are topologically equal if their interiors intersect and
+no part of the interior or boundary of one geometry intersects the exterior of the other.</li>
+<li><strong>Top_Intersects</strong>: A geometry a intersects A geometry b if and only if geometries a and b have
+at least one point in common.</li>
+<li><strong>Top_Overlaps</strong>: A geometry a overlaps a geometry b if and only if they have some but not all
+points in common, they have the same dimension and the intersection of the interiors of the two
+geometries has the same dimension as the geometries themselves</li>
+<li><strong>Top_Touches</strong>: Two geometries a and touched if they have at least one boundary point in
+common, but no interior points.</li>
+<li><strong>Top_Within</strong>: A geometry a is within a geometry b if and only if a lies in the interior of b.</li>
 </ul>
 <h3 id="temporal-measures"><a name="temporal-measures" class="plugin-anchor" href="#temporal-measures"><i class="fa fa-link" aria-hidden="true"></i></a>Temporal Measures</h3>
-<p>The temporal relations between event resources can be found by using the following relations:</p>
+<p>The temporal relations between POI resources can be found by using the following relations:</p>
 <ul>
-<li><code>Tmp_Concurrent</code>: given a source and a target KB, <code>Tmp_Concurrent</code> links the source and the target events that have the same begin date and were produced by the same machine. For example: Tmp_Concurrent(x.beginDate1|machine1,y.beginDate2|machine2)|1.0 </li>
-<li><code>Tmp_Predecessor</code>: given a source and a target KB, <code>Tmp_Predecessor</code> links the source events to the set of target events that happen exactly before them. For example: Tmp_Predecessor(x.beginDate1,y.beginDate2)|1.0. If the <code>Tmp_Predecessor</code> measure is used in a complex LS, the <code>CANONICAL</code> planner should be used. </li>
-<li><code>Tmp_Successor</code>: given a source and a target KB, <code>Tmp_Successor</code> links the source events to the set of target events that happen exactly after them. For example: Tmp_Successor(x.beginDate1,y.beginDate2)|1.0. If the <code>Tmp_Successor</code> measure is used in a complex LS, the <code>CANONICAL</code> planner should be used. </li>
+<li><strong>Tmp_Concurrent</strong>: given a source and a target KB, Tmp_Concurrent links the source and the target
+events that have the same begin date and were produced by the same machine. For example:
+<code>Tmp_Concurrent(x.beginDate1|machine1,y.beginDate2|machine2)|1.0</code> </li>
+<li><strong>Tmp_Predecessor</strong>: given a source and a target KB, vmp_Predecessor links the source events to
+the set of target events that happen exactly before them. For example:
+<code>Tmp_Predecessor (x.beginDate1, y.beginDate2)|1.0</code>.
+If the Tmp_Predecessor measure is used in a complex LS, the CANONICAL planner should be used. </li>
+<li><strong>Tmp_Successor</strong>: given a source and a target KB, Tmp_Successor links the source events to the
+set of target events that happen exactly after them. For example: <code>Tmp_Successor (x.beginDate1, y.beginDate2)|1.0</code>.
+If the Tmp_Successor measure is used in a complex LS, the CANONICAL planner should be used. </li>
 </ul>
-<p>Allen&apos;s temporal relations (<a href="https://en.wikipedia.org/wiki/Allen&apos;s_interval_algebra" target="_blank">https://en.wikipedia.org/wiki/Allen&apos;s_interval_algebra</a>):</p>
+<p>Moreover, LIMES support the following temporal relations between POI resources based on Allen&apos;s algebra:</p>
 <ul>
-<li><code>Tmp_After</code></li>
-<li><code>Tmp_Before</code></li>
-<li><code>Tmp_During</code></li>
-<li><code>Tmp_During_Reverse</code></li>
-<li><code>Tmp_Equals</code></li>
-<li><code>Tmp_Finishes</code></li>
-<li><code>Tmp_Finishes</code></li>
-<li><code>Tmp_Is_Finished_By</code></li>
-<li><code>Tmp_Is_Met_By</code></li>
-<li><code>Tmp_Is_Overlapped_By</code></li>
-<li><code>Tmp_Is_Started_By</code></li>
-<li><code>Tmp_Meets</code></li>
-<li><code>Tmp_Overlaps</code></li>
-<li><code>Tmp_Starts</code></li>
+<li><strong>Tmp_After</strong>: The first POI takes place after the second POI takes place.</li>
+<li><strong>Tmp_Before</strong>: The first POI takes place before the second POI takes place.</li>
+<li><strong>Tmp_During</strong>: The first POI take place during the second POI takes place.</li>
+<li><strong>Tmp_During_Reverse</strong>: The second POI take place during the first POI takes place. Tmp_During_Reverse is the reverse of Tmp_During</li>
+<li><strong>Tmp_Equals</strong>: Both first POI and the second take place concurrently. i.e. both POIs have equal timestamp.</li>
+<li><strong>Tmp_Finishes</strong>: The first POI finishes in the same time as the second POI finishes.</li>
+<li><strong>Tmp_Is_Finished_By</strong>: reverse of Tmp_Finishes</li>
+<li><strong>Tmp_Overlaps</strong>: Part of the first POI timestamp overlaps with the second POI time stamp.</li>
+<li><strong>Tmp_Is_Overlapped_By</strong>: reverse of Tmp_Overlaps</li>
+<li><strong>Tmp_Starts</strong>: The start first POI timestamp is tha same as the start of the second POI time stamp.</li>
+<li><strong>Tmp_Is_Started_By</strong>: reverse of Tmp_Starts</li>
+<li><strong>Tmp_Meets</strong>: The end first POI timestamp meets the start of the second POI time stamp.</li>
+<li><strong>Tmp_Is_xBy</strong>: reverse of Tmp_Meets</li>
 </ul>
-<p>Example of atomic LS that consists of the temporal measure  <code>Tmp_Finishes</code> and a threshold <code>theta = 1.0</code>:</p>
-<p><code>Tmp_Finishes(x.beginDate1|endDate1, y.beginDate2|endDate2) | 0.8</code></p>
-<p>where <code>beginDate1</code> and <code>beginDate2</code> are properties of the source and target KB reps. whose values indicate the begin of a temporal event instance and <code>endDate1</code> and <code>endDate2</code> are properties of the source and target KB reps. whose values indicate the end of a temporal event instance. Both begin and end properties for both source and target MUST be included in an atomic LS whose measure is temporal. Also, the acceptable values for all properties are in the format: <code>2015-04-22T11:29:51+02:00</code>.</p>
+<p>Below, an example of an atomic LS that consists of the temporal measure Tmp_Finishes and a threshold <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>&#x3B8;</mi><mo>=</mo><mn>1</mn><mi mathvariant="normal">.</mi><mn>0</mn></mrow><annotation encoding="application/x-tex">\theta = 1.0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="strut" style="height:0.69444em;"></span><span class="strut bottom" style="height:0.69444em;vertical-align:0em;"></span><span class="base textstyle uncramped"><span class="mord mathit" style="margin-right:0.02778em;">&#x3B8;</span><span class="mrel">=</span><span class="mord mathrm">1</span><span class="mord mathrm">.</span><span class="mord mathrm">0</span></span></span></span> is given: 
+<code>Tmp_Finishes(x.beginDate1|endDate1, y.beginDate2|endDate2) | 0.8</code>
+where beginDate1 and beginDate2 are properties of the source and target KB respectively, whose values
+indicate the begin of a temporal event instance and endDate1 and endDate2 are properties of the source
+and target KB respectively, whose values indicate the end of a temporal event instance.
+Both begin and end properties for both source and target MUST be included in an atomic LS whose
+measure is temporal. Also, the acceptable values for all properties are in the format: <code>2015-04-22T11:29:51+02:00</code>.</p>
 <h3 id="resource-set-measures"><a name="resource-set-measures" class="plugin-anchor" href="#resource-set-measures"><i class="fa fa-link" aria-hidden="true"></i></a>Resource-Set Measures</h3>
 <p>To compare sets of resources (e.g. in rdf containers), use the following relations:</p>
 <ul>
-<li><code>Set_Jaccard</code></li>
+<li><strong>Set_Jaccard</strong>: Works much like the jaccard measure for strings with the difference that it expects
+the inputs to be sets of RDF resources.</li>
 </ul>
-<p>Please note that rdf collections are not supported yet.</p>
+<p>Please note that RDF collections are not supported yet.</p>
 
                                 
                                 </section>
@@ -929,7 +1009,7 @@ Several measure packages ship with LIMES and it is easy to extend it with your o
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Defining Link Specifications","level":"2.3.3","depth":2,"next":{"title":"Metric Operations","level":"2.3.3.1","depth":3,"anchor":"#metric-operations","path":"user_manual/configuration_file/defining_link_specifications.md","ref":"user_manual/configuration_file/defining_link_specifications.md#metric-operations","articles":[]},"previous":{"title":"Configuration File Examples","level":"2.3.2","depth":2,"path":"user_manual/configuration_file/configuration-file-examples.md","ref":"user_manual/configuration_file/configuration-file-examples.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex","anchors","theme-api"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"katex":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"theme-api":{"languages":[],"split":true,"theme":"light"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/configuration_file/defining_link_specifications.md","mtime":"2018-08-20T09:22:25.719Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-20T09:37:07.675Z"},"basePath":"../..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Defining Link Specifications","level":"2.3.3","depth":2,"next":{"title":"Metric Operations","level":"2.3.3.1","depth":3,"anchor":"#metric-operations","path":"user_manual/configuration_file/defining_link_specifications.md","ref":"user_manual/configuration_file/defining_link_specifications.md#metric-operations","articles":[]},"previous":{"title":"Configuration File Examples","level":"2.3.2","depth":2,"path":"user_manual/configuration_file/configuration-file-examples.md","ref":"user_manual/configuration_file/configuration-file-examples.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex","anchors","theme-api"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"katex":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"theme-api":{"languages":[],"split":true,"theme":"light"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/configuration_file/defining_link_specifications.md","mtime":"2018-08-29T13:36:06.162Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2018-08-29T13:51:16.293Z"},"basePath":"../..","book":{"language":""}});
         });
     </script>
 </div>
