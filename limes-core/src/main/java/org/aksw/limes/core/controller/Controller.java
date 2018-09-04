@@ -86,7 +86,7 @@ public class Controller {
         }
     }
 
-    private static CommandLine parseCommandLine(String[] args) {
+    public static CommandLine parseCommandLine(String[] args) {
         CommandLineParser parser = new BasicParser();
         CommandLine cl = null;
         try {
@@ -147,7 +147,7 @@ public class Controller {
     }
 
 
-    static ResultMappings getMapping(Configuration config, int limit) {
+    public static ResultMappings getMapping(Configuration config, int limit) {
         if (logger == null)
             logger = LoggerFactory.getLogger(Controller.class);
         AMapping results = null;
@@ -200,7 +200,7 @@ public class Controller {
         return new ResultMappings(verificationMapping, acceptanceMapping);
     }
 
-    private static void writeResults(ResultMappings mappings, Configuration config) {
+    public static void writeResults(ResultMappings mappings, Configuration config) {
         String outputFormat = config.getOutputFormat();
         ISerializer output = SerializerFactory.createSerializer(outputFormat);
         output.setPrefixes(config.getPrefixes());
@@ -212,7 +212,7 @@ public class Controller {
     /**
      * Print the usage text
      */
-    private static void printHelp() {
+    public static void printHelp() {
         new HelpFormatter().printHelp("limes [OPTION]... <config_file_or_uri>", options);
     }
 
@@ -221,7 +221,7 @@ public class Controller {
      *
      * @return Options object containing all available command line options
      */
-    private static Options getOptions() {
+    public static Options getOptions() {
         Options options = new Options();
 //        options.addOption("g", false, "Run LIMES GUI");
         options.addOption("s", false, "Run LIMES Server");
