@@ -752,14 +752,14 @@
                                 <section class="normal markdown-section">
                                 
                                 <h1 id="measures"><a name="measures" class="plugin-anchor" href="#measures"><i class="fa fa-link" aria-hidden="true"></i></a>Measures</h1>
-<p>LIMES supports a set of metrics that can be used as a part of a LS to link resources (see <a href="user_manual.md">user_manual.md</a> for more details). Each metric corresponds to one mapper. One mapper can correspond to more that one metric. The <code>Measures</code> package is divided into two sub-packages: <code>Measure</code> and <code>Mapper</code>:</p>
+<p>LIMES supports a set of metrics that can be used as a part of an LS to link resources (see <a href="user_manual.md">user_manual.md</a> for more details). Each metric corresponds to one mapper. One mapper can correspond to more that one metric. The <code>Measures</code> package is divided into two sub-packages: <code>Measure</code> and <code>Mapper</code>:</p>
 <ul>
-<li><p>The <code>Measure</code> packages includes the interface <code>IMeasure</code>, the abstract class <code>AMeasure</code>, the set of metrics implemented in LIMES, a <code>MeasureType</code> class, a <code>MeasureFactory</code> class and a <code>MeasureProcessor</code> class:</p>
+<li><p>The <code>Measure</code> packages include the interface <code>IMeasure</code>, the abstract class <code>AMeasure</code>, the set of metrics implemented in LIMES, a <code>MeasureType</code> class, a <code>MeasureFactory</code> class and a <code>MeasureProcessor</code> class:</p>
 <ul>
 <li>The <code>IMeasure</code> interface includes all the basic functions that any metric class must implement.</li>
 <li>The <code>AMeasure</code> class implements the <code>IMeasure</code> interface.</li>
 <li>The <code>MeasureType</code> class includes all the labels of the metrics implemented in LIMES. </li>
-<li>The metrics are divided into type packages based on the type of property they are comparing (<em>string</em>, <em>pointsets</em>, <em>space</em>, <em>topology</em> and <em>space</em>). Each type package includes an interface and an abstract class, i.e. the <em>string</em> type package includes the <code>IStringMeasure</code> interface and the <code>IStringMeasure</code> abstract class. All metrics that belong to a particual type package must implement the corresponding interface and abstract class. Additionally, the type package abstract class must extend <code>AMeasure</code> and implement the corresponding type interface. The type interface must extend the <code>IMeasure</code> interface. </li>
+<li>The metrics are divided into type packages based on the type of property they are comparing (<em>string</em>, <em>pointsets</em>, <em>space</em>, <em>topology</em> and <em>space</em>). Each type package includes an interface and an abstract class, i.e. the <em>string</em> type package includes the <code>IStringMeasure</code> interface and the <code>IStringMeasure</code> abstract class. All metrics that belong to a particular type package must implement the corresponding interface and abstract class. Additionally, the type package abstract class must extend <code>AMeasure</code> and implement the corresponding type interface. The type interface must extend the <code>IMeasure</code> interface. </li>
 <li>The <code>MeasureFactory</code> class returns an object of a measure given an input measure name. </li>
 <li>The <code>MeasureProcessor</code> class is responsible for returning the similarity between two instances, given a simple or complex metric expression and a threshold.</li>
 </ul>
@@ -772,9 +772,9 @@
 <ol>
 <li>The new metric name must end with the word Measure.</li>
 <li>The new metric must extend the type abstract class.</li>
-<li>The new metric must implement all overriden methods of the type interface. No unsupported functions are allowed.</li>
+<li>The new metric must implement all overridden methods of the type interface. No unsupported functions are allowed.</li>
 <li>Go to the <code>MeasureType</code> class and add a representative name of that metric.</li>
-<li>Go to the <code>MeasureFactory</code> class and create a <code>public static final</code> field of String type using the same name of metric as the one used in the <code>MeasureType</code> class i.e. <code>public static final String COSINE = &quot;cosine&quot;;</code> and then add the choice of returing this measure at the <code>getMeasureType</code> and <code>createMeasure</code> functions following the pattern used for other metrics.</li>
+<li>Go to the <code>MeasureFactory</code> class and create a <code>public static final</code> field of String type using the same name of metric as the one used in the <code>MeasureType</code> class i.e. <code>public static final String COSINE = &quot;cosine&quot;;</code> and then add the choice of returning this measure at the <code>getMeasureType</code> and <code>createMeasure</code> functions following the pattern used for other metrics.</li>
 </ol>
 </li>
 <li><p>In case you want to create a new type package:</p>
@@ -786,11 +786,11 @@
 </li>
 </ul>
 </li>
-<li><p>The <code>Mapper</code> has almost the same hierarchy as the <code>Measure</code> package. The <code>Mapper</code> packages includes the interface <code>IMapper</code>, the abstract class <code>AMapper</code>, a <code>MapperFactory</code> class and a <code>MappingOperations</code> class:</p>
+<li><p>The <code>Mapper</code> has almost the same hierarchy as the <code>Measure</code> package. The <code>Mapper</code> packages include the interface <code>IMapper</code>, the abstract class <code>AMapper</code>, a <code>MapperFactory</code> class and a <code>MappingOperations</code> class:</p>
 <ul>
 <li>The <code>IMapper</code> interface includes all the basic functions that any mapper class must implement.</li>
 <li>The <code>AMapper</code> class implements the <code>IMapper</code> interface.</li>
-<li>The mappers are divided into type packages based on the type of property their corresponding metrics are comparing (string, pointsets, space, topology and space).  All mappers must extend the <code>AMapper</code> abstrast class.</li>
+<li>The mappers are divided into type packages based on the type of property their corresponding metrics are comparing (string, pointsets, space, topology and space).  All mappers must extend the <code>AMapper</code> abstract class.</li>
 <li>The <code>MapperFactory</code> class returns an object of a mapper given an input measure name. </li>
 <li>The <code>MappingOperations</code> includes the basic functions between mappings.</li>
 </ul>
@@ -798,7 +798,7 @@
 <li><p>If you want to create a new mapper, you have to follow a set of steps:</p>
 <ol>
 <li>The new mapper name must include the word Mapper at the end.</li>
-<li>The new mapper must extend the <code>AMapper</code> abstrast class as a result, it must implement all overriden methods of the <code>IMapper</code> interface. No unsupported functions are allowed.</li>
+<li>The new mapper must extend the <code>AMapper</code> abstract class as a result, it must implement all overridden methods of the <code>IMapper</code> interface. No unsupported functions are allowed.</li>
 <li>Go to the <code>MapperFactory</code> class and add the choice of returning this mapper at the <code>createMapper</code> function following the pattern used for other mappers.</li>
 </ol>
 </li>
@@ -836,7 +836,7 @@
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Measures","level":"3.4","depth":1,"next":{"title":"LSPipeline","level":"3.5","depth":1,"path":"developer_manual/ls_pipeline.md","ref":"developer_manual/ls_pipeline.md","articles":[]},"previous":{"title":"I/O Classes","level":"3.3","depth":1,"path":"developer_manual/io_classes.md","ref":"developer_manual/io_classes.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex","anchors","theme-api"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"katex":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"theme-api":{"languages":[],"split":true,"theme":"light"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"developer_manual/measures.md","mtime":"2019-02-11T16:02:56.456Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-11T16:17:16.657Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Measures","level":"3.4","depth":1,"next":{"title":"LSPipeline","level":"3.5","depth":1,"path":"developer_manual/ls_pipeline.md","ref":"developer_manual/ls_pipeline.md","articles":[]},"previous":{"title":"I/O Classes","level":"3.3","depth":1,"path":"developer_manual/io_classes.md","ref":"developer_manual/io_classes.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex","anchors","theme-api"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"katex":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"theme-api":{"languages":[],"split":true,"theme":"light"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"developer_manual/measures.md","mtime":"2019-02-28T08:35:57.869Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-02-28T08:49:54.103Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
