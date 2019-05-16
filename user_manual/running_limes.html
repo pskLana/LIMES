@@ -797,6 +797,14 @@ The following statuses are currently implemented:<ul>
 </li>
 <li><code>logs/:id</code> <strong>(GET)</strong> ---
 returns the java logs for the given job. Useful for troubleshooting.</li>
+<li><code>list/measures</code> <strong>(GET)</strong> ---
+returns the list of available measures.</li>
+<li><code>list/operators</code> <strong>(GET)</strong> ---
+returns the list of available operators.</li>
+<li><code>list/preprocessings</code> <strong>(GET)</strong> ---
+returns the list of available preprocessings.</li>
+<li><code>sparql/:urlEncodedEndpointUrl</code> <strong>(GET, POST, OPTIONS)</strong> ---
+proxy for SPARQL queries. Useful in browser when SPARQL endpoints do not implement CORS headers.</li>
 <li><code>results/:id</code> <strong>(GET)</strong> ---
 returns a list of result files in a JSON object.</li>
 <li><code>result/:id/:filename</code>  <strong>(GET)</strong> ---
@@ -829,7 +837,7 @@ curl http://localhost:8080/status/7538819321022935531
 <span class="hljs-comment"># Get result file list</span>
 curl http://localhost:8080/results/7538819321022935531
 <span class="hljs-comment"># returns:</span>
-<span class="hljs-comment"># {&quot;availableFiles&quot;:[&quot;lgd_relaybox_near.nt&quot;,&quot;lgd_relaybox_verynear.nt&quot;],&quot;success&quot;:true}</span>
+<span class="hljs-comment"># {&quot;availableOperators&quot;:[&quot;lgd_relaybox_near.nt&quot;,&quot;lgd_relaybox_verynear.nt&quot;],&quot;success&quot;:true}</span>
 <span class="hljs-comment"># Get result</span>
 curl http://localhost:8080/result/7538819321022935531/lgd_relaybox_verynear.nt
 <span class="hljs-comment"># returns:</span>
@@ -1007,7 +1015,7 @@ the results will be presented.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Running LIMES","level":"2.2","depth":1,"next":{"title":"Using the Client","level":"2.2.1","depth":2,"anchor":"#client","path":"user_manual/running_limes.md","ref":"user_manual/running_limes.md#client","articles":[]},"previous":{"title":"Introduction","level":"2.1","depth":1,"path":"user_manual/index.md","ref":"user_manual/index.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex","anchors","theme-api"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"katex":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"theme-api":{"languages":[],"split":true,"theme":"light"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/running_limes.md","mtime":"2019-03-13T15:39:34.802Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-03-13T15:53:22.271Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Running LIMES","level":"2.2","depth":1,"next":{"title":"Using the Client","level":"2.2.1","depth":2,"anchor":"#client","path":"user_manual/running_limes.md","ref":"user_manual/running_limes.md#client","articles":[]},"previous":{"title":"Introduction","level":"2.1","depth":1,"path":"user_manual/index.md","ref":"user_manual/index.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex","anchors","theme-api"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"katex":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"theme-api":{"languages":[],"split":true,"theme":"light"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/running_limes.md","mtime":"2019-05-16T11:42:10.332Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-16T11:56:53.013Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
