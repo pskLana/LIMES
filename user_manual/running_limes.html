@@ -247,6 +247,19 @@
             
         </li>
     
+        <li class="chapter " data-level="2.2.4" data-path="running_limes.html">
+            
+                <a href="running_limes.html#web-ui">
+            
+                    
+                    Using the Web UI
+            
+                </a>
+            
+
+            
+        </li>
+    
 
             </ul>
             
@@ -808,7 +821,7 @@ proxy for SPARQL queries. Useful in browser when SPARQL endpoints do not impleme
 <li><code>results/:id</code> <strong>(GET)</strong> ---
 returns a list of result files in a JSON object.</li>
 <li><code>result/:id/:filename</code>  <strong>(GET)</strong> ---
-returns the contents of a given result file for a given job id.</li>
+returns the contents of a given result file for a given job id. </li>
 </ul>
 <h3 id="example"><a name="example" class="plugin-anchor" href="#example"><i class="fa fa-link" aria-hidden="true"></i></a>Example</h3>
 <pre><code class="lang-bash"><span class="hljs-comment"># Get latest LIMES, dev branch</span>
@@ -982,6 +995,82 @@ http://www.okkam.org/oaie/person1-Person2190,http://www.okkam.org/oaie/person2-P
 <h4 id="unsupervised-learning"><a name="unsupervised-learning" class="plugin-anchor" href="#unsupervised-learning"><i class="fa fa-link" aria-hidden="true"></i></a>Unsupervised Learning</h4>
 <p>This is the type that needs the least effort from the user. You just click on <em>Learn</em> and after the algorithm is finished, 
 the results will be presented.</p>
+<h2 id="web-ui"><a name="web-ui" class="plugin-anchor" href="#web-ui"><i class="fa fa-link" aria-hidden="true"></i></a>Web UI</h2>
+<p>LIMES Web UI is an additional tool to write configuration file in the XML using web interface and execute it using the LIMES server.
+LIMES Web UI consists of six main components: <em>prefixes</em>, <em>data source / target</em> , <em>manual metric</em>, <em>machine learning</em>, <em>acceptance/review conditions</em> and <em>output</em>.</p>
+<p><img src="../images/full_limes_with_marks.png" width="800" alt="Overview"></p>
+<h3 id="1---prefixes"><a name="1---prefixes" class="plugin-anchor" href="#1---prefixes"><i class="fa fa-link" aria-hidden="true"></i></a>1 - Prefixes</h3>
+<p>The Prefixes component consists of two parts:</p>
+<ul>
+<li>Currently added prefixes. They look like chips, containing the label of the prefix and a hover tooltip with the namespace.</li>
+<li>Add new prefix (optional). In most cases, our interface is able to automatically find the common prefixes from <a href="https://prefix.cc/context" target="_blank">prefix.cc</a>. In case the user want to add a prefix manually, (s)he can type the prefix, choose the its respective URI  from the dropdown list (if any) or manually type it.  Then, the user click on <em>Add</em> and the prefix will be added as a new chip. Again, this process is necessary for common prefixes. </li>
+</ul>
+<p><img src="../images/prefixes_web_ui.png" width="800" alt="Prefixes_web_ui"></p>
+<h3 id="2---data-source--target"><a name="2---data-source--target" class="plugin-anchor" href="#2---data-source--target"><i class="fa fa-link" aria-hidden="true"></i></a>2 - Data source / target</h3>
+<p>The Data source and data target consists of the two similar components, which include three input fields:</p>
+<ul>
+<li><em>Endpoint</em>: A dropdown list of available endpoints. Moreover, the user can try to search for the endpoint, typing it in the input field or write your own endpoint. After clicking on the endpoint from the list or writing it by hand and press the Enter, the user will get the list of restriction classes according to this endpoint.</li>
+<li><em>Restriction</em>: Contains of three parameters splitted by space (?s rdf:type some:Type). The third parameter will be changed automatically after changing the restriction class. </li>
+<li><em>Restriction class</em>: A dropdown list of restriction classes according to the endpoint. You can start typing the name of the class and the list will be filtered automatically. After choosing the restriction class, you will get all the properties related to this class.</li>
+</ul>
+<p><img src="../images/data_source_and_target_web_ui.png" width="800" alt="Data_source_and_target_web_ui"></p>
+<h3 id="3---manual-metric-and-machine-learning"><a name="3---manual-metric-and-machine-learning" class="plugin-anchor" href="#3---manual-metric-and-machine-learning"><i class="fa fa-link" aria-hidden="true"></i></a>3 - Manual metric and machine learning</h3>
+<p>After the <em>data source and target</em> have chosen and you have got a message that properties have already received, you are now ready to build a metric. You can build a manual metric or use machine learning.   These options are interchangeable. Consider first the manual metric tab.</p>
+<h4 id="manual-metric"><a name="manual-metric" class="plugin-anchor" href="#manual-metric"><i class="fa fa-link" aria-hidden="true"></i></a>Manual metric</h4>
+<p>To build a metric you can drag and drop elements from the toolbox. </p>
+<p>There are 8 blocks: </p>
+<ul>
+<li><em>Source property</em>, </li>
+<li><em>Target property</em>, </li>
+<li><em>Optional source property</em>, </li>
+<li><em>Optional target property</em>, </li>
+<li><em>Measure</em>, </li>
+<li><em>Operator</em>, </li>
+<li><em>Preprocessing function</em>, </li>
+<li><em>Preprocessing rename function</em>. </li>
+</ul>
+<p>In the Workspace you can see the <em>Start</em> block, which cannot be removed. Building the metric exactly starts from connecting the <em>Measure</em> or <em>Operator</em> block to the <em>Start</em> block. Once you connect the <em>Measure</em> block, next step can be connecting the <em>Source property</em> and the <em>Target property</em>. 
+The <em>Measure</em> block consists of list of measures and checkbox for enable changing the <em>Threshold</em> value.</p>
+<p>Optionally, you could preprocess your <em>Source</em> and <em>Target</em> properties using the <em>Preprocessing function</em>. For instance, to use <em>Preprocessing rename function</em> you should put the <em>Source property</em> or <em>Target property</em> into this block and then you can connect it to the <em>Measure</em>. </p>
+<p>An <em>Operator</em> block accepts two <em>Measure</em> blocks as inputs. i.e., two <em>Measure</em> blocks must be attached to its input ports.<br>The <em>Operator</em> block includes the list of operators.  </p>
+<p><em>Optional source property</em> and <em>Optional target property</em> can be connected just after connecting the <em>Source property</em> and the <em>Target property</em>.  </p>
+<p>In general, once you add <em>Source property</em>/<em>Target property</em>/<em>Optional source property</em>/<em>Optional target property</em> to the workspace, you can choose the property from the dropdown list. Prefixes of the properties will automatically added to the <em>Prefixes</em>.  </p>
+<p>You can remove the block using the trash can or using right click on the block.<br>On the bottom after the Workspace you can see the formed <em>Metric</em>.  </p>
+<p>At the top before the Workspace there are two options related to Workspace: </p>
+<ul>
+<li><em>Export workspace to xml</em>: You can download an xml file of the current Workspace with connected blocks. </li>
+<li><em>Select file for the importing to the workspace</em>: You can upload the xml file of the saved Workspace to change the current Workspace.</li>
+</ul>
+<p><img src="../images/manual_metric_web_ui.png" width="800" alt="Manual_metric_web_ui"></p>
+<h4 id="machine-learning"><a name="machine-learning" class="plugin-anchor" href="#machine-learning"><i class="fa fa-link" aria-hidden="true"></i></a>Machine learning</h4>
+<p>The tab <em>Machine learning</em> consists of three parts:</p>
+<ul>
+<li><em>Name</em>:The machine learning (ML) algorithm name. The currently available ML algorithms include WOMBAT Simple, WOMBAT Complete and EAGLE</li>
+<li><em>Type</em>: The ML algorithm types, which include supervised batch, supervised active and unsupervised</li>
+<li><em>Parameters</em>: A list of parameters which can be added to the currently selected ML algorithm.</li>
+</ul>
+<p>If <em>Type</em> is supervised batch or supervised active, you will see the additional input, where you can upload the file with training data.</p>
+<p><img src="../images/ml_web_ui.png" width="800" alt="ML_web_ui"></p>
+<h3 id="4---acceptance-and-review-conditions"><a name="4---acceptance-and-review-conditions" class="plugin-anchor" href="#4---acceptance-and-review-conditions"><i class="fa fa-link" aria-hidden="true"></i></a>4 - Acceptance and review conditions</h3>
+<p>In this component you can define the <em>Acceptance Threshold</em> and the <em>Review Threshold</em>. In addition, you can rename the names of files, which can be created after execution. Besides, you can change the <em>Relation</em>. Instead of prefix you can write the namespace and its respective URI will be automatically found by the interface, converted to a prefix (if it exists in prefix.cc, otherwise you have to manually add it).
+<img src="../images/acc_rev_web_ui.png" width="800" alt="acc_rev_web_ui"></p>
+<h3 id="5---output"><a name="5---output" class="plugin-anchor" href="#5---output"><i class="fa fa-link" aria-hidden="true"></i></a>5 - Output</h3>
+<p>Here you can choose an output format, including turtle (TTL), n-triples (N3), tab separated values (TAB), comma separated values (CSV).</p>
+<h3 id="display-config-and-run"><a name="display-config-and-run" class="plugin-anchor" href="#display-config-and-run"><i class="fa fa-link" aria-hidden="true"></i></a>Display config and run</h3>
+<p>There are three buttons at the bottom of the page: <em>Display config</em>, <em>Execute</em>, <em>Check the state of the previous run</em>.  </p>
+<ul>
+<li><p>If you click on the <em>Display config</em>, you can look at formed xml config. Also, if you want you can save it.
+<img src="../images/config_xml_web_ui.png" width="500" alt="config_xml_web_ui">  </p>
+</li>
+<li><p>The <em>Execute</em> button will immediately start the process of executing this xml config. You can have a look at the log messages by clicking on the link <em>Show log</em>.</p>
+</li>
+</ul>
+<p><img src="../images/job_status_web_ui.png" width="400" alt="job_status_web_ui">  </p>
+<ul>
+<li><em>Check the state of the previous run</em> button. The execution can take time. To look at the result later, you must copy the <em>execution key</em>.
+In order to get the result of the previous run, you should click on <em>Check the state of the previous run</em> button. Here you can paste the <em>execution key</em>, which you copied when you ran the execution. Then click on <em>Check</em> and you will get the result. If the run is finished without errors and result is not empty, then you can download <em>accepted links</em> and <em>reviewed links</em> files.  </li>
+</ul>
+<p><img src="../images/check_run_web_ui.png" width="400" alt="check_run_web_ui"> </p>
 
                                 
                                 </section>
@@ -1015,7 +1104,7 @@ the results will be presented.</p>
     <script>
         var gitbook = gitbook || [];
         gitbook.push(function() {
-            gitbook.page.hasChanged({"page":{"title":"Running LIMES","level":"2.2","depth":1,"next":{"title":"Using the Client","level":"2.2.1","depth":2,"anchor":"#client","path":"user_manual/running_limes.md","ref":"user_manual/running_limes.md#client","articles":[]},"previous":{"title":"Introduction","level":"2.1","depth":1,"path":"user_manual/index.md","ref":"user_manual/index.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex","anchors","theme-api"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"katex":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"theme-api":{"languages":[],"split":true,"theme":"light"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/running_limes.md","mtime":"2019-05-16T11:42:10.332Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-05-16T11:56:53.013Z"},"basePath":"..","book":{"language":""}});
+            gitbook.page.hasChanged({"page":{"title":"Running LIMES","level":"2.2","depth":1,"next":{"title":"Using the Client","level":"2.2.1","depth":2,"anchor":"#client","path":"user_manual/running_limes.md","ref":"user_manual/running_limes.md#client","articles":[]},"previous":{"title":"Introduction","level":"2.1","depth":1,"path":"user_manual/index.md","ref":"user_manual/index.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":["katex","anchors","theme-api"],"pluginsConfig":{"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"katex":{},"fontsettings":{"theme":"white","family":"sans","size":2},"highlight":{},"theme-api":{"languages":[],"split":true,"theme":"light"},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false},"anchors":{}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"user_manual/running_limes.md","mtime":"2019-06-26T20:38:21.596Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2019-06-26T20:51:56.668Z"},"basePath":"..","book":{"language":""}});
         });
     </script>
 </div>
