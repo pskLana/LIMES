@@ -75,9 +75,13 @@ public class MLPipeline {
                 ActiveMLAlgorithm mla = new ActiveMLAlgorithm(clazz);
                 mla.init(learningParameters, source, target);
                 mla.getMl().setConfiguration(configuration);
-                mlm = mla.activeLearn();
+                if(mlAlgorithmName.equals("WOMBAT Simple RL")){
+                	mlm = mla.activeLearn(trainingDataMap);
+                } else {
+                	mlm = mla.activeLearn();	
+                }
                 while (!oracle.isStopped()) {
-                    AMapping nextExamplesMapping = mla.getNextExamples(maxIt);
+                	AMapping nextExamplesMapping = mla.getNextExamples(maxIt);
                     if (nextExamplesMapping.getMap().isEmpty()) {
                         oracle.stop();
                         break;

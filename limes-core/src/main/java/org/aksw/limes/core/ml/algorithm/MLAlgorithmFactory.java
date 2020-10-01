@@ -13,6 +13,7 @@ public class MLAlgorithmFactory {
     
     public static final String EAGLE = "eagle";
     public static final String WOMBAT_SIMPLE = "wombat simple";
+    public static final String WOMBAT_SIMPLE_RL = "wombat simple rl";
     public static final String WOMBAT_COMPLETE = "wombat complete";
     public static final String LION = "lion";
     public static final String EUCLID_LINEAR = "euclid linear";
@@ -37,6 +38,9 @@ public class MLAlgorithmFactory {
         }
         if (name.equalsIgnoreCase(WOMBAT_SIMPLE)) {
             return WombatSimple.class;
+        }
+        if (name.equalsIgnoreCase(WOMBAT_SIMPLE_RL)) {
+            return WombatSimpleRL.class;
         }
         if (name.equalsIgnoreCase(WOMBAT_COMPLETE)) {
             return WombatComplete.class;
