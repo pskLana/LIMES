@@ -65,4 +65,13 @@ public class ActiveMLAlgorithm extends AMLAlgorithm {
 		return this.getMl().activeLearn(oracleMapping);
 	}
 
+	    /**
+     * @param trainingData training data
+     * @return wrap with results
+     * @throws UnsupportedMLImplementationException Exception
+     */
+    public MLResults learn(AMapping trainingData) throws UnsupportedMLImplementationException {
+        return getMl().learn(trainingData);
+    }
+
 }

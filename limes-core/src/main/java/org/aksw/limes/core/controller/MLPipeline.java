@@ -51,7 +51,7 @@ public class MLPipeline {
         Class<? extends ACoreMLAlgorithm> clazz = MLAlgorithmFactory.getAlgorithmType(mlAlgorithmName);
         MLResults mlm;
         AMapping trainingDataMap = MappingFactory.createDefaultMapping();
-        if (mlImplementationType == MLImplementationType.SUPERVISED_BATCH){
+        if (mlImplementationType == MLImplementationType.SUPERVISED_BATCH || mlImplementationType == MLImplementationType.SUPERVISED_ACTIVE){
         	AMappingReader mappingReader;
         	if(trainingDataFile.endsWith(".csv")){
         		mappingReader = new CSVMappingReader(trainingDataFile);
@@ -76,7 +76,7 @@ public class MLPipeline {
                 mla.init(learningParameters, source, target);
                 mla.getMl().setConfiguration(configuration);
                 if(mlAlgorithmName.equals("WOMBAT Simple RL")){
-                	mlm = mla.activeLearn(trainingDataMap);
+                	mlm = mla.learn(trainingDataMap);
                 } else {
                 	mlm = mla.activeLearn();	
                 }

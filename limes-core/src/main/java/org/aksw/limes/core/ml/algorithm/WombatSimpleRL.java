@@ -1,5 +1,8 @@
 package org.aksw.limes.core.ml.algorithm;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.*;
 
 import org.aksw.limes.core.datastrutures.LogicOperator;
@@ -18,13 +21,21 @@ import org.aksw.limes.core.measures.mapper.MappingOperations;
 import org.aksw.limes.core.measures.measure.AMeasure;
 import org.aksw.limes.core.measures.measure.MeasureFactory;
 import org.aksw.limes.core.measures.measure.MeasureType;
+import org.aksw.limes.core.measures.measure.string.JaccardMeasure;
 import org.aksw.limes.core.ml.algorithm.classifier.ExtendedClassifier;
 import org.aksw.limes.core.ml.algorithm.eagle.util.PropertyMapping;
 import org.aksw.limes.core.ml.algorithm.wombat.AWombat;
+import org.aksw.limes.core.ml.algorithm.wombat.FrameRL;
 import org.aksw.limes.core.ml.algorithm.wombat.LinkEntropy;
 import org.aksw.limes.core.ml.algorithm.wombat.RefinementNode;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jep.Interpreter;
+import jep.Jep;
+import jep.JepException;
+import jep.SharedInterpreter;
 
 /**
  * Simple implementation of the Wombat algorithm
@@ -48,6 +59,8 @@ public class WombatSimpleRL extends AWombat {
     private Tree<RefinementNode> refinementTreeRoot = null;
     private ACache sourceInstance = null;
     private ACache targetInstance = null;
+    Object d = null;
+    Interpreter interp = null;
     /**
      * WombatSimple constructor.
      */
@@ -69,6 +82,13 @@ public class WombatSimpleRL extends AWombat {
         targetInstance = targetCache;
         bestSolutionNode = null;
         classifiers = null;
+        try {
+			interp = new SharedInterpreter();
+			interp.runScript("src/main/resources/DQN.py");
+		} catch (JepException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     @Override
