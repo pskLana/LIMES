@@ -1,6 +1,6 @@
 package org.aksw.limes.core.ml.algorithm.wombat;
 
-public class FrameRL {
+public class FrameRL implements Comparable<FrameRL>{
 	public String source;
 	public String target;
 	public double similarity;
@@ -28,7 +28,7 @@ public class FrameRL {
 	public void setTarget(String target) {
 		this.target = target;
 	}
-	public double getSimilarity() {
+	public Double getSimilarity() {
 		return similarity;
 	}
 	public void setSimilarity(double similarity) {
@@ -52,5 +52,9 @@ public class FrameRL {
 	public void setResult(int result) {
 		this.result = result;
 	}
+	@Override
+	public int compareTo(FrameRL o) {
+        return this.getSimilarity().compareTo(o.getSimilarity());
+    }
 
 }

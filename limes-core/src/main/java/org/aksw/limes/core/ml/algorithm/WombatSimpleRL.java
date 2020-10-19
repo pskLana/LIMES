@@ -4,9 +4,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
+import java.util.Map.Entry;
 
+import org.aksw.limes.core.datastrutures.GoldStandard;
 import org.aksw.limes.core.datastrutures.LogicOperator;
 import org.aksw.limes.core.datastrutures.Tree;
+import org.aksw.limes.core.evaluation.qualititativeMeasures.FMeasure;
 import org.aksw.limes.core.evaluation.qualititativeMeasures.PseudoFMeasure;
 import org.aksw.limes.core.exceptions.UnsupportedMLImplementationException;
 import org.aksw.limes.core.execution.planning.plan.Instruction;
@@ -25,6 +28,7 @@ import org.aksw.limes.core.measures.measure.string.JaccardMeasure;
 import org.aksw.limes.core.ml.algorithm.classifier.ExtendedClassifier;
 import org.aksw.limes.core.ml.algorithm.eagle.util.PropertyMapping;
 import org.aksw.limes.core.ml.algorithm.wombat.AWombat;
+import org.aksw.limes.core.ml.algorithm.wombat.EnvRL;
 import org.aksw.limes.core.ml.algorithm.wombat.FrameRL;
 import org.aksw.limes.core.ml.algorithm.wombat.LinkEntropy;
 import org.aksw.limes.core.ml.algorithm.wombat.RefinementNode;
@@ -61,6 +65,7 @@ public class WombatSimpleRL extends AWombat {
     private ACache targetInstance = null;
     Object d = null;
     Interpreter interp = null;
+    double oldFMeasure = 0.0;
     /**
      * WombatSimple constructor.
      */
@@ -394,8 +399,9 @@ public class WombatSimpleRL extends AWombat {
 		        		stMeasure.add(fr);
 		            }
 		        }
-		        System.out.println("");
+		        
 		        //Compute decision boundary --> m >= 0.5
+		        
 		        
 		        // run python script with DQL 	        
 		        try {
@@ -404,6 +410,7 @@ public class WombatSimpleRL extends AWombat {
 		            
 		            // using exec(String) to invoke methods
 			        interp.set("arg", stMeasure);
+			        interp.set("WombatRLObject", this);
 			        interp.exec("x = mainFun(arg)");
 //		            interp.exec("x = mainFun()");
 		            Object result1 = interp.getValue("x");
@@ -433,5 +440,73 @@ public class WombatSimpleRL extends AWombat {
 	    }
 	    return receivedList;
 	}
+	
+    //Select an action. Via exploration or exploitation
+    // 2 possible actions(take 3 best or take 3 nearest to 0.5)
+    // We take a random action, for example, take 3 best.
+	public EnvRL get3Best(List<FrameRL> stMeasure) throws JepException {
+        Collections.sort(stMeasure, Collections.reverseOrder());
+        List<FrameRL> best3 = stMeasure.subList(0, 3);
+        
+        AMapping result = MappingFactory.createDefaultMapping();
+        for(FrameRL l: best3){
+            result.add(l.getSource(), l.getTarget(), l.getSimilarity());
+        }
+        
+        // calculate F-measure
+        double newFMeasure = new FMeasure().calculate(result, new GoldStandard(trainingData), getBeta());
+        System.out.println(newFMeasure);
+        // reward
+        double reward = newFMeasure - oldFMeasure;
+//        // update old FMeasure
+//        oldFMeasure = newFMeasure;
+        EnvRL envRL = new EnvRL(best3, newFMeasure, reward); 
+        interp.set("EnvRLObject", envRL);
+        return envRL;
+	}
+	
+	public EnvRL get3NearestToBoundary(List<FrameRL> stMeasure) throws JepException {
+		Map<Double, FrameRL> distanceBetweenMeasures = new HashMap<Double, FrameRL>();
+		for(FrameRL l: stMeasure){
+			distanceBetweenMeasures.put(Math.abs(l.getSimilarity()-0.5), l);
+        }
+		TreeMap<Double, FrameRL> sorted = new TreeMap<Double, FrameRL>(distanceBetweenMeasures);
+
+        List<FrameRL> best3 = new ArrayList<FrameRL>();
+        int num = 0;
+        for(Map.Entry<Double, FrameRL> entry : sorted.entrySet()) {
+        	if(num >=3) {
+        		break;
+        	}
+	    	Double key = entry.getKey();
+	    	FrameRL value = entry.getValue();
+	    	best3.add(value);
+	    	num++;
+        }
+        
+        AMapping result = MappingFactory.createDefaultMapping();
+        for(FrameRL l: best3){
+            result.add(l.getSource(), l.getTarget(), l.getSimilarity());
+        }
+        
+        // calculate F-measure
+        double newFMeasure = new FMeasure().calculate(result, new GoldStandard(trainingData), getBeta());
+        // reward
+        double reward = newFMeasure - oldFMeasure;
+        EnvRL envRL = new EnvRL(best3, newFMeasure, reward); 
+        interp.set("EnvRLObject", envRL);
+        return envRL;
+	}
+	
+//	replace 3 predicted examples with 3 worst ones
+//	sort self.current_state_examples by similarityMeasure and replace 3 first worse examples with self.selectedExamples
+	 public List<FrameRL> replaceWorstExamples(List<FrameRL> selectedExamples, List<FrameRL> oldExamples) {
+		 Collections.sort(oldExamples, Collections.reverseOrder());
+		 List<FrameRL> newExamples = new ArrayList<FrameRL>(selectedExamples);
+		 newExamples.addAll(oldExamples.subList(3, oldExamples.size()));
+		 return newExamples;
+	 }
 
 }
+
+
