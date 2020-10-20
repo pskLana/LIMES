@@ -347,58 +347,50 @@ public class WombatSimpleRL extends AWombat {
 
 	@Override
 	protected AMapping getNextExamples(int size) {
-		int num_episodes = 2;
-		for(int ep=0; ep<=num_episodes; ep++) {
-			runNextEpisode();
-		}
-        
-        
+		runNextEpisode(); 
 		return null;
+	}
+	
+	public List<FrameRL> runNextWombatAndGetRandomExamples() {
+		MLResults mlm = this.learn(this.trainingData);
+        logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
+        // Applying 10 random examples from source and target to link spec
+        List<String> randomSourceList = givenList_whenNumberElementsChosen_shouldReturnRandomElementsNoRepeat(sourceUris);
+        List<String> randomTargetList = givenList_whenNumberElementsChosen_shouldReturnRandomElementsNoRepeat(targetUris);
+        System.out.println(mlm.getLinkSpecification().getMeasure());//setThreshold(0.5);
+        String str = "jaccard(x.pref0:given_name,y.pref1:given_name)";// mlm.getLinkSpecification().getMeasure()
+        Instruction inst = new Instruction(
+        		Command.RUN, str, 
+        		Double.toString(0.6), -1, -1, 0);
+        MeasureType type = MeasureFactory.getMeasureType(inst.getMeasureExpression());
+        AMeasure measure = MeasureFactory.createMeasure(type);
+//        Map<String, Double> stMeasure  = new HashMap<String, Double>();
+        List<FrameRL> stMeasure  = new ArrayList<FrameRL>();
+        int amountOfPositive = 0;
+        for (String s : randomSourceList) {
+        	for (String t : randomTargetList) {
+        		int positive = -1;
+//        		String prop1 = mlm.getLinkSpecification().getProperty1(); How to get properties from link spec ("pref0:given_name") and ("pref1:given_name")???
+        		TreeSet<String> sourceProp = sourceInstance.getInstance(s).getProperty("pref0:given_name");
+        		TreeSet<String> targetProp = targetInstance.getInstance(t).getProperty("pref1:given_name");
+        		double m = ((JaccardMeasure) measure).getSimilarityChar(sourceProp, targetProp);
+//        		double m = measure.getSimilarity("b r a e n", "b r o e n");
+//        		stMeasure.put("["+sourceProp+"]"+"["+targetProp+"]", m);
+//        		stMeasure.put("["+s+"]"+"["+t+"]", m);
+        		if(m >= 0.5) {
+        			amountOfPositive++;
+        			positive = 1;
+        		}
+        		FrameRL fr = new FrameRL(s, t, m, sourceProp.first(), targetProp.first(), positive);
+        		stMeasure.add(fr);
+            }
+        }
+        return stMeasure;
 	}
 
 	public void runNextEpisode() {
 		// Using supervised batch
-				MLResults mlm = this.learn(this.trainingData);
-//				Set<String> measures = new HashSet<>(Arrays.asList("jaccard", "cosine", "qgrams"));
-//				learningParameters.remove(new LearningParameter(PARAMETER_ATOMIC_MEASURES, measures, MeasureType.class, 0, 0, 0,
-//		                PARAMETER_ATOMIC_MEASURES));
-//				measures = new HashSet<>(Arrays.asList("cosine", "qgrams"));
-//		        learningParameters.add(new LearningParameter(PARAMETER_ATOMIC_MEASURES, measures, MeasureType.class, 0, 0, 0,
-//		                PARAMETER_ATOMIC_MEASURES));
-		        logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
-		        // Applying 10 random examples from source and target to link spec
-		        List<String> randomSourceList = givenList_whenNumberElementsChosen_shouldReturnRandomElementsNoRepeat(sourceUris);
-		        List<String> randomTargetList = givenList_whenNumberElementsChosen_shouldReturnRandomElementsNoRepeat(targetUris);
-//		        LinkSpecification ls = new LinkSpecification();
-//		        ls = mlm.getLinkSpecification().clone();
-		        System.out.println(mlm.getLinkSpecification().getMeasure());//setThreshold(0.5);
-		        String str = "jaccard(x.pref0:given_name,y.pref1:given_name)";// mlm.getLinkSpecification().getMeasure()
-		        Instruction inst = new Instruction(
-		        		Command.RUN, str, 
-		        		Double.toString(0.6), -1, -1, 0);
-		        MeasureType type = MeasureFactory.getMeasureType(inst.getMeasureExpression());
-		        AMeasure measure = MeasureFactory.createMeasure(type);
-//		        Map<String, Double> stMeasure  = new HashMap<String, Double>();
-		        List<FrameRL> stMeasure  = new ArrayList<FrameRL>();
-		        int amountOfPositive = 0;
-		        for (String s : randomSourceList) {
-		        	for (String t : randomTargetList) {
-		        		int positive = -1;
-//		        		String prop1 = mlm.getLinkSpecification().getProperty1(); How to get properties from link spec ("pref0:given_name") and ("pref1:given_name")???
-		        		TreeSet<String> sourceProp = sourceInstance.getInstance(s).getProperty("pref0:given_name");
-		        		TreeSet<String> targetProp = targetInstance.getInstance(t).getProperty("pref1:given_name");
-		        		double m = ((JaccardMeasure) measure).getSimilarityChar(sourceProp, targetProp);
-//		        		double m = measure.getSimilarity("b r a e n", "b r o e n");
-//		        		stMeasure.put("["+sourceProp+"]"+"["+targetProp+"]", m);
-//		        		stMeasure.put("["+s+"]"+"["+t+"]", m);
-		        		if(m >= 0.5) {
-		        			amountOfPositive++;
-		        			positive = 1;
-		        		}
-		        		FrameRL fr = new FrameRL(s, t, m, sourceProp.first(), targetProp.first(), positive);
-		        		stMeasure.add(fr);
-		            }
-		        }
+		List<FrameRL> stMeasure = runNextWombatAndGetRandomExamples();
 		        
 		        //Compute decision boundary --> m >= 0.5
 		        
@@ -498,12 +490,13 @@ public class WombatSimpleRL extends AWombat {
         return envRL;
 	}
 	
-//	replace 3 predicted examples with 3 worst ones
-//	sort self.current_state_examples by similarityMeasure and replace 3 first worse examples with self.selectedExamples
-	 public List<FrameRL> replaceWorstExamples(List<FrameRL> selectedExamples, List<FrameRL> oldExamples) {
-		 Collections.sort(oldExamples, Collections.reverseOrder());
+//	replace 3 predicted examples with 3 worst ones (call Wombat, generate random examples and replace 3 worst ones)
+//	sort new examples by similarityMeasure and replace 3 first worse examples with self.selectedExamples
+	 public List<FrameRL> replaceWorstExamples(List<FrameRL> selectedExamples) {
+		 List<FrameRL> stMeasure = runNextWombatAndGetRandomExamples();
+		 Collections.sort(stMeasure, Collections.reverseOrder());
 		 List<FrameRL> newExamples = new ArrayList<FrameRL>(selectedExamples);
-		 newExamples.addAll(oldExamples.subList(3, oldExamples.size()));
+		 newExamples.addAll(stMeasure.subList(3, stMeasure.size()));
 		 return newExamples;
 	 }
 

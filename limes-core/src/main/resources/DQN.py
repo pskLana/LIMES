@@ -49,14 +49,15 @@ class DQN(nn.Module):
 		self.fc = nn.Linear(in_features=2, out_features=5, bias=False)
 		self.fc.weight = nn.Parameter(weight_matrix)
 		self.out = nn.Linear(in_features=5, out_features=2, bias=False)
+		self.out.weight = nn.Parameter(weight_matrix)
 
 	def forward(self, t):
 		# t = t.flatten(start_dim=1)
 		# t = F.relu(self.fc1(t))
 		# t = F.relu(self.fc2(t))
 		# t = self.out(t)
-		t = self.fc(t)
-		t = F.relu(t)
+# 		t = self.fc(t)
+# 		t = F.relu(self.out(t))
 		t = self.out(t)
 		return t
 
@@ -154,6 +155,7 @@ class EnvManager():
 		self.oldFMeasure = 0.0
 		self.selectedExamples = None
 		self.endState = 5
+		self.stateTable = {}
 
 	def reset(self):
 		self.state_num = 1
@@ -188,13 +190,19 @@ class EnvManager():
 
 	def get_state(self): 
 		if self.just_starting() or self.done:
-			return self.current_state_examples
-		else: # replace 3 predicted examples with 3 worst ones
-			# sort self.current_state_examples by similarityMeasure and replace 3 first worse examples with self.selectedExamples
-			self.current_state_examples = WombatRLObject.replaceWorstExamples(self.selectedExamples, self.current_state_examples)
+			# Add info about state_num and what is in this state(self.current_state_examples)
+			# 		self.current_state_examples
+			self.stateTable[self.state_num] = self.current_state_examples
+			return torch.tensor([self.state_num], device=self.device, dtype=torch.float)	
+		else:
+			# call Wombat, generate random examples and replace 3 worst ones
+			if self.selectedExamples is not None:
+				self.current_state_examples = WombatRLObject.replaceWorstExamples(self.selectedExamples)
 			if self.state_num == self.endState:
 				self.done = True
-			return self.current_state_examples
+				
+			self.stateTable[self.state_num] = self.current_state_examples
+			return torch.tensor([self.state_num], device=self.device, dtype=torch.float)
 
 def plot(values, moving_avg_period):
 	plt.figure(2)
@@ -292,7 +300,7 @@ def mainFun(newExamples):
 	target_update = 10
 	memory_size = 100000
 	lr = 0.001
-	num_episodes = 10000
+	num_episodes = 2
 
 	device = dic['device']#torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	# em = CartPoleEnvManager(device)
@@ -306,27 +314,35 @@ def mainFun(newExamples):
 	target_net.eval()
 	optimizer = optim.Adam(params=policy_net.parameters(), lr=lr)
 
-	state = em.get_state() #starting state
-	# for timestep in count():
-	action = agent.select_action(state, policy_net) #change function
-	reward = em.take_action(action) #change function
-	next_state = em.get_state()
-	return next_state
-	memory.push(Experience(state, action, next_state, reward))
-	state = next_state
-
-	# if memory.can_provide_sample(batch_size):
-	# 	experiences = memory.sample(batch_size)
-	# 	states, actions, rewards, next_states = extract_tensors(experiences)
-
-	# 	current_q_values = QValues.get_current(policy_net, states, actions)
-	# 	next_q_values = QValues.get_next(target_net, next_states)
-	# 	target_q_values = (next_q_values * gamma) + rewards
-
-	# 	loss = F.mse_loss(current_q_values, target_q_values.unsqueeze(1))
-	# 	optimizer.zero_grad()
-	# 	loss.backward()
-	# 	optimizer.step()
+	episode_durations = []
+	for episode in range(num_episodes):
+		em.reset()
+		state = em.get_state() #starting state
+		# for timestep in count():
+		for timestep in range(0, 6):
+			action = agent.select_action(state, policy_net) #change function
+			reward = em.take_action(action) #change function
+			pydevDebug()
+			next_state = em.get_state()
+		# 	return next_state
+			memory.push(Experience(state, action, next_state, reward))
+			# return policy_net.out.weight
+			state = next_state
+			batch_size = 5 # at least 1 experiences should be done
+		
+			if memory.can_provide_sample(batch_size):
+				experiences = memory.sample(batch_size)
+				states, actions, rewards, next_states = extract_tensors(experiences)
+		
+				current_q_values = QValues.get_current(policy_net, states, actions)
+				return current_q_values
+				next_q_values = QValues.get_next(target_net, next_states)
+				target_q_values = (next_q_values * gamma) + rewards
+		
+				loss = F.mse_loss(current_q_values, target_q_values.unsqueeze(1))
+				optimizer.zero_grad()
+				loss.backward()
+				optimizer.step()
 
 # 	if em.done:
 # 		episode_durations.append(timestep)
@@ -375,3 +391,12 @@ def mainFun(newExamples):
 # em.close()
 
 	# return dic['test']
+	
+def pydevDebug():
+    import sys
+    PYDEVD_PATH='the PYDEVD_PATH determined earlier'
+    if sys.path.count(PYDEVD_PATH) < 1:
+        sys.path.append(PYDEVD_PATH)
+    import pydevd
+    pydevd.settrace()
+    	
