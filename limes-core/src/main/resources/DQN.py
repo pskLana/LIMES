@@ -38,26 +38,14 @@ class DQN(nn.Module):
 		# self.fc2 = nn.Linear(in_features=24, out_features=32)
 		# self.out = nn.Linear(in_features=32, out_features=2)
 
-		# weight_matrix = torch.tensor([
-		#     [0,0],
-		#     [0,2],
-		#     [0,0],
-		# 	[0,3],
-		# 	[0,0],
-		# ], dtype=torch.float32)
-		weight_matrix = torch.zeros(5,2)
-		self.fc = nn.Linear(in_features=2, out_features=5, bias=False)
-		self.fc.weight = nn.Parameter(weight_matrix)
-		self.out = nn.Linear(in_features=5, out_features=2, bias=False)
-		self.out.weight = nn.Parameter(weight_matrix)
+		self.fc1 = nn.Linear(in_features=13, out_features=24)   
+		self.fc2 = nn.Linear(in_features=24, out_features=32)
+		self.out = nn.Linear(in_features=32, out_features=13)
+
 
 	def forward(self, t):
-		# t = t.flatten(start_dim=1)
-		# t = F.relu(self.fc1(t))
-		# t = F.relu(self.fc2(t))
-		# t = self.out(t)
-# 		t = self.fc(t)
-# 		t = F.relu(self.out(t))
+		t = F.relu(self.fc1(t))
+		t = F.relu(self.fc2(t))
 		t = self.out(t)
 		return t
 
@@ -136,7 +124,7 @@ class Agent():
 	def select_action(self, state, policy_net): #policy_net is the policy trained by DQN
 		rate = self.strategy.get_exploration_rate(self.current_step)
 		self.current_step += 1
-
+ 
 		if rate > random.random():
 			action = random.randrange(self.num_actions)
 			return torch.tensor([action]).to(self.device) # explore      
@@ -150,12 +138,14 @@ class EnvManager():
 		self.state_num = 1
 		self.current_state_examples = current_state_examples
 		self.done = False
-		self.num_actions = 2
+		self.num_actions = 13 # take one of 13 pairs
 		self.actions = {1: "take 3 best", 2: "take 3 nearest to 0.5"}
 		self.oldFMeasure = 0.0
 		self.selectedExamples = None
 		self.endState = 5
 		self.stateTable = {}
+		self.currentAction = None
+		self.currentState = None
 
 	def reset(self):
 		self.state_num = 1
@@ -168,8 +158,10 @@ class EnvManager():
 		return self.num_actions    
 
 	def take_action(self, action):
-		reward = self.tryStep(action.item())     # if action is 0 or 1  
+# 		reward = self.tryStep(action.item())     # if action is 0 or 1  
+		reward = 0 # replace for the score calc
 		self.state_num = self.state_num + 1
+		self.currentAction = action.item()
 		return torch.tensor([reward], device=self.device)
 	
 	def tryStep(self, action):
@@ -193,7 +185,8 @@ class EnvManager():
 			# Add info about state_num and what is in this state(self.current_state_examples)
 			# 		self.current_state_examples
 			self.stateTable[self.state_num] = self.current_state_examples
-			return torch.tensor([self.state_num], device=self.device, dtype=torch.float)	
+			self.currentState = torch.tensor([0,0,0,0,0,0,0,0,0,0,0,0,0], device=self.device, dtype=torch.float)
+			return self.currentState	
 		else:
 			# call Wombat, generate random examples and replace 3 worst ones
 			if self.selectedExamples is not None:
@@ -202,7 +195,11 @@ class EnvManager():
 				self.done = True
 				
 			self.stateTable[self.state_num] = self.current_state_examples
-			return torch.tensor([self.state_num], device=self.device, dtype=torch.float)
+			
+			t = self.currentState
+			t[self.currentAction] = 1
+			
+			return torch.tensor(t, device=self.device, dtype=torch.float)
 
 def plot(values, moving_avg_period):
 	plt.figure(2)
@@ -234,29 +231,33 @@ def extract_tensors(experiences):
 	# Convert batch of Experiences to Experience of batches
 	batch = Experience(*zip(*experiences))
 
-	t1 = torch.cat(batch.state)
+# 	t1 = torch.cat(batch.state)
+	t1 = torch.stack(batch.state)
 	t2 = torch.cat(batch.action)
 	t3 = torch.cat(batch.reward)
-	t4 = torch.cat(batch.next_state)
+# 	t4 = torch.cat(batch.next_state)
+	t4 = torch.stack(batch.next_state)
 
 	return (t1,t2,t3,t4)
+
 
 class QValues():
 	device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	@staticmethod
 	def get_current(policy_net, states, actions):
+		# change states (list of objects to one dim array of code symbols of all source and target urls)
 		return policy_net(states).gather(dim=1, index=actions.unsqueeze(-1))
-
+		
 	@staticmethod        
 	def get_next(target_net, next_states):                
-		final_state_locations = next_states.flatten(start_dim=1).max(dim=1)[0].eq(0).type(torch.bool)
-		non_final_state_locations = (final_state_locations == False)
-		non_final_states = next_states[non_final_state_locations]
-		batch_size = next_states.shape[0]
-		values = torch.zeros(batch_size).to(QValues.device)
-		values[non_final_state_locations] = target_net(non_final_states).max(dim=1)[0].detach()
-		return values
-
+# 		final_state_locations = next_states.flatten(start_dim=1).max(dim=1)[0].eq(0).type(torch.bool)
+# 		non_final_state_locations = (final_state_locations == False)
+# 		non_final_states = next_states[non_final_state_locations]
+# 		batch_size = next_states.shape[0]
+# 		values = torch.zeros(batch_size).to(QValues.device)
+# 		values[non_final_state_locations] = target_net(non_final_states).max(dim=1)[0].detach()
+# 		return values
+		return target_net(next_states).max(dim=1)[0]
 
 dic = {'test':1,
 'device': torch.device("cuda" if torch.cuda.is_available() else "cpu")}
@@ -334,8 +335,8 @@ def mainFun(newExamples):
 				experiences = memory.sample(batch_size)
 				states, actions, rewards, next_states = extract_tensors(experiences)
 		
+# 				s = processStates(states) # just example change states
 				current_q_values = QValues.get_current(policy_net, states, actions)
-				return current_q_values
 				next_q_values = QValues.get_next(target_net, next_states)
 				target_q_values = (next_q_values * gamma) + rewards
 		
@@ -352,51 +353,12 @@ def mainFun(newExamples):
 # if episode % target_update == 0:
 # 	target_net.load_state_dict(policy_net.state_dict())
 
-
-
-
-
-# episode_durations = []
-# for episode in range(num_episodes):
-# 	em.reset()
-# 	state = em.get_state() #starting state
-	# for timestep in count():
-	# 	action = agent.select_action(state, policy_net) #change function
-	# 	reward = em.take_action(action) #change function
-	# 	next_state = em.get_state()
-	# 	memory.push(Experience(state, action, next_state, reward))
-	# 	state = next_state
-
-		# if memory.can_provide_sample(batch_size):
-		# 	experiences = memory.sample(batch_size)
-		# 	states, actions, rewards, next_states = extract_tensors(experiences)
-
-		# 	current_q_values = QValues.get_current(policy_net, states, actions)
-		# 	next_q_values = QValues.get_next(target_net, next_states)
-		# 	target_q_values = (next_q_values * gamma) + rewards
-
-		# 	loss = F.mse_loss(current_q_values, target_q_values.unsqueeze(1))
-		# 	optimizer.zero_grad()
-		# 	loss.backward()
-		# 	optimizer.step()
-
-	# 	if em.done:
-	# 		episode_durations.append(timestep)
-	# 		plot(episode_durations, 100)
-	# 		break
-
-	# if episode % target_update == 0:
-	# 	target_net.load_state_dict(policy_net.state_dict())
-
-# em.close()
-
-	# return dic['test']
 	
 def pydevDebug():
-    import sys
-    PYDEVD_PATH='the PYDEVD_PATH determined earlier'
-    if sys.path.count(PYDEVD_PATH) < 1:
-        sys.path.append(PYDEVD_PATH)
-    import pydevd
-    pydevd.settrace()
-    	
+	import sys
+	PYDEVD_PATH='the PYDEVD_PATH determined earlier'
+	if sys.path.count(PYDEVD_PATH) < 1:
+		sys.path.append(PYDEVD_PATH)
+	import pydevd
+	pydevd.settrace()
+		
