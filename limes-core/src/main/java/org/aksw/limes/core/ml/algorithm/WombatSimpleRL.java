@@ -66,6 +66,9 @@ public class WombatSimpleRL extends AWombat {
     Object d = null;
     Interpreter interp = null;
     double oldFMeasure = 0.0;
+    
+    private boolean firstIter = false;
+    private AMapping groundTruthExamples = null;
     /**
      * WombatSimple constructor.
      */
@@ -142,51 +145,51 @@ public class WombatSimpleRL extends AWombat {
                 mlType == MLImplementationType.SUPERVISED_ACTIVE;
     }
 
-//    @Override
-//    protected AMapping getNextExamples(int size) throws UnsupportedMLImplementationException {
-//        List<RefinementNode> bestNodes = getBestKNodes(refinementTreeRoot, activeLearningRate);
-//        AMapping intersectionMapping = MappingFactory.createDefaultMapping();
-//        AMapping unionMapping = MappingFactory.createDefaultMapping();
-//
-//        for(RefinementNode sn : bestNodes){
-//            intersectionMapping = MappingOperations.intersection(intersectionMapping, sn.getMapping());
-//            unionMapping = MappingOperations.union(unionMapping, sn.getMapping());
-//        }
-//        AMapping posEntropyMapping = MappingOperations.difference(unionMapping, intersectionMapping);
-//
-//        TreeSet<LinkEntropy> linkEntropy = new TreeSet<>();
-//        int entropyPos = 0, entropyNeg = 0;
-//        for(String s : posEntropyMapping.getMap().keySet()){
-//            for(String t : posEntropyMapping.getMap().get(s).keySet()){
-//                // compute Entropy(s,t)
-//                for(RefinementNode sn : bestNodes){
-//                    if(sn.getMapping().contains(s, t)){
-//                        entropyPos++;
-//                    }else{
-//                        entropyNeg++;
-//                    }
-//                }
-//                int entropy = entropyPos * entropyNeg;
-//                linkEntropy.add(new LinkEntropy(s, t, entropy));
-//            }
-//        }
-//        // get highestEntropyLinks
-//        List<LinkEntropy> highestEntropyLinks = new ArrayList<>();
-//        int i = 0;
-//        Iterator<LinkEntropy> itr = linkEntropy.descendingIterator();
-//        while(itr.hasNext() && i < size) {
-//            LinkEntropy next = itr.next();
-//            if (!trainingData.contains(next.getSourceUri(), next.getTargetUri())) {
-//                highestEntropyLinks.add(next);
-//                i++;
-//            }
-//        }
-//        AMapping result = MappingFactory.createDefaultMapping();
-//        for(LinkEntropy l: highestEntropyLinks){
-//            result.add(l.getSourceUri(), l.getTargetUri(), l.getEntropy());
-//        }
-//        return result;
-//    }
+    protected AMapping getNextExamplesWombatSimple(int size) throws UnsupportedMLImplementationException {
+        List<RefinementNode> bestNodes = getBestKNodes(refinementTreeRoot, activeLearningRate);
+        AMapping intersectionMapping = MappingFactory.createDefaultMapping();
+        AMapping unionMapping = MappingFactory.createDefaultMapping();
+
+        for(RefinementNode sn : bestNodes){
+            intersectionMapping = MappingOperations.intersection(intersectionMapping, sn.getMapping());
+            unionMapping = MappingOperations.union(unionMapping, sn.getMapping());
+        }
+        AMapping posEntropyMapping = MappingOperations.difference(unionMapping, intersectionMapping);
+
+        TreeSet<LinkEntropy> linkEntropy = new TreeSet<>();
+        int entropyPos = 0, entropyNeg = 0;
+        for(String s : posEntropyMapping.getMap().keySet()){
+            for(String t : posEntropyMapping.getMap().get(s).keySet()){
+                // compute Entropy(s,t)
+                for(RefinementNode sn : bestNodes){
+                    if(sn.getMapping().contains(s, t)){
+                        entropyPos++;
+                    }else{
+                        entropyNeg++;
+                    }
+                }
+                int entropy = entropyPos * entropyNeg;
+                linkEntropy.add(new LinkEntropy(s, t, entropy));
+            }
+        }
+        // get highestEntropyLinks
+        List<LinkEntropy> highestEntropyLinks = new ArrayList<>();
+        int i = 0;
+        Iterator<LinkEntropy> itr = linkEntropy.descendingIterator();
+        while(itr.hasNext() && i < size) {
+            LinkEntropy next = itr.next();
+            if (!trainingData.contains(next.getSourceUri(), next.getTargetUri())) {
+                highestEntropyLinks.add(next);
+                i++;
+            }
+        }
+        AMapping result = MappingFactory.createDefaultMapping();
+        for(LinkEntropy l: highestEntropyLinks){
+            result.add(l.getSourceUri(), l.getTargetUri(), l.getEntropy());
+        }
+        
+        return result;
+    }
 
     @Override
     protected MLResults activeLearn(){
@@ -346,12 +349,17 @@ public class WombatSimpleRL extends AWombat {
     }
 
 	@Override
-	protected AMapping getNextExamples(int size) {
-		runNextEpisode(); 
+	protected AMapping getNextExamples(int size) throws UnsupportedMLImplementationException {
+		if(!firstIter) {
+			groundTruthExamples = getNextExamplesWombatSimple(size);
+			firstIter = true;
+		} else {
+			runNextEpisode(); 
+		}
 		return null;
 	}
 	
-	public List<FrameRL> runNextWombatAndGetRandomExamples() {
+	public List<FrameRL> runNextWombatAndGetRandomExamples(int k) {
 		MLResults mlm = this.learn(this.trainingData);
         logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
         // Applying 10 random examples from source and target to link spec
@@ -381,16 +389,25 @@ public class WombatSimpleRL extends AWombat {
         			amountOfPositive++;
         			positive = 1;
         		}
-        		FrameRL fr = new FrameRL(s, t, m, sourceProp.first(), targetProp.first(), positive);
+        		FrameRL fr = new FrameRL(s, t, m, sourceProp.first(), targetProp.first(), positive);     		
         		stMeasure.add(fr);
             }
         }
-        return stMeasure;
+        Collections.sort(stMeasure, Collections.reverseOrder());
+        List<FrameRL> bestK = stMeasure.subList(0, k);
+        return bestK;
 	}
 
 	public void runNextEpisode() {
+		// Initialization
 		// Using supervised batch
-		List<FrameRL> stMeasure = runNextWombatAndGetRandomExamples();
+		// return k-pairs with highest sim measure
+		int k = 10;
+		int m = 3;
+		List<FrameRL> stMeasure = runNextWombatAndGetRandomExamples(k);
+		
+		// Start RL
+		List<FrameRL> stMeasure1 = runNextWombatAndGetRandomExamples(m);
 		        
 		        //Compute decision boundary --> m >= 0.5
 		        
@@ -422,7 +439,7 @@ public class WombatSimpleRL extends AWombat {
 	    List<String> receivedList = new ArrayList<String>();
 	    List<String> givenList = list;
 	 
-	    int numberOfElements = 3;
+	    int numberOfElements = 10;
 	 
 	    for (int i = 0; i < numberOfElements; i++) {
 	        int randomIndex = rand.nextInt(givenList.size());
@@ -493,7 +510,7 @@ public class WombatSimpleRL extends AWombat {
 //	replace 3 predicted examples with 3 worst ones (call Wombat, generate random examples and replace 3 worst ones)
 //	sort new examples by similarityMeasure and replace 3 first worse examples with self.selectedExamples
 	 public List<FrameRL> replaceWorstExamples(List<FrameRL> selectedExamples) {
-		 List<FrameRL> stMeasure = runNextWombatAndGetRandomExamples();
+		 List<FrameRL> stMeasure = runNextWombatAndGetRandomExamples(10);
 		 Collections.sort(stMeasure, Collections.reverseOrder());
 		 List<FrameRL> newExamples = new ArrayList<FrameRL>(selectedExamples);
 		 newExamples.addAll(stMeasure.subList(3, stMeasure.size()));

@@ -1,9 +1,6 @@
 package org.aksw.limes.core.controller;
 
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
-
 import org.aksw.limes.core.evaluation.evaluator.EvaluatorFactory;
 import org.aksw.limes.core.evaluation.evaluator.EvaluatorType;
 import org.aksw.limes.core.evaluation.qualititativeMeasures.PseudoFMeasure;
@@ -75,13 +72,17 @@ public class MLPipeline {
                 ActiveMLAlgorithm mla = new ActiveMLAlgorithm(clazz);
                 mla.init(learningParameters, source, target);
                 mla.getMl().setConfiguration(configuration);
+                AMapping nextExamplesMapping;
                 if(mlAlgorithmName.equals("WOMBAT Simple RL")){
                 	mlm = mla.learn(trainingDataMap);
+                	// on first iteration we ask user 
+                	// for the ground truth (nextExamplesMapping) during active learning
+                	nextExamplesMapping = mla.getNextExamples(maxIt);
                 } else {
                 	mlm = mla.activeLearn();	
                 }
                 while (!oracle.isStopped()) {
-                	AMapping nextExamplesMapping = mla.getNextExamples(maxIt);
+                	nextExamplesMapping = mla.getNextExamples(maxIt);
                     if (nextExamplesMapping.getMap().isEmpty()) {
                         oracle.stop();
                         break;
