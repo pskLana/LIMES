@@ -77,7 +77,7 @@ public class MLPipeline {
                 	mlm = mla.learn(trainingDataMap);
                 	// on first iteration we ask user 
                 	// for the ground truth (nextExamplesMapping) during active learning
-                	nextExamplesMapping = mla.getNextExamples(maxIt);
+//                	nextExamplesMapping = mla.getNextExamples(maxIt);
                 } else {
                 	mlm = mla.activeLearn();	
                 }

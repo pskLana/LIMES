@@ -38,15 +38,15 @@ class DQN(nn.Module):
 		# self.fc2 = nn.Linear(in_features=24, out_features=32)
 		# self.out = nn.Linear(in_features=32, out_features=2)
 
-		self.fc1 = nn.Linear(in_features=13, out_features=24)   
+		self.fc1 = nn.Linear(in_features=800, out_features=24)   
 		self.fc2 = nn.Linear(in_features=24, out_features=32)
-		self.out = nn.Linear(in_features=32, out_features=13)
+		self.out = nn.Linear(in_features=32, out_features=1)
 
 
 	def forward(self, t):
 		t = F.relu(self.fc1(t))
 		t = F.relu(self.fc2(t))
-		t = self.out(t)
+		t = self.out(t).transpose(0,1)
 		return t
 
 Experience = namedtuple(
@@ -125,12 +125,13 @@ class Agent():
 		rate = self.strategy.get_exploration_rate(self.current_step)
 		self.current_step += 1
  
-		if rate > random.random():
-			action = random.randrange(self.num_actions)
-			return torch.tensor([action]).to(self.device) # explore      
-		else:
-			with torch.no_grad(): #turn off gradient tracking
-				return policy_net(state).argmax(dim=1).to(self.device) # exploit
+# 		if rate > random.random():
+# 			action = random.randrange(self.num_actions)
+# 			return torch.tensor([action]).to(self.device) # explore      
+# 		else:
+# 			with torch.no_grad(): #turn off gradient tracking
+# 				return policy_net(state).argmax(dim=1).to(self.device) # exploit
+		return policy_net(state).argmax(dim=1).to(self.device)
 
 class EnvManager():
 	def __init__(self, device, current_state_examples):
@@ -185,16 +186,17 @@ class EnvManager():
 			# Add info about state_num and what is in this state(self.current_state_examples)
 			# 		self.current_state_examples
 			self.stateTable[self.state_num] = self.current_state_examples
-			self.currentState = torch.tensor([0,0,0,0,0,0,0,0,0,0,0,0,0], device=self.device, dtype=torch.float)
+			self.currentState = torch.tensor(self.current_state_examples, device=self.device, dtype=torch.float)
+# 			torch.tensor([0,0,0,0,0,0,0,0,0,0,0,0,0], device=self.device, dtype=torch.float)
 			return self.currentState	
 		else:
 			# call Wombat, generate random examples and replace 3 worst ones
-			if self.selectedExamples is not None:
-				self.current_state_examples = WombatRLObject.replaceWorstExamples(self.selectedExamples)
-			if self.state_num == self.endState:
-				self.done = True
-				
-			self.stateTable[self.state_num] = self.current_state_examples
+# 			if self.selectedExamples is not None:
+# 				self.current_state_examples = WombatRLObject.replaceWorstExamples(self.selectedExamples)
+# 			if self.state_num == self.endState:
+# 				self.done = True
+# 				
+# 			self.stateTable[self.state_num] = self.current_state_examples
 			
 			t = self.currentState
 			t[self.currentAction] = 1
@@ -292,6 +294,8 @@ def mainFun(newExamples):
 
 	# dic['test']=dic['test']+1
 	# return dic['test']
+	
+	pydevDebug()
 
 	batch_size = 256
 	gamma = 0.999
@@ -322,8 +326,8 @@ def mainFun(newExamples):
 		# for timestep in count():
 		for timestep in range(0, 6):
 			action = agent.select_action(state, policy_net) #change function
+			return action.item()
 			reward = em.take_action(action) #change function
-			pydevDebug()
 			next_state = em.get_state()
 		# 	return next_state
 			memory.push(Experience(state, action, next_state, reward))

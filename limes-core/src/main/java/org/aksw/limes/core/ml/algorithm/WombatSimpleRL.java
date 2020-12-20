@@ -1,8 +1,5 @@
 package org.aksw.limes.core.ml.algorithm;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -15,33 +12,29 @@ import org.aksw.limes.core.exceptions.UnsupportedMLImplementationException;
 import org.aksw.limes.core.execution.planning.plan.Instruction;
 import org.aksw.limes.core.execution.planning.plan.Instruction.Command;
 import org.aksw.limes.core.io.cache.ACache;
-import org.aksw.limes.core.io.cache.Instance;
 import org.aksw.limes.core.io.ls.LinkSpecification;
 import org.aksw.limes.core.io.mapping.AMapping;
 import org.aksw.limes.core.io.mapping.MappingFactory;
 import org.aksw.limes.core.io.mapping.MappingFactory.MappingType;
 import org.aksw.limes.core.io.mapping.reader.AMappingReader;
 import org.aksw.limes.core.io.mapping.reader.CSVMappingReader;
-import org.aksw.limes.core.io.mapping.reader.RDFMappingReader;
 import org.aksw.limes.core.measures.mapper.MappingOperations;
 import org.aksw.limes.core.measures.measure.AMeasure;
 import org.aksw.limes.core.measures.measure.MeasureFactory;
 import org.aksw.limes.core.measures.measure.MeasureType;
 import org.aksw.limes.core.measures.measure.string.JaccardMeasure;
 import org.aksw.limes.core.ml.algorithm.classifier.ExtendedClassifier;
-import org.aksw.limes.core.ml.algorithm.eagle.util.PropertyMapping;
 import org.aksw.limes.core.ml.algorithm.wombat.AWombat;
 import org.aksw.limes.core.ml.algorithm.wombat.EnvRL;
 import org.aksw.limes.core.ml.algorithm.wombat.FrameRL;
+import org.aksw.limes.core.ml.algorithm.wombat.FullMappingEV;
 import org.aksw.limes.core.ml.algorithm.wombat.LinkEntropy;
+import org.aksw.limes.core.ml.algorithm.wombat.MappingEV;
 import org.aksw.limes.core.ml.algorithm.wombat.RefinementNode;
-import org.apache.commons.collections.ListUtils;
-import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jep.Interpreter;
-import jep.Jep;
 import jep.JepException;
 import jep.SharedInterpreter;
 
@@ -359,14 +352,19 @@ public class WombatSimpleRL extends AWombat {
 			int N = 10; // for the decision boundary
 			AMapping state = getLSandState(N);
 			// save state as embedding vectors in stateEV
-			List<List<Double>> stateEV = getStateAsEV(state);
-			ArrayList<AMapping> examples = new ArrayList<AMapping>();
+			FullMappingEV m = getStateAsEV(state);// contains mapping for later and EVs
+//			for (List<Double> temp : stateEV) {
+//	            System.out.println(temp.size());
+//	        }
+			List<Integer> exampleNums = new ArrayList<Integer>();
 			// train NN and get examples to show to the user
-			examples = trainNNandGetExamples(stateEV);
+			exampleNums = trainNNandGetExamples(m.getStateEV());
 			
 			AMapping result = MappingFactory.createDefaultMapping();
-	        for(AMapping l: examples){
-//	            result.add(l.getSourceUri(), l.getTargetUri(), l.getEntropy()); // todo
+	        for(Integer num: exampleNums){
+
+	        	MappingEV example = m.getMappingByNum(num);
+	            result.add(example.getSourceUri(), example.getTargetUri(), example.getSimilarity());  	
 	        }
 	        
 			firstIter = true;
@@ -378,7 +376,7 @@ public class WombatSimpleRL extends AWombat {
 		return null;
 	}
 	
-	public List<List<Double>> getStateAsEV(AMapping state) {
+	public FullMappingEV getStateAsEV(AMapping state) {
 		// get embedding vectors for person11
 		String dataPerson11Path = "src/main/resources/ConEx-vectors/Person1/person11.csv";
 		AMappingReader mappingReader;
@@ -394,18 +392,24 @@ public class WombatSimpleRL extends AWombat {
         person12DataMap = ((CSVMappingReader) mappingReader1).readEV();
         
         List<List<Double>> stateEV = new ArrayList<List<Double>>();
+        Integer num = 0;
+        List<MappingEV> mEV = new ArrayList<MappingEV>();
         for (Entry<String, HashMap<String, Double>> entry : state.getMap().entrySet()) {
             for (Entry<String, Double> items : entry.getValue().entrySet()) {
-            	List<Double> newList = person11DataMap.get(entry.getKey());
-            	List<Double> listTwo = person12DataMap.get(items.getKey());
-            	newList.addAll(listTwo);
+            	List<Double> newList = new ArrayList<Double>();
+            	newList.addAll(person11DataMap.get(entry.getKey()));
+            	newList.addAll(person12DataMap.get(items.getKey()));
             	stateEV.add(newList);
+            	MappingEV mappingEV = new MappingEV(num, entry.getKey(), items.getKey(), items.getValue());
+            	mEV.add(mappingEV);
+            	num++;
             }
         }
-        return stateEV;
+        FullMappingEV m = new FullMappingEV(mEV, stateEV);
+        return m;
 	}
 	
-	public ArrayList<AMapping> trainNNandGetExamples(List<List<Double>> stateEV) {
+	public List<Integer> trainNNandGetExamples(List<List<Double>> stateEV) {
 		// run python script with DQL 	        
         try {
             
@@ -416,9 +420,13 @@ public class WombatSimpleRL extends AWombat {
 	        interp.set("WombatRLObject", this);
 	        interp.exec("x = mainFun(arg)");
 //            interp.exec("x = mainFun()");
-            Object result1 = interp.getValue("x");
-            d = result1;
-            System.out.println(result1);
+            Object action = interp.getValue("x"); // so far we take only K=1
+//            d = action;
+            Long d = (long) action;
+            System.out.println(action);
+            List<Integer> exampleNums = new ArrayList<Integer>();
+            exampleNums.add(d.intValue());
+            return exampleNums;
 
         }
         catch (JepException e) {
