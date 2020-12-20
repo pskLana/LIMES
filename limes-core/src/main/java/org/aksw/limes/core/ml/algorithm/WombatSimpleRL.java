@@ -20,6 +20,9 @@ import org.aksw.limes.core.io.ls.LinkSpecification;
 import org.aksw.limes.core.io.mapping.AMapping;
 import org.aksw.limes.core.io.mapping.MappingFactory;
 import org.aksw.limes.core.io.mapping.MappingFactory.MappingType;
+import org.aksw.limes.core.io.mapping.reader.AMappingReader;
+import org.aksw.limes.core.io.mapping.reader.CSVMappingReader;
+import org.aksw.limes.core.io.mapping.reader.RDFMappingReader;
 import org.aksw.limes.core.measures.mapper.MappingOperations;
 import org.aksw.limes.core.measures.measure.AMeasure;
 import org.aksw.limes.core.measures.measure.MeasureFactory;
@@ -32,6 +35,7 @@ import org.aksw.limes.core.ml.algorithm.wombat.EnvRL;
 import org.aksw.limes.core.ml.algorithm.wombat.FrameRL;
 import org.aksw.limes.core.ml.algorithm.wombat.LinkEntropy;
 import org.aksw.limes.core.ml.algorithm.wombat.RefinementNode;
+import org.apache.commons.collections.ListUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -351,11 +355,77 @@ public class WombatSimpleRL extends AWombat {
 	@Override
 	protected AMapping getNextExamples(int size) throws UnsupportedMLImplementationException {
 		if(!firstIter) {
-			groundTruthExamples = getNextExamplesWombatSimple(size);
+//			groundTruthExamples = getNextExamplesWombatSimple(size);
+			int N = 10; // for the decision boundary
+			AMapping state = getLSandState(N);
+			// save state as embedding vectors in stateEV
+			List<List<Double>> stateEV = getStateAsEV(state);
+			ArrayList<AMapping> examples = new ArrayList<AMapping>();
+			// train NN and get examples to show to the user
+			examples = trainNNandGetExamples(stateEV);
+			
+			AMapping result = MappingFactory.createDefaultMapping();
+	        for(AMapping l: examples){
+//	            result.add(l.getSourceUri(), l.getTargetUri(), l.getEntropy()); // todo
+	        }
+	        
 			firstIter = true;
+			
+			return result;
 		} else {
 			runNextEpisode(); 
 		}
+		return null;
+	}
+	
+	public List<List<Double>> getStateAsEV(AMapping state) {
+		// get embedding vectors for person11
+		String dataPerson11Path = "src/main/resources/ConEx-vectors/Person1/person11.csv";
+		AMappingReader mappingReader;
+    	mappingReader = new CSVMappingReader(dataPerson11Path);
+    	HashMap<String, List<Double>> person11DataMap = new HashMap<String, List<Double>>();
+        person11DataMap = ((CSVMappingReader) mappingReader).readEV();
+        
+        // get embedding vectors for person12
+        String dataPerson12Path = "src/main/resources/ConEx-vectors/Person1/person12.csv";
+		AMappingReader mappingReader1;
+    	mappingReader1 = new CSVMappingReader(dataPerson12Path);
+    	HashMap<String, List<Double>> person12DataMap = new HashMap<String, List<Double>>();
+        person12DataMap = ((CSVMappingReader) mappingReader1).readEV();
+        
+        List<List<Double>> stateEV = new ArrayList<List<Double>>();
+        for (Entry<String, HashMap<String, Double>> entry : state.getMap().entrySet()) {
+            for (Entry<String, Double> items : entry.getValue().entrySet()) {
+            	List<Double> newList = person11DataMap.get(entry.getKey());
+            	List<Double> listTwo = person12DataMap.get(items.getKey());
+            	newList.addAll(listTwo);
+            	stateEV.add(newList);
+            }
+        }
+        return stateEV;
+	}
+	
+	public ArrayList<AMapping> trainNNandGetExamples(List<List<Double>> stateEV) {
+		// run python script with DQL 	        
+        try {
+            
+            // any of the following work, these are just pseudo-examples
+            
+            // using exec(String) to invoke methods
+	        interp.set("arg", stateEV);
+	        interp.set("WombatRLObject", this);
+	        interp.exec("x = mainFun(arg)");
+//            interp.exec("x = mainFun()");
+            Object result1 = interp.getValue("x");
+            d = result1;
+            System.out.println(result1);
+
+        }
+        catch (JepException e) {
+        	// TODO Auto-generated catch block
+        	e.printStackTrace();
+        }
+        
 		return null;
 	}
 	
@@ -397,8 +467,33 @@ public class WombatSimpleRL extends AWombat {
         List<FrameRL> bestK = stMeasure.subList(0, k);
         return bestK;
 	}
+	
+	public AMapping getLSandState(int N) {
+		MLResults mlm = this.learn(this.trainingData);
+        logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
+        String str = "jaccard(x.pref0:given_name,y.pref1:given_name)";// mlm.getLinkSpecification().getMeasure()
+        Instruction inst = new Instruction(
+        		Command.RUN, str, 
+        		Double.toString(0.6), -1, -1, 0);
+        MeasureType type = MeasureFactory.getMeasureType(inst.getMeasureExpression());
+        AMeasure measure = MeasureFactory.createMeasure(type);
+        List<FrameRL> stMeasure  = new ArrayList<FrameRL>();
+        for (String s : sourceUris) {
+        	for (String t : targetUris) {
+        		TreeSet<String> sourceProp = sourceInstance.getInstance(s).getProperty("pref0:given_name");
+        		TreeSet<String> targetProp = targetInstance.getInstance(t).getProperty("pref1:given_name");
+        		double m = ((JaccardMeasure) measure).getSimilarityChar(sourceProp, targetProp);
+        		FrameRL fr = new FrameRL(s, t, m, sourceProp.first(), targetProp.first(), 0);     		
+        		stMeasure.add(fr);
+            }
+        }
+        Collections.sort(stMeasure, Collections.reverseOrder());
+        AMapping state = getNearestToBoundary(stMeasure, N);
+        return state;
+	}
 
 	public void runNextEpisode() {
+		
 		// Initialization
 		// Using supervised batch
 		// return k-pairs with highest sim measure
@@ -474,37 +569,38 @@ public class WombatSimpleRL extends AWombat {
         return envRL;
 	}
 	
-	public EnvRL get3NearestToBoundary(List<FrameRL> stMeasure) throws JepException {
+	public AMapping getNearestToBoundary(List<FrameRL> stMeasure, int N) {
 		Map<Double, FrameRL> distanceBetweenMeasures = new HashMap<Double, FrameRL>();
 		for(FrameRL l: stMeasure){
 			distanceBetweenMeasures.put(Math.abs(l.getSimilarity()-0.5), l);
         }
 		TreeMap<Double, FrameRL> sorted = new TreeMap<Double, FrameRL>(distanceBetweenMeasures);
 
-        List<FrameRL> best3 = new ArrayList<FrameRL>();
+        List<FrameRL> best = new ArrayList<FrameRL>();
         int num = 0;
         for(Map.Entry<Double, FrameRL> entry : sorted.entrySet()) {
-        	if(num >=3) {
+        	if(num >=N+N) {
         		break;
         	}
 	    	Double key = entry.getKey();
 	    	FrameRL value = entry.getValue();
-	    	best3.add(value);
+	    	best.add(value);
 	    	num++;
         }
         
         AMapping result = MappingFactory.createDefaultMapping();
-        for(FrameRL l: best3){
+        for(FrameRL l: best){
             result.add(l.getSource(), l.getTarget(), l.getSimilarity());
         }
         
-        // calculate F-measure
-        double newFMeasure = new FMeasure().calculate(result, new GoldStandard(trainingData), getBeta());
-        // reward
-        double reward = newFMeasure - oldFMeasure;
-        EnvRL envRL = new EnvRL(best3, newFMeasure, reward); 
-        interp.set("EnvRLObject", envRL);
-        return envRL;
+//        // calculate F-measure
+//        double newFMeasure = new FMeasure().calculate(result, new GoldStandard(trainingData), getBeta());
+//        // reward
+//        double reward = newFMeasure - oldFMeasure;
+//        EnvRL envRL = new EnvRL(best3, newFMeasure, reward); 
+//        interp.set("EnvRLObject", envRL);
+//        return envRL;
+        return result;
 	}
 	
 //	replace 3 predicted examples with 3 worst ones (call Wombat, generate random examples and replace 3 worst ones)

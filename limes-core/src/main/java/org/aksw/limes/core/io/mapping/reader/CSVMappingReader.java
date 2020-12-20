@@ -2,6 +2,10 @@ package org.aksw.limes.core.io.mapping.reader;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
 
 import org.aksw.limes.core.io.mapping.AMapping;
 import org.aksw.limes.core.io.mapping.MappingFactory;
@@ -73,6 +77,39 @@ public class CSVMappingReader extends AMappingReader {
                     throw new RuntimeException();
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+
+    }
+    
+    /*
+     * Read Mapping from the input CSV file First column contains URIs
+     * Other columns contain vectors
+     */
+    public HashMap<String, List<Double>> readEV() {
+        try {
+        	HashMap<String, List<Double>> mappingUriEv = new HashMap<String, List<Double>>();
+            BufferedReader reader = new BufferedReader(new FileReader(file));
+            String line = reader.readLine();
+//            reader.close();
+            String split[];
+            line = reader.readLine();
+            while (line != null) {
+            	split = line.split(delimiter);
+            	String URI = split[0];
+            	List<String> EVStr = new ArrayList<>(Arrays.asList(split));
+            	EVStr.remove(0);
+            	List<Double> EV = new ArrayList<Double>();
+            	for (String d : EVStr) {
+            	    EV.add(Double.parseDouble(d));
+            	}
+                mappingUriEv.put(URI, EV);
+                line = reader.readLine();
+            }
+            reader.close();
+            return mappingUriEv;
         } catch (Exception e) {
             e.printStackTrace();
         }
