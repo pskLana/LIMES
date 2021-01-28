@@ -8,6 +8,7 @@ public class MappingEV {
 	private String targetUri;
 	private double similarity;
 	public MappingEV(Integer num, String sourceUri, String targetUri, double similarity) {
+		this.num = num;
 		this.sourceUri = sourceUri;
 		this.targetUri = targetUri;
 		this.similarity = similarity;

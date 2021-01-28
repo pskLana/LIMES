@@ -66,6 +66,7 @@ public class WombatSimpleRL extends AWombat {
     
     private boolean firstIter = false;
     private AMapping groundTruthExamples = null;
+    private List<ExperienceRL> experienceList = new ArrayList<ExperienceRL>();
     /**
      * WombatSimple constructor.
      */
@@ -352,7 +353,7 @@ public class WombatSimpleRL extends AWombat {
 			int N = 10; // for the decision boundary
 			AMapping state = getLSandState(N);
 			// save state as embedding vectors in stateEV
-			FullMappingEV m = getStateAsEV(state);// contains mapping for later and EVs
+			FullMappingEV m = getStateAsEV(state, null);// contains mapping for later and EVs
 //			for (List<Double> temp : stateEV) {
 //	            System.out.println(temp.size());
 //	        }
@@ -366,17 +367,47 @@ public class WombatSimpleRL extends AWombat {
 	        	MappingEV example = m.getMappingByNum(num);
 	            result.add(example.getSourceUri(), example.getTargetUri(), example.getSimilarity());  	
 	        }
+	        // save next state without chosen action and save experience
+	        // remove previous action from the state
+	        FullMappingEV nextState = m.remove(exampleNums);
+	        experienceList.add(new ExperienceRL(m, exampleNums, nextState, 0.0)); 
 	        
 			firstIter = true;
 			
 			return result;
 		} else {
-			runNextEpisode(); 
+//			runNextEpisode(); 
+			
+			int experienceCounter = experienceList.size()-1;
+			
+			// add K=1 new examples nearest to the decision boundary	
+			AMapping newState = getLSandNextState(experienceList.get(experienceCounter).getActions().size()/2.0);
+			// save state as embedding vectors in stateEV
+			FullMappingEV newM = getStateAsEV(newState, experienceList.get(experienceCounter).getActions());// contains mapping for later and EVs
+			// join K new examples with old from the previous iteration 
+			FullMappingEV m = newM.join(experienceList.get(experienceCounter).getNextState());
+			List<Integer> exampleNums = new ArrayList<Integer>();
+			// train NN and get examples to show to the user
+			exampleNums = trainNNandGetExamples(m.getStateEV());
+			
+			AMapping result = MappingFactory.createDefaultMapping();
+	        for(Integer num: exampleNums){
+
+	        	MappingEV example = m.getMappingByNum(num);
+	            result.add(example.getSourceUri(), example.getTargetUri(), example.getSimilarity());  	
+	        }
+	        
+	        // save next state without chosen action and save experience
+	        // remove previous action from the state
+	        FullMappingEV nextState = m.remove(exampleNums);
+	        experienceList.add(new ExperienceRL(m, exampleNums, nextState, 0.0)); 
+			
+			return result;
 		}
-		return null;
+//		return null;
 	}
 	
-	public FullMappingEV getStateAsEV(AMapping state) {
+	public FullMappingEV getStateAsEV(AMapping state, List<Integer> exampleNums) {
 		// get embedding vectors for person11
 		String dataPerson11Path = "src/main/resources/ConEx-vectors/Person1/person11.csv";
 		AMappingReader mappingReader;
@@ -392,7 +423,12 @@ public class WombatSimpleRL extends AWombat {
         person12DataMap = ((CSVMappingReader) mappingReader1).readEV();
         
         List<List<Double>> stateEV = new ArrayList<List<Double>>();
+        
         Integer num = 0;
+        int counterExamplesNums = 0;
+        if(exampleNums != null) {
+        	num = exampleNums.get(0);
+        }
         List<MappingEV> mEV = new ArrayList<MappingEV>();
         for (Entry<String, HashMap<String, Double>> entry : state.getMap().entrySet()) {
             for (Entry<String, Double> items : entry.getValue().entrySet()) {
@@ -402,6 +438,12 @@ public class WombatSimpleRL extends AWombat {
             	stateEV.add(newList);
             	MappingEV mappingEV = new MappingEV(num, entry.getKey(), items.getKey(), items.getValue());
             	mEV.add(mappingEV);
+            	if(exampleNums != null) {
+            		counterExamplesNums++;
+            		if(exampleNums.size() < counterExamplesNums) {
+            			num = exampleNums.get(counterExamplesNums);
+            		}
+            	}
             	num++;
             }
         }
@@ -499,6 +541,30 @@ public class WombatSimpleRL extends AWombat {
         AMapping state = getNearestToBoundary(stMeasure, N);
         return state;
 	}
+	
+	public AMapping getLSandNextState(double e) { // K - amount of examples nearest to the decision boundary
+		MLResults mlm = this.learn(this.trainingData);
+        logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
+        String str = "jaccard(x.pref0:given_name,y.pref1:given_name)";// mlm.getLinkSpecification().getMeasure()
+        Instruction inst = new Instruction(
+        		Command.RUN, str, 
+        		Double.toString(0.6), -1, -1, 0);
+        MeasureType type = MeasureFactory.getMeasureType(inst.getMeasureExpression());
+        AMeasure measure = MeasureFactory.createMeasure(type);
+        List<FrameRL> stMeasure  = new ArrayList<FrameRL>();
+        for (String s : sourceUris) {
+        	for (String t : targetUris) {
+        		TreeSet<String> sourceProp = sourceInstance.getInstance(s).getProperty("pref0:given_name");
+        		TreeSet<String> targetProp = targetInstance.getInstance(t).getProperty("pref1:given_name");
+        		double m = ((JaccardMeasure) measure).getSimilarityChar(sourceProp, targetProp);
+        		FrameRL fr = new FrameRL(s, t, m, sourceProp.first(), targetProp.first(), 0);     		
+        		stMeasure.add(fr);
+            }
+        }
+        Collections.sort(stMeasure, Collections.reverseOrder());
+        AMapping state = getNearestToBoundary(stMeasure, e);
+        return state;
+	}
 
 	public void runNextEpisode() {
 		
@@ -577,7 +643,7 @@ public class WombatSimpleRL extends AWombat {
         return envRL;
 	}
 	
-	public AMapping getNearestToBoundary(List<FrameRL> stMeasure, int N) {
+	public AMapping getNearestToBoundary(List<FrameRL> stMeasure, double N) {
 		Map<Double, FrameRL> distanceBetweenMeasures = new HashMap<Double, FrameRL>();
 		for(FrameRL l: stMeasure){
 			distanceBetweenMeasures.put(Math.abs(l.getSimilarity()-0.5), l);
@@ -587,7 +653,7 @@ public class WombatSimpleRL extends AWombat {
         List<FrameRL> best = new ArrayList<FrameRL>();
         int num = 0;
         for(Map.Entry<Double, FrameRL> entry : sorted.entrySet()) {
-        	if(num >=N+N) {
+        	if(num >=2*N) {
         		break;
         	}
 	    	Double key = entry.getKey();

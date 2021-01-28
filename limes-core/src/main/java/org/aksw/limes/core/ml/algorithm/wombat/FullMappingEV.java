@@ -2,6 +2,8 @@ package org.aksw.limes.core.ml.algorithm.wombat;
 
 import java.util.List;
 
+import org.aksw.limes.core.io.mapping.AMapping;
+
 public class FullMappingEV {
 
 	private List<MappingEV> mEV;
@@ -30,6 +32,22 @@ public class FullMappingEV {
 
 	public void setStateEV(List<List<Double>> stateEV) {
 		this.stateEV = stateEV;
+	}
+
+	public FullMappingEV remove(List<Integer> exampleNums) {
+		for(Integer num: exampleNums){
+        	MappingEV example = this.getMappingByNum(num);
+            mEV.remove(example);
+            stateEV.remove(stateEV.get(num));
+        }
+		return this;
+	}
+
+	public FullMappingEV join(FullMappingEV nextState) {
+//		List<String> newList = new ArrayList<String>(listOne);
+		this.mEV.addAll(nextState.getMappingEV());
+		this.stateEV.addAll(nextState.getStateEV());
+		return this;
 	}
 
 }
