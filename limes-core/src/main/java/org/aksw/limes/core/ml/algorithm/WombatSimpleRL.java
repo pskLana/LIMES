@@ -67,6 +67,7 @@ public class WombatSimpleRL extends AWombat {
     private boolean firstIter = false;
     private AMapping groundTruthExamples = null;
     private List<ExperienceRL> experienceList = new ArrayList<ExperienceRL>();
+    private double currentReward = 0.0;
     /**
      * WombatSimple constructor.
      */
@@ -359,7 +360,7 @@ public class WombatSimpleRL extends AWombat {
 //	        }
 			List<Integer> exampleNums = new ArrayList<Integer>();
 			// train NN and get examples to show to the user
-			exampleNums = trainNNandGetExamples(m.getStateEV());
+			exampleNums = trainNNandGetExamples(m.getStateEV(), false);
 			
 			AMapping result = MappingFactory.createDefaultMapping();
 	        for(Integer num: exampleNums){
@@ -388,7 +389,11 @@ public class WombatSimpleRL extends AWombat {
 			FullMappingEV m = newM.join(experienceList.get(experienceCounter).getNextState());
 			List<Integer> exampleNums = new ArrayList<Integer>();
 			// train NN and get examples to show to the user
-			exampleNums = trainNNandGetExamples(m.getStateEV());
+			if (experienceCounter == size-2) { // if this is the last iteration of AL
+				exampleNums = trainNNandGetExamples(m.getStateEV(), true);
+			} else {
+				exampleNums = trainNNandGetExamples(m.getStateEV(), false);
+			}
 			
 			AMapping result = MappingFactory.createDefaultMapping();
 	        for(Integer num: exampleNums){
@@ -400,9 +405,14 @@ public class WombatSimpleRL extends AWombat {
 	        // save next state without chosen action and save experience
 	        // remove previous action from the state
 	        FullMappingEV nextState = m.remove(exampleNums);
-	        experienceList.add(new ExperienceRL(m, exampleNums, nextState, 0.0)); 
+	        experienceList.add(new ExperienceRL(m, exampleNums, nextState, this.currentReward));
 			
-			return result;
+	        if (experienceCounter == size-2) { 
+	        	return MappingFactory.createDefaultMapping();
+			} else {
+				return result;
+			}
+	        
 		}
 //		return null;
 	}
@@ -451,7 +461,7 @@ public class WombatSimpleRL extends AWombat {
         return m;
 	}
 	
-	public List<Integer> trainNNandGetExamples(List<List<Double>> stateEV) {
+	public List<Integer> trainNNandGetExamples(List<List<Double>> stateEV, boolean isLastIterationOfAL) {
 		// run python script with DQL 	        
         try {
             
@@ -459,8 +469,9 @@ public class WombatSimpleRL extends AWombat {
             
             // using exec(String) to invoke methods
 	        interp.set("arg", stateEV);
+	        interp.set("arg2", isLastIterationOfAL);
 	        interp.set("WombatRLObject", this);
-	        interp.exec("x = mainFun(arg)");
+	        interp.exec("x = mainFun(arg, arg2)");
 //            interp.exec("x = mainFun()");
             Object action = interp.getValue("x"); // so far we take only K=1
 //            d = action;
@@ -617,6 +628,18 @@ public class WombatSimpleRL extends AWombat {
 	        givenList.remove(randomIndex);
 	    }
 	    return receivedList;
+	}
+	
+	public double countFMeasure() {
+		String goldStandardDataFile = "src/main/resources/datasets/Persons1/dataset11_dataset12_goldstandard_person.xml.csv";
+        AMapping goldStandardDataMap = MappingFactory.createDefaultMapping();
+        AMappingReader mappingReader;
+        mappingReader = new CSVMappingReader(goldStandardDataFile);
+        goldStandardDataMap = mappingReader.read();
+		// calculate F-measure
+        double newFMeasure = new FMeasure().calculate(this.trainingData, new GoldStandard(goldStandardDataMap), getBeta());
+        this.currentReward = newFMeasure;
+		return newFMeasure;
 	}
 	
     //Select an action. Via exploration or exploitation

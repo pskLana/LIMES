@@ -158,9 +158,12 @@ class EnvManager():
 	def num_actions_available(self):
 		return self.num_actions    
 
-	def take_action(self, action):
+	def take_action(self, action, isLastIterationOfAL):
 # 		reward = self.tryStep(action.item())     # if action is 0 or 1  
-		reward = 0 # replace for the score calc
+		if not isLastIterationOfAL:
+			reward = 0.0
+		else:
+			reward = WombatRLObject.countFMeasure()
 		self.state_num = self.state_num + 1
 		self.currentAction = action.item()
 		return torch.tensor([reward], device=self.device)
@@ -264,7 +267,7 @@ class QValues():
 dic = {'test':1,
 'device': torch.device("cuda" if torch.cuda.is_available() else "cpu")}
 #### MAIN PART ########
-def mainFun(newExamples):
+def mainFun(newExamples, isLastIterationOfAL):
 	# newExamples = []
 	# newExamples.append(FrameRL("s1", "t1", 0.1, "sProp", "tProp", -1))
 	# newExamples.append(FrameRL("s2", "t2", 0.2, "sProp", "tProp", -1))
@@ -326,8 +329,8 @@ def mainFun(newExamples):
 		# for timestep in count():
 		for timestep in range(0, 6):
 			action = agent.select_action(state, policy_net) #change function
+			reward = em.take_action(action, isLastIterationOfAL) #change function
 			return action.item()
-			reward = em.take_action(action) #change function
 			next_state = em.get_state()
 		# 	return next_state
 			memory.push(Experience(state, action, next_state, reward))

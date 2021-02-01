@@ -107,7 +107,7 @@ public class MLPipeline {
 //                    AMapping classify = oracle.classify(activeLearningExamples);
                     
                     // temporary for oracle feedback
-                    String goldStandardDataFile = "src/main/resources//datasets/Persons1/dataset11_dataset12_goldstandard_person.xml.csv";
+                    String goldStandardDataFile = "src/main/resources/datasets/Persons1/dataset11_dataset12_goldstandard_person.xml.csv";
                     AMapping goldStandardDataMap = MappingFactory.createDefaultMapping();
                     AMappingReader mappingReader;
                     mappingReader = new CSVMappingReader(goldStandardDataFile);
