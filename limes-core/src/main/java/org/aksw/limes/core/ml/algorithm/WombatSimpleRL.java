@@ -90,6 +90,10 @@ public class WombatSimpleRL extends AWombat {
         targetUris = targetCache.getAllUris();
         sourceInstance = sourceCache;
         targetInstance = targetCache;
+        this.sourceCache = sourceCache;
+        this.targetCache = targetCache;
+        sourceSample = sourceCache;
+        targetSample = targetCache;
         bestSolutionNode = null;
         classifiers = null;
         try {

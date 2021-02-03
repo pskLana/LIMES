@@ -89,15 +89,12 @@ public class MLPipeline {
                 AMapping nextExamplesMapping;
                 if(mlAlgorithmName.equals("WOMBAT Simple RL")){
                 	mlm = mla.learn(trainingDataMap);
-                	// on first iteration we ask user 
-                	// for the ground truth (nextExamplesMapping) during active learning
-//                	nextExamplesMapping = mla.getNextExamples(maxIt);
                 } else {
                 	mlm = mla.activeLearn();	
                 }
                 
                 if(mlAlgorithmName.equals("WOMBAT Simple RL")){ // RL version
-                	for(int iter=0; iter<1000; iter++) {
+                	for(int iter=0; iter<10; iter++) {
                 		logger.info("Iteration:" + iter);
                     	nextExamplesMapping = null;
                     	oracle = new AsynchronousServerOracle();
