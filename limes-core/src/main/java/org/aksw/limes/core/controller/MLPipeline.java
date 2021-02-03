@@ -81,7 +81,7 @@ public class MLPipeline {
                 logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
                 return mls.predict(source, target, mlm);
             case SUPERVISED_ACTIVE:
-                // for active learning, need to reiterate and prompt the user for evaluation of examples:
+            	// for active learning, need to reiterate and prompt the user for evaluation of examples:
                 //            boolean stopLearning = false;
                 ActiveMLAlgorithm mla = new ActiveMLAlgorithm(clazz);
                 mla.init(learningParameters, source, target);
@@ -95,30 +95,78 @@ public class MLPipeline {
                 } else {
                 	mlm = mla.activeLearn();	
                 }
-                while (!oracle.isStopped()) {
-                	nextExamplesMapping = mla.getNextExamples(maxIt);
-                    if (nextExamplesMapping.getMap().isEmpty()) {
-                        oracle.stop();
-                        break;
-                    }
-                    logger.info(nextExamplesMapping.toString());
-                 // instead feedback from user - later uncomment
-//                    ActiveLearningExamples activeLearningExamples = new ActiveLearningExamples(nextExamplesMapping, source, target);
-//                    AMapping classify = oracle.classify(activeLearningExamples);
-                    
-                    // temporary for oracle feedback
-                    String goldStandardDataFile = "src/main/resources/datasets/Persons1/dataset11_dataset12_goldstandard_person.xml.csv";
-                    AMapping goldStandardDataMap = MappingFactory.createDefaultMapping();
-                    AMappingReader mappingReader;
-                    mappingReader = new CSVMappingReader(goldStandardDataFile);
-                    goldStandardDataMap = mappingReader.read();
-                    AMapping classify = oracleFeedback(nextExamplesMapping,goldStandardDataMap);
-                    /////////
-                    logger.info(classify.toString());
-                    mlm = mla.activeLearn(classify);
+                
+                if(mlAlgorithmName.equals("WOMBAT Simple RL")){ // RL version
+                	for(int iter=0; iter<1000; iter++) {
+                		logger.info("Iteration:" + iter);
+                    	nextExamplesMapping = null;
+                    	oracle = new AsynchronousServerOracle();
+                        while (!oracle.isStopped()) {
+                        	nextExamplesMapping = mla.getNextExamples(maxIt);
+                            if (nextExamplesMapping.getMap().isEmpty()) {
+                                oracle.stop();
+                                break;
+                            }
+                            logger.info(nextExamplesMapping.toString());
+                         // instead feedback from user - later uncomment
+//                            ActiveLearningExamples activeLearningExamples = new ActiveLearningExamples(nextExamplesMapping, source, target);
+//                            AMapping classify = oracle.classify(activeLearningExamples);
+                            
+                            // temporary for oracle feedback
+                            String goldStandardDataFile = "src/main/resources/datasets/Persons1/dataset11_dataset12_goldstandard_person.xml.csv";
+                            AMapping goldStandardDataMap = MappingFactory.createDefaultMapping();
+                            AMappingReader mappingReader;
+                            mappingReader = new CSVMappingReader(goldStandardDataFile);
+                            goldStandardDataMap = mappingReader.read();
+                            AMapping classify = oracleFeedback(nextExamplesMapping,goldStandardDataMap);
+                            /////////
+                            logger.info(classify.toString());
+                            mlm = mla.activeLearn(classify);
+                            if(classify.size() != 0) {
+                            	final AMapping trainingDataMap1 = trainingDataMap;
+                            	classify.getMap().forEach((k,v) -> {
+                            		trainingDataMap1.add(k, v);
+                            	});
+                            	trainingDataMap = trainingDataMap1;
+                            }
+                        }
+                        logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
+                        
+                    	}
+                } else { // old version
+                        while (!oracle.isStopped()) {
+                        	nextExamplesMapping = mla.getNextExamples(maxIt);
+                            if (nextExamplesMapping.getMap().isEmpty()) {
+                                oracle.stop();
+                                break;
+                            }
+                            logger.info(nextExamplesMapping.toString());
+                         // instead feedback from user - later uncomment
+//                            ActiveLearningExamples activeLearningExamples = new ActiveLearningExamples(nextExamplesMapping, source, target);
+//                            AMapping classify = oracle.classify(activeLearningExamples);
+                            
+                            // temporary for oracle feedback
+                            String goldStandardDataFile = "src/main/resources/datasets/Persons1/dataset11_dataset12_goldstandard_person.xml.csv";
+                            AMapping goldStandardDataMap = MappingFactory.createDefaultMapping();
+                            AMappingReader mappingReader;
+                            mappingReader = new CSVMappingReader(goldStandardDataFile);
+                            goldStandardDataMap = mappingReader.read();
+                            AMapping classify = oracleFeedback(nextExamplesMapping,goldStandardDataMap);
+                            /////////
+                            logger.info(classify.toString());
+                            mlm = mla.activeLearn(classify);
+                            if(mlAlgorithmName.equals("WOMBAT Simple RL") && classify.size() != 0) {
+                            	final AMapping trainingDataMap1 = trainingDataMap;
+                            	classify.getMap().forEach((k,v) -> {
+                            		trainingDataMap1.add(k, v);
+                            	});
+                            	trainingDataMap = trainingDataMap1;
+                            }
+                        }
+                        logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
                 }
-                logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
-                return mla.predict(source, target, mlm);
+
+            	return mla.predict(source, target, mlm);
             case UNSUPERVISED:
                 UnsupervisedMLAlgorithm mlu = new UnsupervisedMLAlgorithm(clazz);
                 mlu.init(learningParameters, source, target);

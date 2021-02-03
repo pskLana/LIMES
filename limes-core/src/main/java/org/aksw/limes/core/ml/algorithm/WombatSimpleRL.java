@@ -68,6 +68,9 @@ public class WombatSimpleRL extends AWombat {
     private AMapping groundTruthExamples = null;
     private List<ExperienceRL> experienceList = new ArrayList<ExperienceRL>();
     private double currentReward = 0.0;
+//    public AMapping trainingData;
+    private int counterAL = 0;
+    private int experienceCounter = -1;
     /**
      * WombatSimple constructor.
      */
@@ -350,6 +353,7 @@ public class WombatSimpleRL extends AWombat {
 	@Override
 	protected AMapping getNextExamples(int size) throws UnsupportedMLImplementationException {
 		if(!firstIter) {
+			counterAL++;
 //			groundTruthExamples = getNextExamplesWombatSimple(size);
 			int N = 10; // for the decision boundary
 			AMapping state = getLSandState(N);
@@ -372,14 +376,12 @@ public class WombatSimpleRL extends AWombat {
 	        // remove previous action from the state
 	        FullMappingEV nextState = m.remove(exampleNums);
 	        experienceList.add(new ExperienceRL(m, exampleNums, nextState, 0.0)); 
-	        
+	        experienceCounter++;
 			firstIter = true;
 			
 			return result;
 		} else {
 //			runNextEpisode(); 
-			
-			int experienceCounter = experienceList.size()-1;
 			
 			// add K=1 new examples nearest to the decision boundary	
 			AMapping newState = getLSandNextState(experienceList.get(experienceCounter).getActions().size()/2.0);
@@ -389,7 +391,7 @@ public class WombatSimpleRL extends AWombat {
 			FullMappingEV m = newM.join(experienceList.get(experienceCounter).getNextState());
 			List<Integer> exampleNums = new ArrayList<Integer>();
 			// train NN and get examples to show to the user
-			if (experienceCounter == size-2) { // if this is the last iteration of AL
+			if (experienceCounter/counterAL == size) { // if this is the last iteration of AL
 				exampleNums = trainNNandGetExamples(m.getStateEV(), true);
 			} else {
 				exampleNums = trainNNandGetExamples(m.getStateEV(), false);
@@ -406,8 +408,10 @@ public class WombatSimpleRL extends AWombat {
 	        // remove previous action from the state
 	        FullMappingEV nextState = m.remove(exampleNums);
 	        experienceList.add(new ExperienceRL(m, exampleNums, nextState, this.currentReward));
+	        experienceCounter++;
 			
-	        if (experienceCounter == size-2) { 
+	        if (experienceCounter/counterAL == size) { // if this is the last iteration of AL
+	        	firstIter = false; // preparation for the next episode of AL
 	        	return MappingFactory.createDefaultMapping();
 			} else {
 				return result;
@@ -532,7 +536,8 @@ public class WombatSimpleRL extends AWombat {
 	public AMapping getLSandState(int N) {
 		MLResults mlm = this.learn(this.trainingData);
         logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
-        String str = "jaccard(x.pref0:given_name,y.pref1:given_name)";// mlm.getLinkSpecification().getMeasure()
+//        String str = "jaccard(x.pref0:given_name,y.pref1:given_name)"; 
+        String str = mlm.getLinkSpecification().getMeasure();
         Instruction inst = new Instruction(
         		Command.RUN, str, 
         		Double.toString(0.6), -1, -1, 0);
