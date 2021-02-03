@@ -123,8 +123,11 @@ public class MLPipeline {
                             logger.info(classify.toString());
                             mlm = mla.activeLearn(classify);
                             if(classify.size() != 0) {
-                            	final AMapping trainingDataMap1 = trainingDataMap;
+                            	AMapping trainingDataMap1 = MappingFactory.createDefaultMapping();//trainingDataMap;
                             	classify.getMap().forEach((k,v) -> {
+                            		trainingDataMap1.add(k, v);
+                            	});
+                            	trainingDataMap.getMap().forEach((k,v) -> {
                             		trainingDataMap1.add(k, v);
                             	});
                             	trainingDataMap = trainingDataMap1;
@@ -155,13 +158,6 @@ public class MLPipeline {
                             /////////
                             logger.info(classify.toString());
                             mlm = mla.activeLearn(classify);
-                            if(mlAlgorithmName.equals("WOMBAT Simple RL") && classify.size() != 0) {
-                            	final AMapping trainingDataMap1 = trainingDataMap;
-                            	classify.getMap().forEach((k,v) -> {
-                            		trainingDataMap1.add(k, v);
-                            	});
-                            	trainingDataMap = trainingDataMap1;
-                            }
                         }
                         logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
                 }

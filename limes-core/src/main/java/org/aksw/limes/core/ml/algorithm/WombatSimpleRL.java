@@ -147,52 +147,6 @@ public class WombatSimpleRL extends AWombat {
                 mlType == MLImplementationType.SUPERVISED_ACTIVE;
     }
 
-    protected AMapping getNextExamplesWombatSimple(int size) throws UnsupportedMLImplementationException {
-        List<RefinementNode> bestNodes = getBestKNodes(refinementTreeRoot, activeLearningRate);
-        AMapping intersectionMapping = MappingFactory.createDefaultMapping();
-        AMapping unionMapping = MappingFactory.createDefaultMapping();
-
-        for(RefinementNode sn : bestNodes){
-            intersectionMapping = MappingOperations.intersection(intersectionMapping, sn.getMapping());
-            unionMapping = MappingOperations.union(unionMapping, sn.getMapping());
-        }
-        AMapping posEntropyMapping = MappingOperations.difference(unionMapping, intersectionMapping);
-
-        TreeSet<LinkEntropy> linkEntropy = new TreeSet<>();
-        int entropyPos = 0, entropyNeg = 0;
-        for(String s : posEntropyMapping.getMap().keySet()){
-            for(String t : posEntropyMapping.getMap().get(s).keySet()){
-                // compute Entropy(s,t)
-                for(RefinementNode sn : bestNodes){
-                    if(sn.getMapping().contains(s, t)){
-                        entropyPos++;
-                    }else{
-                        entropyNeg++;
-                    }
-                }
-                int entropy = entropyPos * entropyNeg;
-                linkEntropy.add(new LinkEntropy(s, t, entropy));
-            }
-        }
-        // get highestEntropyLinks
-        List<LinkEntropy> highestEntropyLinks = new ArrayList<>();
-        int i = 0;
-        Iterator<LinkEntropy> itr = linkEntropy.descendingIterator();
-        while(itr.hasNext() && i < size) {
-            LinkEntropy next = itr.next();
-            if (!trainingData.contains(next.getSourceUri(), next.getTargetUri())) {
-                highestEntropyLinks.add(next);
-                i++;
-            }
-        }
-        AMapping result = MappingFactory.createDefaultMapping();
-        for(LinkEntropy l: highestEntropyLinks){
-            result.add(l.getSourceUri(), l.getTargetUri(), l.getEntropy());
-        }
-        
-        return result;
-    }
-
     @Override
     protected MLResults activeLearn(){
         return learn(new PseudoFMeasure());
@@ -494,45 +448,6 @@ public class WombatSimpleRL extends AWombat {
 		return null;
 	}
 	
-	public List<FrameRL> runNextWombatAndGetRandomExamples(int k) {
-		MLResults mlm = this.learn(this.trainingData);
-        logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
-        // Applying 10 random examples from source and target to link spec
-        List<String> randomSourceList = givenList_whenNumberElementsChosen_shouldReturnRandomElementsNoRepeat(sourceUris);
-        List<String> randomTargetList = givenList_whenNumberElementsChosen_shouldReturnRandomElementsNoRepeat(targetUris);
-        System.out.println(mlm.getLinkSpecification().getMeasure());//setThreshold(0.5);
-        String str = "jaccard(x.pref0:given_name,y.pref1:given_name)";// mlm.getLinkSpecification().getMeasure()
-        Instruction inst = new Instruction(
-        		Command.RUN, str, 
-        		Double.toString(0.6), -1, -1, 0);
-        MeasureType type = MeasureFactory.getMeasureType(inst.getMeasureExpression());
-        AMeasure measure = MeasureFactory.createMeasure(type);
-//        Map<String, Double> stMeasure  = new HashMap<String, Double>();
-        List<FrameRL> stMeasure  = new ArrayList<FrameRL>();
-        int amountOfPositive = 0;
-        for (String s : randomSourceList) {
-        	for (String t : randomTargetList) {
-        		int positive = -1;
-//        		String prop1 = mlm.getLinkSpecification().getProperty1(); How to get properties from link spec ("pref0:given_name") and ("pref1:given_name")???
-        		TreeSet<String> sourceProp = sourceInstance.getInstance(s).getProperty("pref0:given_name");
-        		TreeSet<String> targetProp = targetInstance.getInstance(t).getProperty("pref1:given_name");
-        		double m = ((JaccardMeasure) measure).getSimilarityChar(sourceProp, targetProp);
-//        		double m = measure.getSimilarity("b r a e n", "b r o e n");
-//        		stMeasure.put("["+sourceProp+"]"+"["+targetProp+"]", m);
-//        		stMeasure.put("["+s+"]"+"["+t+"]", m);
-        		if(m >= 0.5) {
-        			amountOfPositive++;
-        			positive = 1;
-        		}
-        		FrameRL fr = new FrameRL(s, t, m, sourceProp.first(), targetProp.first(), positive);     		
-        		stMeasure.add(fr);
-            }
-        }
-        Collections.sort(stMeasure, Collections.reverseOrder());
-        List<FrameRL> bestK = stMeasure.subList(0, k);
-        return bestK;
-	}
-	
 	public AMapping getLSandState(int N) {
 		MLResults mlm = this.learn(this.trainingData);
         logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
@@ -581,59 +496,6 @@ public class WombatSimpleRL extends AWombat {
         AMapping state = getNearestToBoundary(stMeasure, e);
         return state;
 	}
-
-	public void runNextEpisode() {
-		
-		// Initialization
-		// Using supervised batch
-		// return k-pairs with highest sim measure
-		int k = 10;
-		int m = 3;
-		List<FrameRL> stMeasure = runNextWombatAndGetRandomExamples(k);
-		
-		// Start RL
-		List<FrameRL> stMeasure1 = runNextWombatAndGetRandomExamples(m);
-		        
-		        //Compute decision boundary --> m >= 0.5
-		        
-		        
-		        // run python script with DQL 	        
-		        try {
-		            
-		            // any of the following work, these are just pseudo-examples
-		            
-		            // using exec(String) to invoke methods
-			        interp.set("arg", stMeasure);
-			        interp.set("WombatRLObject", this);
-			        interp.exec("x = mainFun(arg)");
-//		            interp.exec("x = mainFun()");
-		            Object result1 = interp.getValue("x");
-		            d = result1;
-		            System.out.println(result1);
-
-		        }
-		        catch (JepException e) {
-		        	// TODO Auto-generated catch block
-		        	e.printStackTrace();
-		        }
-		
-	}
-
-	public List<String> givenList_whenNumberElementsChosen_shouldReturnRandomElementsNoRepeat(List<String> list) {
-	    Random rand = new Random();
-	    List<String> receivedList = new ArrayList<String>();
-	    List<String> givenList = list;
-	 
-	    int numberOfElements = 10;
-	 
-	    for (int i = 0; i < numberOfElements; i++) {
-	        int randomIndex = rand.nextInt(givenList.size());
-	        String randomElement = givenList.get(randomIndex);
-	        receivedList.add(randomElement);
-	        givenList.remove(randomIndex);
-	    }
-	    return receivedList;
-	}
 	
 	public double countFMeasure() {
 		String goldStandardDataFile = "src/main/resources/datasets/Persons1/dataset11_dataset12_goldstandard_person.xml.csv";
@@ -673,8 +535,9 @@ public class WombatSimpleRL extends AWombat {
 	
 	public AMapping getNearestToBoundary(List<FrameRL> stMeasure, double N) {
 		Map<Double, FrameRL> distanceBetweenMeasures = new HashMap<Double, FrameRL>();
+		double threshold = 0.8;
 		for(FrameRL l: stMeasure){
-			distanceBetweenMeasures.put(Math.abs(l.getSimilarity()-0.5), l);
+			distanceBetweenMeasures.put(Math.abs(l.getSimilarity()-threshold), l);
         }
 		TreeMap<Double, FrameRL> sorted = new TreeMap<Double, FrameRL>(distanceBetweenMeasures);
 
@@ -704,16 +567,6 @@ public class WombatSimpleRL extends AWombat {
 //        return envRL;
         return result;
 	}
-	
-//	replace 3 predicted examples with 3 worst ones (call Wombat, generate random examples and replace 3 worst ones)
-//	sort new examples by similarityMeasure and replace 3 first worse examples with self.selectedExamples
-	 public List<FrameRL> replaceWorstExamples(List<FrameRL> selectedExamples) {
-		 List<FrameRL> stMeasure = runNextWombatAndGetRandomExamples(10);
-		 Collections.sort(stMeasure, Collections.reverseOrder());
-		 List<FrameRL> newExamples = new ArrayList<FrameRL>(selectedExamples);
-		 newExamples.addAll(stMeasure.subList(3, stMeasure.size()));
-		 return newExamples;
-	 }
 
 }
 
