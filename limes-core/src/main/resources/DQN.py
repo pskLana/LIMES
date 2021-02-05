@@ -201,8 +201,10 @@ class EnvManager():
 # 				
 # 			self.stateTable[self.state_num] = self.current_state_examples
 			
-			t = self.currentState
-			t[self.currentAction] = 1
+# 			t = self.currentState
+			del self.current_state_examples[self.currentAction]
+			t = self.current_state_examples
+# 			t[self.currentAction] = 1
 			
 			return torch.tensor(t, device=self.device, dtype=torch.float)
 
@@ -265,7 +267,8 @@ class QValues():
 		return target_net(next_states).max(dim=1)[0]
 
 dic = {'test':1,
-'device': torch.device("cuda" if torch.cuda.is_available() else "cpu")}
+'device': torch.device("cuda" if torch.cuda.is_available() else "cpu"),
+'memory': ReplayMemory(100000)}
 #### MAIN PART ########
 def mainFun(newExamples, isLastIterationOfAL):
 	# newExamples = []
@@ -315,7 +318,8 @@ def mainFun(newExamples, isLastIterationOfAL):
 	em = EnvManager(device, newExamples)
 	strategy = EpsilonGreedyStrategy(eps_start, eps_end, eps_decay)
 	agent = Agent(strategy, em.num_actions_available(), device) #change class -> Wombat in Java
-	memory = ReplayMemory(memory_size) #change class -> move to java
+	memory = dic['memory']
+# 	ReplayMemory(memory_size) #change class -> move to java
 	policy_net = DQN()
 	target_net = DQN()
 	target_net.load_state_dict(policy_net.state_dict())
@@ -330,12 +334,13 @@ def mainFun(newExamples, isLastIterationOfAL):
 		for timestep in range(0, 6):
 			action = agent.select_action(state, policy_net) #change function
 			reward = em.take_action(action, isLastIterationOfAL) #change function
-			return action.item()
-			next_state = em.get_state()
+			
+			next_state = em.get_state() # fix next state adding the next state after deleting the previous one
 		# 	return next_state
 			memory.push(Experience(state, action, next_state, reward))
+			
 			# return policy_net.out.weight
-			state = next_state
+			
 			batch_size = 5 # at least 1 experiences should be done
 		
 			if memory.can_provide_sample(batch_size):
@@ -351,6 +356,9 @@ def mainFun(newExamples, isLastIterationOfAL):
 				optimizer.zero_grad()
 				loss.backward()
 				optimizer.step()
+				
+			
+			return action.item()
 
 # 	if em.done:
 # 		episode_durations.append(timestep)
