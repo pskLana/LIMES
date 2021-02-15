@@ -321,6 +321,15 @@ public class WombatSimpleRL extends AWombat {
 //	            System.out.println(temp.size());
 //	        }
 			List<Integer> exampleNums = new ArrayList<Integer>();
+			
+			// initializeRL in python
+        	try {
+				interp.exec("initializeRL()");
+			} catch (JepException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        	
 			// train NN and get examples to show to the user
 			exampleNums = trainNNandGetExamples(m.getStateEV(), false);
 			

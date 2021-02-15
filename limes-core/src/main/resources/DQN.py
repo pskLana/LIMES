@@ -269,7 +269,23 @@ class QValues():
 
 dic = {'test':1,
 'device': torch.device("cuda" if torch.cuda.is_available() else "cpu"),
-'memory': ReplayMemory(100000)}
+'memory': ReplayMemory(100000),
+'strategy': EpsilonGreedyStrategy(1, 0.01, 0.001),
+'policy_net': DQN(),
+'target_net': DQN(),
+'optimizer': None,
+}
+
+def initializeRL():
+# 	pydevDebug()
+	target_net = dic['target_net'] #DQN()
+	target_net.load_state_dict(dic['policy_net'].state_dict())
+	target_net.eval()
+	
+	lr = 0.001
+	optimizer = optim.Adam(params=dic['policy_net'].parameters(), lr=lr)
+	dic['optimizer'] = optimizer
+
 #### MAIN PART ########
 def mainFun(newExamples, isLastIterationOfAL):
 	# newExamples = []
@@ -317,15 +333,13 @@ def mainFun(newExamples, isLastIterationOfAL):
 	device = dic['device']#torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	# em = CartPoleEnvManager(device)
 	em = EnvManager(device, newExamples)
-	strategy = EpsilonGreedyStrategy(eps_start, eps_end, eps_decay)
+	strategy = dic['strategy'] #EpsilonGreedyStrategy(eps_start, eps_end, eps_decay)
 	agent = Agent(strategy, em.num_actions_available(), device) #change class -> Wombat in Java
 	memory = dic['memory']
 # 	ReplayMemory(memory_size) #change class -> move to java
-	policy_net = DQN()
-	target_net = DQN()
-	target_net.load_state_dict(policy_net.state_dict())
-	target_net.eval()
-	optimizer = optim.Adam(params=policy_net.parameters(), lr=lr)
+	policy_net = dic['policy_net'] #DQN()
+	target_net = dic['target_net'] #DQN()
+	optimizer = dic['optimizer']#optim.Adam(params=policy_net.parameters(), lr=lr)
 
 	episode_durations = []
 	for episode in range(num_episodes):

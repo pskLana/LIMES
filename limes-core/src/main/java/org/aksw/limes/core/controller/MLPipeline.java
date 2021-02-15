@@ -129,6 +129,7 @@ public class MLPipeline {
                             	});
                             	trainingDataMap = trainingDataMap1;
                             }
+                            logger.info("Current TestK size: "+trainingDataMap.size());
                         }
                         logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
                         
