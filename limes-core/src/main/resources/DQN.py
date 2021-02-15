@@ -202,7 +202,8 @@ class EnvManager():
 # 			self.stateTable[self.state_num] = self.current_state_examples
 			
 # 			t = self.currentState
-			del self.current_state_examples[self.currentAction]
+
+# 			del self.current_state_examples[self.currentAction]
 			t = self.current_state_examples
 # 			t[self.currentAction] = 1
 			
@@ -253,7 +254,7 @@ class QValues():
 	@staticmethod
 	def get_current(policy_net, states, actions):
 		# change states (list of objects to one dim array of code symbols of all source and target urls)
-		return policy_net(states).gather(dim=1, index=actions.unsqueeze(-1))
+		return policy_net(states).mean(dim=1).gather(dim=0, index=actions.unsqueeze(-1)) #.unsqueeze(-1)
 		
 	@staticmethod        
 	def get_next(target_net, next_states):                
@@ -341,12 +342,12 @@ def mainFun(newExamples, isLastIterationOfAL):
 			
 			# return policy_net.out.weight
 			
-			batch_size = 5 # at least 1 experiences should be done
+			batch_size = 20 # at least 1 experiences should be done
 		
 			if memory.can_provide_sample(batch_size):
 				experiences = memory.sample(batch_size)
 				states, actions, rewards, next_states = extract_tensors(experiences)
-		
+# 				pydevDebug()
 # 				s = processStates(states) # just example change states
 				current_q_values = QValues.get_current(policy_net, states, actions)
 				next_q_values = QValues.get_next(target_net, next_states)
