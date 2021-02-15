@@ -356,6 +356,7 @@ public class WombatSimpleRL extends AWombat {
 			FullMappingEV newM = getStateAsEV(newState, experienceList.get(experienceCounter).getActions());// contains mapping for later and EVs
 			// join K new examples with old from the previous iteration 
 			FullMappingEV m = newM.join(experienceList.get(experienceCounter).getNextState());
+			experienceCounter++;
 			List<Integer> exampleNums = new ArrayList<Integer>();
 			// train NN and get examples to show to the user
 			if (experienceCounter/counterAL == size) { // if this is the last iteration of AL
@@ -375,7 +376,7 @@ public class WombatSimpleRL extends AWombat {
 	        // remove previous action from the state
 	        FullMappingEV nextState = m.remove(exampleNums);
 	        experienceList.add(new ExperienceRL(m, exampleNums, nextState, this.currentReward));
-	        experienceCounter++;
+	        
 			
 	        if (experienceCounter/counterAL == size) { // if this is the last iteration of AL
 	        	firstIter = false; // preparation for the next episode of AL
@@ -383,6 +384,7 @@ public class WombatSimpleRL extends AWombat {
 			} else {
 				return result;
 			}
+	        
 	        
 		}
 //		return null;
