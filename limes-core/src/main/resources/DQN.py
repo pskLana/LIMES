@@ -136,17 +136,14 @@ class Agent():
 class EnvManager():
 	def __init__(self, device, current_state_examples):
 		self.device = device
-		self.state_num = 1
+		self.state_num = 0
 		self.current_state_examples = current_state_examples
 		self.done = False
-		self.num_actions = 13 # take one of 13 pairs
-		self.actions = {1: "take 3 best", 2: "take 3 nearest to 0.5"}
-		self.oldFMeasure = 0.0
-		self.selectedExamples = None
-		self.endState = 5
+		self.num_actions = 1 # take one of 1 pairs
 		self.stateTable = {}
 		self.currentAction = None
 		self.currentState = None
+		self.currentReward = None
 
 	def reset(self):
 		self.state_num = 1
@@ -154,32 +151,22 @@ class EnvManager():
 
 	# def close(self):
 	# 	self.env.close()
+	
+	def initializeCurrentState(self, current_state_examples):
+		self.current_state_examples = current_state_examples
 
 	def num_actions_available(self):
 		return self.num_actions    
 
 	def take_action(self, action, isLastIterationOfAL):
-# 		reward = self.tryStep(action.item())     # if action is 0 or 1  
 		if not isLastIterationOfAL:
 			reward = 0.0
 		else:
 			reward = WombatRLObject.countFMeasure()
 		self.state_num = self.state_num + 1
-		self.currentAction = action.item()
+		self.currentAction = action
+		self.currentReward = torch.tensor([reward], device=self.device)
 		return torch.tensor([reward], device=self.device)
-	
-	def tryStep(self, action):
-		envRL = None
-		if action == 0: # take 3 best
-			envRL = WombatRLObject.get3Best(self.current_state_examples)
-		else: # take 3 nearest to 0.5
-			envRL = WombatRLObject.get3NearestToBoundary(self.current_state_examples)
-
-		self.selectedExamples = envRL.getSelectedExamples()
-		self.newFMeasure = envRL.getNewFMeasure()
-		reward = envRL.getReward()
-		self.oldFMeasure = self.newFMeasure
-		return reward
 
 	def just_starting(self):
 		return self.state_num == 1
@@ -204,10 +191,14 @@ class EnvManager():
 # 			t = self.currentState
 
 # 			del self.current_state_examples[self.currentAction]
-			t = self.current_state_examples
+# 			t = torch.tensor(self.current_state_examples, device=self.device, dtype=torch.float)
 # 			t[self.currentAction] = 1
 			
-			return torch.tensor(t, device=self.device, dtype=torch.float)
+# 			return torch.tensor(t, device=self.device, dtype=torch.float)
+
+			self.currentState = torch.tensor(self.current_state_examples, device=self.device, dtype=torch.float)
+# 			torch.tensor([0,0,0,0,0,0,0,0,0,0,0,0,0], device=self.device, dtype=torch.float)
+			return self.currentState
 
 def plot(values, moving_avg_period):
 	plt.figure(2)
@@ -269,6 +260,7 @@ class QValues():
 
 dic = {'test':1,
 'device': torch.device("cuda" if torch.cuda.is_available() else "cpu"),
+'ema': None,
 'memory': ReplayMemory(100000),
 'strategy': EpsilonGreedyStrategy(1, 0.01, 0.001),
 'policy_net': DQN(),
@@ -278,6 +270,8 @@ dic = {'test':1,
 
 def initializeRL():
 # 	pydevDebug()
+	dic['ema'] = EnvManager(dic['device'], None)
+
 	target_net = dic['target_net'] #DQN()
 	target_net.load_state_dict(dic['policy_net'].state_dict())
 	target_net.eval()
@@ -332,7 +326,8 @@ def mainFun(newExamples, isLastIterationOfAL):
 
 	device = dic['device']#torch.device("cuda" if torch.cuda.is_available() else "cpu")
 	# em = CartPoleEnvManager(device)
-	em = EnvManager(device, newExamples)
+	em = dic['ema']
+	em.initializeCurrentState(newExamples)
 	strategy = dic['strategy'] #EpsilonGreedyStrategy(eps_start, eps_end, eps_decay)
 	agent = Agent(strategy, em.num_actions_available(), device) #change class -> Wombat in Java
 	memory = dic['memory']
@@ -342,15 +337,23 @@ def mainFun(newExamples, isLastIterationOfAL):
 	optimizer = dic['optimizer']#optim.Adam(params=policy_net.parameters(), lr=lr)
 
 	episode_durations = []
-	for episode in range(num_episodes):
-		em.reset()
+# 		em.reset()
+	if em.state_num == 0:
 		state = em.get_state() #starting state
-		# for timestep in count():
+		action = agent.select_action(state, policy_net)
+		reward = em.take_action(action, isLastIterationOfAL)
+		return action.item()
+	else:
+		
+# 		for timestep in count():
 		for timestep in range(0, 6):
-			action = agent.select_action(state, policy_net) #change function
-			reward = em.take_action(action, isLastIterationOfAL) #change function
+			state = em.currentState
+			action = em.currentAction
+			reward = em.currentReward
 			
-			next_state = em.get_state() # fix next state adding the next state after deleting the previous one
+			next_state = em.get_state()
+			next_action = agent.select_action(next_state, policy_net)
+			next_reward = em.take_action(next_action, isLastIterationOfAL)
 		# 	return next_state
 			memory.push(Experience(state, action, next_state, reward))
 			
@@ -362,7 +365,8 @@ def mainFun(newExamples, isLastIterationOfAL):
 				experiences = memory.sample(batch_size)
 				states, actions, rewards, next_states = extract_tensors(experiences)
 # 				pydevDebug()
-# 				s = processStates(states) # just example change states
+	# 				pydevDebug()
+	# 				s = processStates(states) # just example change states
 				current_q_values = QValues.get_current(policy_net, states, actions)
 				next_q_values = QValues.get_next(target_net, next_states)
 				target_q_values = (next_q_values * gamma) + rewards
@@ -373,7 +377,7 @@ def mainFun(newExamples, isLastIterationOfAL):
 				optimizer.step()
 				
 			
-			return action.item()
+			return next_action.item()
 
 # 	if em.done:
 # 		episode_durations.append(timestep)
