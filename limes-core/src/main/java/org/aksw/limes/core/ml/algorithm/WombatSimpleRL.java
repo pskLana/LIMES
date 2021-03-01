@@ -463,10 +463,27 @@ public class WombatSimpleRL extends AWombat {
 		return null;
 	}
 	
+    public AMapping executeLS(LinkSpecification ls, ACache sCache, ACache tCache) {
+        Rewriter rw = RewriterFactory.getDefaultRewriter();
+        LinkSpecification rwLs = rw.rewrite(ls);
+        IPlanner planner = ExecutionPlannerFactory.getPlanner(ExecutionPlannerType.DEFAULT, sCache, tCache);
+        assert planner != null;
+        ExecutionEngine engine = ExecutionEngineFactory.getEngine(ExecutionEngineType.DEFAULT, sCache, tCache,
+                "?" + sourceVariable, "?" + targetVariable, 0, 1);
+        assert engine != null;
+        AMapping resultMap = engine.execute(rwLs, planner);
+        return resultMap.getSubMap(ls.getThreshold());
+    }
+	
 	public AMapping getLSandState(int N) {
 		MLResults mlm = this.learn(this.trainingData);
         logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
 //        String str = "jaccard(x.pref0:given_name,y.pref1:given_name)"; 
+        
+        LinkSpecification ls = mlm.linkspec;
+//        AMapping b = executeLS(ls, sourceCache, targetCache); // getting mapping for the LS
+        AMapping results = LSPipeline.execute(sourceCache, targetCache, ls);
+        
         String str = mlm.getLinkSpecification().getMeasure();
         Instruction inst = new Instruction(
         		Command.RUN, str, 
