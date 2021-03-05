@@ -54,6 +54,8 @@ public abstract class AMapping implements IMapping {
     public abstract AMapping getBestOneToNMapping();
 
     public abstract AMapping getSubMap(double threshold);
+    
+    public abstract AMapping getSubMap(double d, double e);
 
     /**
      * Returns the best one to one mapping with a bias towards the source Should
@@ -147,6 +149,5 @@ public abstract class AMapping implements IMapping {
             return false;
         return true;
     }
-
 
 }

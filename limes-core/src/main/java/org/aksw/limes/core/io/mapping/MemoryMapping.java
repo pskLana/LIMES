@@ -88,6 +88,33 @@ public class MemoryMapping extends AMapping{
         }
         return m;
     }
+    
+    /**
+     * Returns a mapping that contains all elements of the current mapping that
+     * have similarity between two thresholds.
+     *
+     * @param threshold
+     *         Similarity threshold for filtering
+     * @return Mapping that contains all elements (s,t) with sim(s,t) between two thresholds
+     */
+    public AMapping getSubMap(double thresholdLeft, double thresholdRight) {
+        AMapping m = MappingFactory.createDefaultMapping();
+        HashMap<String, TreeSet<String>> pairs;
+        if (reversedMap == null || reversedMap.size() == 0) {
+            initReversedMap();
+        }
+        for (Double d : reversedMap.keySet()) {
+            if (d.doubleValue() >= thresholdLeft && d.doubleValue() <= thresholdRight) {
+                pairs = reversedMap.get(d);
+                for (String s : pairs.keySet()) {
+                    for (String t : pairs.get(s)) {
+                        m.add(s, t, d);
+                    }
+                }
+            }
+        }
+        return m;
+    }
 
     /**
      * Add a batch of similarities to the mapping

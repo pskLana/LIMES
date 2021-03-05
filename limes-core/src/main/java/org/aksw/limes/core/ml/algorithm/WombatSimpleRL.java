@@ -71,6 +71,8 @@ public class WombatSimpleRL extends AWombat {
 //    public AMapping trainingData;
     private int counterAL = 0;
     private int experienceCounter = -1;
+    private double decisionBoundaryTheshold = 0.8;
+    private double epsilon = 0.1;
     /**
      * WombatSimple constructor.
      */
@@ -477,56 +479,46 @@ public class WombatSimpleRL extends AWombat {
 	
 	public AMapping getLSandState(int N) {
 		MLResults mlm = this.learn(this.trainingData);
-        logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
+//        logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
 //        String str = "jaccard(x.pref0:given_name,y.pref1:given_name)"; 
-        
-        LinkSpecification ls = mlm.linkspec;
-//        AMapping b = executeLS(ls, sourceCache, targetCache); // getting mapping for the LS
+		
+        LinkSpecification ls = mlm.getLinkSpecification();
+        ls.setThreshold(decisionBoundaryTheshold);
+        logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
+  
+//        AMapping results = executeLS(ls, sourceCache, targetCache); // getting mapping for the LS
         AMapping results = LSPipeline.execute(sourceCache, targetCache, ls);
-        
-        String str = mlm.getLinkSpecification().getMeasure();
-        Instruction inst = new Instruction(
-        		Command.RUN, str, 
-        		Double.toString(0.6), -1, -1, 0);
-        MeasureType type = MeasureFactory.getMeasureType(inst.getMeasureExpression());
-        AMeasure measure = MeasureFactory.createMeasure(type);
-        List<FrameRL> stMeasure  = new ArrayList<FrameRL>();
-        for (String s : sourceUris) {
-        	for (String t : targetUris) {
-        		TreeSet<String> sourceProp = sourceInstance.getInstance(s).getProperty("pref0:given_name");
-        		TreeSet<String> targetProp = targetInstance.getInstance(t).getProperty("pref1:given_name");
-        		double m = ((JaccardMeasure) measure).getSimilarityChar(sourceProp, targetProp);
-        		FrameRL fr = new FrameRL(s, t, m, sourceProp.first(), targetProp.first(), 0);     		
-        		stMeasure.add(fr);
-            }
-        }
-        Collections.sort(stMeasure, Collections.reverseOrder());
-        AMapping state = getNearestToBoundary(stMeasure, N);
-        return state;
+        AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon);
+        return subMapping;
 	}
 	
 	public AMapping getLSandNextState(double e) { // K - amount of examples nearest to the decision boundary
 		MLResults mlm = this.learn(this.trainingData);
         logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
-        String str = "jaccard(x.pref0:given_name,y.pref1:given_name)";// mlm.getLinkSpecification().getMeasure()
-        Instruction inst = new Instruction(
-        		Command.RUN, str, 
-        		Double.toString(0.6), -1, -1, 0);
-        MeasureType type = MeasureFactory.getMeasureType(inst.getMeasureExpression());
-        AMeasure measure = MeasureFactory.createMeasure(type);
-        List<FrameRL> stMeasure  = new ArrayList<FrameRL>();
-        for (String s : sourceUris) {
-        	for (String t : targetUris) {
-        		TreeSet<String> sourceProp = sourceInstance.getInstance(s).getProperty("pref0:given_name");
-        		TreeSet<String> targetProp = targetInstance.getInstance(t).getProperty("pref1:given_name");
-        		double m = ((JaccardMeasure) measure).getSimilarityChar(sourceProp, targetProp);
-        		FrameRL fr = new FrameRL(s, t, m, sourceProp.first(), targetProp.first(), 0);     		
-        		stMeasure.add(fr);
-            }
-        }
-        Collections.sort(stMeasure, Collections.reverseOrder());
-        AMapping state = getNearestToBoundary(stMeasure, e);
-        return state;
+        LinkSpecification ls = mlm.linkspec;
+//      AMapping b = executeLS(ls, sourceCache, targetCache); // getting mapping for the LS
+	    AMapping results = LSPipeline.execute(sourceCache, targetCache, ls);
+	    AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon);
+      
+        //        String str = "jaccard(x.pref0:given_name,y.pref1:given_name)";// mlm.getLinkSpecification().getMeasure()
+//        Instruction inst = new Instruction(
+//        		Command.RUN, str, 
+//        		Double.toString(0.6), -1, -1, 0);
+//        MeasureType type = MeasureFactory.getMeasureType(inst.getMeasureExpression());
+//        AMeasure measure = MeasureFactory.createMeasure(type);
+//        List<FrameRL> stMeasure  = new ArrayList<FrameRL>();
+//        for (String s : sourceUris) {
+//        	for (String t : targetUris) {
+//        		TreeSet<String> sourceProp = sourceInstance.getInstance(s).getProperty("pref0:given_name");
+//        		TreeSet<String> targetProp = targetInstance.getInstance(t).getProperty("pref1:given_name");
+//        		double m = ((JaccardMeasure) measure).getSimilarityChar(sourceProp, targetProp);
+//        		FrameRL fr = new FrameRL(s, t, m, sourceProp.first(), targetProp.first(), 0);     		
+//        		stMeasure.add(fr);
+//            }
+//        }
+//        Collections.sort(stMeasure, Collections.reverseOrder());
+//        AMapping state = getNearestToBoundary(stMeasure, e);
+        return subMapping.getBestOneToNMapping();
 	}
 	
 	public double countFMeasure() {

@@ -81,4 +81,10 @@ public class HybridMapping extends AMapping {
 		return null;
 	}
 
+	@Override
+	public AMapping getSubMap(double d, double e) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
