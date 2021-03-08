@@ -72,7 +72,7 @@ public class WombatSimpleRL extends AWombat {
     private int counterAL = 0;
     private int experienceCounter = -1;
     private double decisionBoundaryTheshold = 0.8;
-    private double epsilon = 0.1;
+    private double epsilon = 0.05;
     /**
      * WombatSimple constructor.
      */
@@ -394,14 +394,14 @@ public class WombatSimpleRL extends AWombat {
 	
 	public FullMappingEV getStateAsEV(AMapping state, List<Integer> exampleNums) {
 		// get embedding vectors for person11
-		String dataPerson11Path = "src/main/resources/ConEx-vectors/Person1/person11.csv";
+		String dataPerson11Path = "src/main/resources/ConEx-vectors/Abt-Buy/Abt.csv";
 		AMappingReader mappingReader;
     	mappingReader = new CSVMappingReader(dataPerson11Path);
     	HashMap<String, List<Double>> person11DataMap = new HashMap<String, List<Double>>();
         person11DataMap = ((CSVMappingReader) mappingReader).readEV();
         
         // get embedding vectors for person12
-        String dataPerson12Path = "src/main/resources/ConEx-vectors/Person1/person12.csv";
+        String dataPerson12Path = "src/main/resources/ConEx-vectors/Abt-Buy/Buy.csv";
 		AMappingReader mappingReader1;
     	mappingReader1 = new CSVMappingReader(dataPerson12Path);
     	HashMap<String, List<Double>> person12DataMap = new HashMap<String, List<Double>>();
@@ -518,7 +518,7 @@ public class WombatSimpleRL extends AWombat {
 //        }
 //        Collections.sort(stMeasure, Collections.reverseOrder());
 //        AMapping state = getNearestToBoundary(stMeasure, e);
-        return subMapping.getBestOneToNMapping();
+        return subMapping.getRandomElementMap();
 	}
 	
 	public double countFMeasure() {

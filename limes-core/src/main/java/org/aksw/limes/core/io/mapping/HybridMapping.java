@@ -87,4 +87,10 @@ public class HybridMapping extends AMapping {
 		return null;
 	}
 
+	@Override
+	public AMapping getRandomElementMap() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

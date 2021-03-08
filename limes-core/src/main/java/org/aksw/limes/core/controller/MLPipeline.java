@@ -110,7 +110,7 @@ public class MLPipeline {
 //                            AMapping classify = oracle.classify(activeLearningExamples);
                             
                             // temporary for oracle feedback
-                            String goldStandardDataFile = "src/main/resources/datasets/Persons1/dataset11_dataset12_goldstandard_person.xml.csv";
+                            String goldStandardDataFile = "src/main/resources/datasets/Abt-Buy/abt_buy_perfectMapping.csv";
                             AMapping goldStandardDataMap = MappingFactory.createDefaultMapping();
                             AMappingReader mappingReader;
                             mappingReader = new CSVMappingReader(goldStandardDataFile);
@@ -143,17 +143,9 @@ public class MLPipeline {
                             }
                             logger.info(nextExamplesMapping.toString());
                          // instead feedback from user - later uncomment
-//                            ActiveLearningExamples activeLearningExamples = new ActiveLearningExamples(nextExamplesMapping, source, target);
-//                            AMapping classify = oracle.classify(activeLearningExamples);
+                            ActiveLearningExamples activeLearningExamples = new ActiveLearningExamples(nextExamplesMapping, source, target);
+                            AMapping classify = oracle.classify(activeLearningExamples);
                             
-                            // temporary for oracle feedback
-                            String goldStandardDataFile = "src/main/resources/datasets/Persons1/dataset11_dataset12_goldstandard_person.xml.csv";
-                            AMapping goldStandardDataMap = MappingFactory.createDefaultMapping();
-                            AMappingReader mappingReader;
-                            mappingReader = new CSVMappingReader(goldStandardDataFile);
-                            goldStandardDataMap = mappingReader.read();
-                            AMapping classify = oracleFeedback(nextExamplesMapping,goldStandardDataMap);
-                            /////////
                             logger.info(classify.toString());
                             mlm = mla.activeLearn(classify);
                         }

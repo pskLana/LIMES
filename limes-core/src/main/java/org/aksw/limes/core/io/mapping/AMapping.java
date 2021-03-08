@@ -56,6 +56,8 @@ public abstract class AMapping implements IMapping {
     public abstract AMapping getSubMap(double threshold);
     
     public abstract AMapping getSubMap(double d, double e);
+    
+    public abstract AMapping getRandomElementMap();
 
     /**
      * Returns the best one to one mapping with a bias towards the source Should

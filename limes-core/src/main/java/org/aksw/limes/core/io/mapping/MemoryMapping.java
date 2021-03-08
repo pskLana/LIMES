@@ -3,6 +3,7 @@ package org.aksw.limes.core.io.mapping;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -113,6 +114,35 @@ public class MemoryMapping extends AMapping{
                 }
             }
         }
+        return m;
+    }
+    
+    /**
+     * Returns a mapping that contains one random element of the current mapping.
+     *
+     * @return Mapping that contains one element (s,t) with sim(s,t)
+     */
+    public AMapping getRandomElementMap() {
+        AMapping m = MappingFactory.createDefaultMapping();
+        HashMap<String, TreeSet<String>> pairs;
+        if (reversedMap == null || reversedMap.size() == 0) {
+            initReversedMap();
+        }
+
+        Random generator = new Random();
+        Object[] values = reversedMap.keySet().toArray();
+        Double d = (Double) values[generator.nextInt(values.length)];
+        pairs = reversedMap.get(d);
+        
+        generator = new Random();
+        values = pairs.keySet().toArray();
+        String s = (String) values[generator.nextInt(values.length)];
+        
+        generator = new Random();
+        values = pairs.get(s).toArray();
+        String t = (String) values[generator.nextInt(values.length)];
+        
+        m.add(s, t, d);
         return m;
     }
 
