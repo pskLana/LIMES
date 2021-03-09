@@ -3,10 +3,13 @@ package org.aksw.limes.core.io.mapping;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.aksw.limes.core.ml.algorithm.ExperienceRL;
+import org.aksw.limes.core.ml.algorithm.wombat.MappingEV;
 import org.aksw.limes.core.util.RandomStringGenerator;
 
 /**
@@ -122,7 +125,7 @@ public class MemoryMapping extends AMapping{
      *
      * @return Mapping that contains one element (s,t) with sim(s,t)
      */
-    public AMapping getRandomElementMap() {
+    public AMapping getRandomElementMap(List<ExperienceRL> experienceList) {
         AMapping m = MappingFactory.createDefaultMapping();
         HashMap<String, TreeSet<String>> pairs;
         if (reversedMap == null || reversedMap.size() == 0) {
@@ -141,6 +144,15 @@ public class MemoryMapping extends AMapping{
         generator = new Random();
         values = pairs.get(s).toArray();
         String t = (String) values[generator.nextInt(values.length)];
+        
+        for(ExperienceRL exp : experienceList) {
+        	Integer action = exp.getActions().get(0);
+        	String source = exp.getState().getMappingByNum(action).getSourceUri();
+        	String target = exp.getState().getMappingByNum(action).getTargetUri();
+        	if(source.equals(s) && target.equals(t)) {
+        		getRandomElementMap(experienceList);
+        	}
+        }
         
         m.add(s, t, d);
         return m;

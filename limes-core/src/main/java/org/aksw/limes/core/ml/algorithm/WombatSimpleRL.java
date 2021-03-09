@@ -343,7 +343,8 @@ public class WombatSimpleRL extends AWombat {
 	        }
 	        // save next state without chosen action and save experience
 	        // remove previous action from the state
-	        FullMappingEV nextState = m.remove(exampleNums);
+	        FullMappingEV m1 = getStateAsEV(state, null);
+	        FullMappingEV nextState = m1.remove(exampleNums);
 	        experienceList.add(new ExperienceRL(m, exampleNums, nextState, 0.0)); 
 	        experienceCounter++;
 			firstIter = true;
@@ -354,10 +355,13 @@ public class WombatSimpleRL extends AWombat {
 			
 			// add K=1 new examples nearest to the decision boundary	
 			AMapping newState = getLSandNextState(experienceList.get(experienceCounter).getActions().size()/2.0);
+			AMapping newState1 = getLSandNextState(experienceList.get(experienceCounter).getActions().size()/2.0);
 			// save state as embedding vectors in stateEV
 			FullMappingEV newM = getStateAsEV(newState, experienceList.get(experienceCounter).getActions());// contains mapping for later and EVs
+			FullMappingEV newM1 = getStateAsEV(newState1, experienceList.get(experienceCounter).getActions());
 			// join K new examples with old from the previous iteration 
 			FullMappingEV m = newM.join(experienceList.get(experienceCounter).getNextState());
+			FullMappingEV m1 = newM1.join(experienceList.get(experienceCounter).getNextState());
 			experienceCounter++;
 			List<Integer> exampleNums = new ArrayList<Integer>();
 			// train NN and get examples to show to the user
@@ -376,7 +380,7 @@ public class WombatSimpleRL extends AWombat {
 	        
 	        // save next state without chosen action and save experience
 	        // remove previous action from the state
-	        FullMappingEV nextState = m.remove(exampleNums);
+	        FullMappingEV nextState = m1.remove(exampleNums);
 	        experienceList.add(new ExperienceRL(m, exampleNums, nextState, this.currentReward));
 	        
 			
@@ -518,11 +522,11 @@ public class WombatSimpleRL extends AWombat {
 //        }
 //        Collections.sort(stMeasure, Collections.reverseOrder());
 //        AMapping state = getNearestToBoundary(stMeasure, e);
-        return subMapping.getRandomElementMap();
+        return subMapping.getRandomElementMap(experienceList);
 	}
 	
 	public double countFMeasure() {
-		String goldStandardDataFile = "src/main/resources/datasets/Persons1/dataset11_dataset12_goldstandard_person.xml.csv";
+		String goldStandardDataFile = "src/main/resources/datasets/Abt-Buy/abt_buy_perfectMapping.csv";
         AMapping goldStandardDataMap = MappingFactory.createDefaultMapping();
         AMappingReader mappingReader;
         mappingReader = new CSVMappingReader(goldStandardDataFile);

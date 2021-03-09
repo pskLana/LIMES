@@ -1,6 +1,9 @@
 package org.aksw.limes.core.io.mapping;
 
 import java.util.HashMap;
+import java.util.List;
+
+import org.aksw.limes.core.ml.algorithm.ExperienceRL;
 
 /**
  * @author Mohamed Sherif {@literal <}sherif {@literal @} informatik.uni-leipzig.de{@literal >}
@@ -88,7 +91,7 @@ public class HybridMapping extends AMapping {
 	}
 
 	@Override
-	public AMapping getRandomElementMap() {
+	public AMapping getRandomElementMap(List<ExperienceRL> experienceList) {
 		// TODO Auto-generated method stub
 		return null;
 	}

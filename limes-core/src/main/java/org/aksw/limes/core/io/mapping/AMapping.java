@@ -1,8 +1,10 @@
 package org.aksw.limes.core.io.mapping;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.TreeSet;
 
+import org.aksw.limes.core.ml.algorithm.ExperienceRL;
 import org.apache.jena.vocabulary.OWL;
 
 /**
@@ -57,7 +59,7 @@ public abstract class AMapping implements IMapping {
     
     public abstract AMapping getSubMap(double d, double e);
     
-    public abstract AMapping getRandomElementMap();
+    public abstract AMapping getRandomElementMap(List<ExperienceRL> experienceList);
 
     /**
      * Returns the best one to one mapping with a bias towards the source Should
