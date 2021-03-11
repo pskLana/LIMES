@@ -1,13 +1,28 @@
 package org.aksw.limes.core.ml.algorithm.wombat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.aksw.limes.core.io.mapping.AMapping;
 
-public class FullMappingEV {
+public class FullMappingEV implements Cloneable {
 
 	private List<MappingEV> mEV;
 	private List<List<Double>> stateEV;
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+        FullMappingEV cloned = (FullMappingEV) super.clone();
+        cloned.mEV = new ArrayList<>();
+        for (MappingEV item : mEV) {
+        	cloned.mEV.add((MappingEV) item.clone());
+        }
+        cloned.stateEV = new ArrayList<>();
+        for (List<Double> item : stateEV) {
+        	cloned.stateEV.add(new ArrayList<>(item));
+        }
+        return cloned;
+    }
 
 	public FullMappingEV(List<MappingEV> mEV, List<List<Double>> stateEV) {
 		this.mEV = mEV;

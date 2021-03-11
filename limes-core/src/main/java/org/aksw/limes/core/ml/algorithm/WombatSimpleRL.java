@@ -343,11 +343,18 @@ public class WombatSimpleRL extends AWombat {
 	        }
 	        // save next state without chosen action and save experience
 	        // remove previous action from the state
-	        FullMappingEV m1 = getStateAsEV(state, null);
-	        FullMappingEV nextState = m1.remove(exampleNums);
-	        experienceList.add(new ExperienceRL(m, exampleNums, nextState, 0.0)); 
-	        experienceCounter++;
-			firstIter = true;
+	        FullMappingEV m1;
+			try {
+				m1 = (FullMappingEV) m.clone();
+				FullMappingEV nextState = m1.remove(exampleNums);
+		        experienceList.add(new ExperienceRL(m, exampleNums, nextState, 0.0)); 
+		        experienceCounter++;
+				firstIter = true;
+			} catch (CloneNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}// implement clone()
+	        
 			
 			return result;
 		} else {
@@ -377,8 +384,15 @@ public class WombatSimpleRL extends AWombat {
 	        
 	        // save next state without chosen action and save experience
 	        // remove previous action from the state
-	        FullMappingEV nextState = m.remove(exampleNums); // implement clone()
-	        experienceList.add(new ExperienceRL(m, exampleNums, nextState, this.currentReward));
+	        try {
+				FullMappingEV m1 = (FullMappingEV) m.clone();
+				FullMappingEV nextState = m1.remove(exampleNums); // implement clone()
+		        experienceList.add(new ExperienceRL(m, exampleNums, nextState, this.currentReward));
+			} catch (CloneNotSupportedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	        
 			
 	        if (experienceCounter/counterAL == size) { // if this is the last iteration of AL
 	        	firstIter = false; // preparation for the next episode of AL
@@ -535,42 +549,4 @@ public class WombatSimpleRL extends AWombat {
         interp.set("EnvRLObject", envRL);
         return envRL;
 	}
-	
-	public AMapping getNearestToBoundary(List<FrameRL> stMeasure, double N) {
-		Map<Double, FrameRL> distanceBetweenMeasures = new HashMap<Double, FrameRL>();
-		double threshold = 0.8;
-		for(FrameRL l: stMeasure){
-			distanceBetweenMeasures.put(Math.abs(l.getSimilarity()-threshold), l);
-        }
-		TreeMap<Double, FrameRL> sorted = new TreeMap<Double, FrameRL>(distanceBetweenMeasures);
-
-        List<FrameRL> best = new ArrayList<FrameRL>();
-        int num = 0;
-        for(Map.Entry<Double, FrameRL> entry : sorted.entrySet()) {
-        	if(num >=2*N) {
-        		break;
-        	}
-	    	Double key = entry.getKey();
-	    	FrameRL value = entry.getValue();
-	    	best.add(value);
-	    	num++;
-        }
-        
-        AMapping result = MappingFactory.createDefaultMapping();
-        for(FrameRL l: best){
-            result.add(l.getSource(), l.getTarget(), l.getSimilarity());
-        }
-        
-//        // calculate F-measure
-//        double newFMeasure = new FMeasure().calculate(result, new GoldStandard(trainingData), getBeta());
-//        // reward
-//        double reward = newFMeasure - oldFMeasure;
-//        EnvRL envRL = new EnvRL(best3, newFMeasure, reward); 
-//        interp.set("EnvRLObject", envRL);
-//        return envRL;
-        return result;
-	}
-
 }
-
-

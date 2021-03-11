@@ -114,17 +114,10 @@ public class MemoryMapping extends AMapping{
                 for (String s : pairs.keySet()) {
                     for (String t : pairs.get(s)) {
                     	// check whether pair already exists in training, if not then add
-                    	for(Entry<String, HashMap<String, Double>> itemTraining : trainingData.getMap().entrySet()) {
-                    		for(Entry<String, Double> valTraining : itemTraining.getValue().entrySet()) {
-            		        	if(!itemTraining.getKey().equals(s) && !valTraining.getKey().equals(t)) {
-            		        		m.add(s, t, d);
-            		        	}
-            		        	else {
-//            		        		System.out.println("s:"+s+"t:"+t+"d:"+d);
-            		        	}
-                    		}
-                    	}
-                        
+                    	HashMap<String, Double> itemTraining = trainingData.getMap().get(s);
+                    	if (itemTraining == null || !itemTraining.containsKey(t)) {
+                    		m.add(s, t, d);
+                    	}                        
                     }
                 }
             }
@@ -143,43 +136,37 @@ public class MemoryMapping extends AMapping{
         if (reversedMap == null || reversedMap.size() == 0) {
             initReversedMap();
         }
+        assert reversedMap.size() == map.size();
 
-        Random generator = new Random();
-        Object[] values = reversedMap.keySet().toArray();
-        Double d = (Double) values[generator.nextInt(values.length)];
-        pairs = reversedMap.get(d);
-        
-        generator = new Random();
-        values = pairs.keySet().toArray();
-        String s = (String) values[generator.nextInt(values.length)];
-        
-        generator = new Random();
-        values = pairs.get(s).toArray();
-        String t = (String) values[generator.nextInt(values.length)];
-        
-//        for(ExperienceRL exp : experienceList) {
-//        	Integer action = exp.getActions().get(0);
-//        	String source = exp.getState().getMappingByNum(action).getSourceUri();
-//        	String target = exp.getState().getMappingByNum(action).getTargetUri();
-//        	for(Entry<String, HashMap<String, Double>> itemTraining : trainingData.getMap().entrySet()) {
-//        		for(Entry<String, Double> valTraining : itemTraining.getValue().entrySet()) {
-//		        	if((source.equals(s) && target.equals(t)) 
-//		        			|| (itemTraining.getKey().equals(s) && valTraining.getKey().equals(t))) {
-//		        		getRandomElementMap(experienceList, trainingData);
-//		        	}
-//        		}
-//        	}
-//        }
-        
-        for(ExperienceRL exp : experienceList) {
-        	Integer action = exp.getActions().get(0);
-        	String source = exp.getState().getMappingByNum(action).getSourceUri();
-        	String target = exp.getState().getMappingByNum(action).getTargetUri();
-
-        	if(source.equals(s) && target.equals(t)) {
-        		getRandomElementMap(experienceList, trainingData);
-        	}
-
+        Double d = null;
+        String s = null;
+        String t = null;
+        boolean done = false;
+        while (!done) {
+	        Random generator = new Random();
+	        Object[] values = reversedMap.keySet().toArray();
+	        d = (Double) values[generator.nextInt(values.length)];
+	        pairs = reversedMap.get(d);
+	        
+	        generator = new Random();
+	        values = pairs.keySet().toArray();
+	        s = (String) values[generator.nextInt(values.length)];
+	        
+	        generator = new Random();
+	        values = pairs.get(s).toArray();
+	        t = (String) values[generator.nextInt(values.length)];
+	        
+	        done = true;
+	        for(ExperienceRL exp : experienceList) {
+	        	Integer action = exp.getActions().get(0);
+	        	String source = exp.getState().getMappingByNum(action).getSourceUri();
+	        	String target = exp.getState().getMappingByNum(action).getTargetUri();
+	
+	        	if(source.equals(s) && target.equals(t)) {
+	        		done = false;
+	        	}
+	
+	        }
         }
         
         m.add(s, t, d);

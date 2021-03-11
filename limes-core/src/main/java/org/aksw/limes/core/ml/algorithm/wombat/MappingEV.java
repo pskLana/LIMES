@@ -2,7 +2,7 @@ package org.aksw.limes.core.ml.algorithm.wombat;
 
 import java.util.List;
 
-public class MappingEV {
+public class MappingEV implements Cloneable {
 	private Integer num;
 	private String sourceUri;
 	private String targetUri;
@@ -37,5 +37,10 @@ public class MappingEV {
 	public void setNum(Integer num) {
 		this.num = num;
 	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
 }
