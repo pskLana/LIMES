@@ -355,13 +355,10 @@ public class WombatSimpleRL extends AWombat {
 			
 			// add K=1 new examples nearest to the decision boundary	
 			AMapping newState = getLSandNextState(experienceList.get(experienceCounter).getActions().size()/2.0);
-			AMapping newState1 = getLSandNextState(experienceList.get(experienceCounter).getActions().size()/2.0);
 			// save state as embedding vectors in stateEV
 			FullMappingEV newM = getStateAsEV(newState, experienceList.get(experienceCounter).getActions());// contains mapping for later and EVs
-			FullMappingEV newM1 = getStateAsEV(newState1, experienceList.get(experienceCounter).getActions());
 			// join K new examples with old from the previous iteration 
 			FullMappingEV m = newM.join(experienceList.get(experienceCounter).getNextState());
-			FullMappingEV m1 = newM1.join(experienceList.get(experienceCounter).getNextState());
 			experienceCounter++;
 			List<Integer> exampleNums = new ArrayList<Integer>();
 			// train NN and get examples to show to the user
@@ -380,9 +377,8 @@ public class WombatSimpleRL extends AWombat {
 	        
 	        // save next state without chosen action and save experience
 	        // remove previous action from the state
-	        FullMappingEV nextState = m1.remove(exampleNums);
+	        FullMappingEV nextState = m.remove(exampleNums); // implement clone()
 	        experienceList.add(new ExperienceRL(m, exampleNums, nextState, this.currentReward));
-	        
 			
 	        if (experienceCounter/counterAL == size) { // if this is the last iteration of AL
 	        	firstIter = false; // preparation for the next episode of AL
@@ -482,17 +478,14 @@ public class WombatSimpleRL extends AWombat {
     }
 	
 	public AMapping getLSandState(int N) {
-		MLResults mlm = this.learn(this.trainingData);
-//        logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
-//        String str = "jaccard(x.pref0:given_name,y.pref1:given_name)"; 
-		
+		MLResults mlm = this.learn(this.trainingData);	
         LinkSpecification ls = mlm.getLinkSpecification();
-        ls.setThreshold(decisionBoundaryTheshold);
+//        ls.setThreshold(decisionBoundaryTheshold);
         logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
   
 //        AMapping results = executeLS(ls, sourceCache, targetCache); // getting mapping for the LS
         AMapping results = LSPipeline.execute(sourceCache, targetCache, ls);
-        AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon);
+        AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon, this.trainingData);
         return subMapping;
 	}
 	
@@ -500,29 +493,11 @@ public class WombatSimpleRL extends AWombat {
 		MLResults mlm = this.learn(this.trainingData);
         logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
         LinkSpecification ls = mlm.linkspec;
-//      AMapping b = executeLS(ls, sourceCache, targetCache); // getting mapping for the LS
+//        ls.setThreshold(decisionBoundaryTheshold);
 	    AMapping results = LSPipeline.execute(sourceCache, targetCache, ls);
-	    AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon);
-      
-        //        String str = "jaccard(x.pref0:given_name,y.pref1:given_name)";// mlm.getLinkSpecification().getMeasure()
-//        Instruction inst = new Instruction(
-//        		Command.RUN, str, 
-//        		Double.toString(0.6), -1, -1, 0);
-//        MeasureType type = MeasureFactory.getMeasureType(inst.getMeasureExpression());
-//        AMeasure measure = MeasureFactory.createMeasure(type);
-//        List<FrameRL> stMeasure  = new ArrayList<FrameRL>();
-//        for (String s : sourceUris) {
-//        	for (String t : targetUris) {
-//        		TreeSet<String> sourceProp = sourceInstance.getInstance(s).getProperty("pref0:given_name");
-//        		TreeSet<String> targetProp = targetInstance.getInstance(t).getProperty("pref1:given_name");
-//        		double m = ((JaccardMeasure) measure).getSimilarityChar(sourceProp, targetProp);
-//        		FrameRL fr = new FrameRL(s, t, m, sourceProp.first(), targetProp.first(), 0);     		
-//        		stMeasure.add(fr);
-//            }
-//        }
-//        Collections.sort(stMeasure, Collections.reverseOrder());
-//        AMapping state = getNearestToBoundary(stMeasure, e);
-        return subMapping.getRandomElementMap(experienceList);
+	    AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon, this.trainingData);
+ 
+        return subMapping.getRandomElementMap(experienceList,this.trainingData);
 	}
 	
 	public double countFMeasure() {

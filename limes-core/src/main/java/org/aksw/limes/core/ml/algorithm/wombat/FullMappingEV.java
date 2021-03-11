@@ -19,7 +19,13 @@ public class FullMappingEV {
 	}
 	
 	public MappingEV getMappingByNum(Integer num) { 
-		return mEV.get(num);
+		for(MappingEV i : mEV) {
+			if(i.getNum().equals(num)) {
+				return i;
+			}
+		}
+//		return mEV.get(num);
+		return null;
 	}
 
 	public void setMappingEV(List<MappingEV> mappingEV) {

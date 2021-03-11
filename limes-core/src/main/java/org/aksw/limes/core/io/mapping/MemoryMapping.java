@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
@@ -101,7 +102,7 @@ public class MemoryMapping extends AMapping{
      *         Similarity threshold for filtering
      * @return Mapping that contains all elements (s,t) with sim(s,t) between two thresholds
      */
-    public AMapping getSubMap(double thresholdLeft, double thresholdRight) {
+    public AMapping getSubMap(double thresholdLeft, double thresholdRight, AMapping trainingData) {
         AMapping m = MappingFactory.createDefaultMapping();
         HashMap<String, TreeSet<String>> pairs;
         if (reversedMap == null || reversedMap.size() == 0) {
@@ -112,7 +113,18 @@ public class MemoryMapping extends AMapping{
                 pairs = reversedMap.get(d);
                 for (String s : pairs.keySet()) {
                     for (String t : pairs.get(s)) {
-                        m.add(s, t, d);
+                    	// check whether pair already exists in training, if not then add
+                    	for(Entry<String, HashMap<String, Double>> itemTraining : trainingData.getMap().entrySet()) {
+                    		for(Entry<String, Double> valTraining : itemTraining.getValue().entrySet()) {
+            		        	if(!itemTraining.getKey().equals(s) && !valTraining.getKey().equals(t)) {
+            		        		m.add(s, t, d);
+            		        	}
+            		        	else {
+//            		        		System.out.println("s:"+s+"t:"+t+"d:"+d);
+            		        	}
+                    		}
+                    	}
+                        
                     }
                 }
             }
@@ -121,11 +133,11 @@ public class MemoryMapping extends AMapping{
     }
     
     /**
-     * Returns a mapping that contains one random element of the current mapping.
+     * Returns a mapping that contains one random element of the current mapping, not containing the mapping from the training.
      *
      * @return Mapping that contains one element (s,t) with sim(s,t)
      */
-    public AMapping getRandomElementMap(List<ExperienceRL> experienceList) {
+    public AMapping getRandomElementMap(List<ExperienceRL> experienceList, AMapping trainingData) {
         AMapping m = MappingFactory.createDefaultMapping();
         HashMap<String, TreeSet<String>> pairs;
         if (reversedMap == null || reversedMap.size() == 0) {
@@ -145,13 +157,29 @@ public class MemoryMapping extends AMapping{
         values = pairs.get(s).toArray();
         String t = (String) values[generator.nextInt(values.length)];
         
+//        for(ExperienceRL exp : experienceList) {
+//        	Integer action = exp.getActions().get(0);
+//        	String source = exp.getState().getMappingByNum(action).getSourceUri();
+//        	String target = exp.getState().getMappingByNum(action).getTargetUri();
+//        	for(Entry<String, HashMap<String, Double>> itemTraining : trainingData.getMap().entrySet()) {
+//        		for(Entry<String, Double> valTraining : itemTraining.getValue().entrySet()) {
+//		        	if((source.equals(s) && target.equals(t)) 
+//		        			|| (itemTraining.getKey().equals(s) && valTraining.getKey().equals(t))) {
+//		        		getRandomElementMap(experienceList, trainingData);
+//		        	}
+//        		}
+//        	}
+//        }
+        
         for(ExperienceRL exp : experienceList) {
         	Integer action = exp.getActions().get(0);
         	String source = exp.getState().getMappingByNum(action).getSourceUri();
         	String target = exp.getState().getMappingByNum(action).getTargetUri();
+
         	if(source.equals(s) && target.equals(t)) {
-        		getRandomElementMap(experienceList);
+        		getRandomElementMap(experienceList, trainingData);
         	}
+
         }
         
         m.add(s, t, d);
