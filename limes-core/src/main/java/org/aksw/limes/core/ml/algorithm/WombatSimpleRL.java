@@ -410,15 +410,17 @@ public class WombatSimpleRL extends AWombat {
 	}
 	
 	public FullMappingEV getStateAsEV(AMapping state, List<Integer> exampleNums) {
-		// get embedding vectors for person11
-		String dataPerson11Path = "src/main/resources/ConEx-vectors/Abt-Buy/Abt.csv";
+		// get embedding vectors for source dataset
+		String fileName = configuration.getSourceInfo().getEndpoint().split("datasets")[1];
+		String dataPerson11Path = "src/main/resources/ConEx-vectors"+fileName;
 		AMappingReader mappingReader;
     	mappingReader = new CSVMappingReader(dataPerson11Path);
     	HashMap<String, List<Double>> person11DataMap = new HashMap<String, List<Double>>();
         person11DataMap = ((CSVMappingReader) mappingReader).readEV();
         
-        // get embedding vectors for person12
-        String dataPerson12Path = "src/main/resources/ConEx-vectors/Abt-Buy/Buy.csv";
+        // get embedding vectors for target dataset
+        String fileName2 = configuration.getTargetInfo().getEndpoint().split("datasets")[1];
+        String dataPerson12Path = "src/main/resources/ConEx-vectors"+fileName2;
 		AMappingReader mappingReader1;
     	mappingReader1 = new CSVMappingReader(dataPerson12Path);
     	HashMap<String, List<Double>> person12DataMap = new HashMap<String, List<Double>>();
@@ -526,6 +528,7 @@ public class WombatSimpleRL extends AWombat {
 		// calculate F-measure
         double newFMeasure = new FMeasure().calculate(this.trainingData, new GoldStandard(goldStandardDataMap), getBeta());
         this.currentReward = newFMeasure;
+        logger.info("Current reward: "+this.currentReward);
 		return newFMeasure;
 	}
 	
