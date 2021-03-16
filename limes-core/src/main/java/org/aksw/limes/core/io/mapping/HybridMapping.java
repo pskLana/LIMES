@@ -85,13 +85,13 @@ public class HybridMapping extends AMapping {
 	}
 
 	@Override
-	public AMapping getSubMap(double d, double e, AMapping trainingData) {
+	public AMapping getSubMap(double d, double e, AMapping trainingData, int numberOfPairs) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public AMapping getRandomElementMap(List<ExperienceRL> experienceList, AMapping trainingData) {
+	public AMapping getRandomElementMap(List<ExperienceRL> experienceList) {
 		// TODO Auto-generated method stub
 		return null;
 	}

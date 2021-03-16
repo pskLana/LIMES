@@ -3,14 +3,21 @@ package org.aksw.limes.core.ml.algorithm;
 import java.util.*;
 import java.util.Map.Entry;
 
+import org.aksw.limes.core.controller.LSPipeline;
 import org.aksw.limes.core.datastrutures.GoldStandard;
 import org.aksw.limes.core.datastrutures.LogicOperator;
 import org.aksw.limes.core.datastrutures.Tree;
 import org.aksw.limes.core.evaluation.qualititativeMeasures.FMeasure;
 import org.aksw.limes.core.evaluation.qualititativeMeasures.PseudoFMeasure;
 import org.aksw.limes.core.exceptions.UnsupportedMLImplementationException;
-import org.aksw.limes.core.execution.planning.plan.Instruction;
-import org.aksw.limes.core.execution.planning.plan.Instruction.Command;
+import org.aksw.limes.core.execution.engine.ExecutionEngine;
+import org.aksw.limes.core.execution.engine.ExecutionEngineFactory;
+import org.aksw.limes.core.execution.engine.ExecutionEngineFactory.ExecutionEngineType;
+import org.aksw.limes.core.execution.planning.planner.ExecutionPlannerFactory;
+import org.aksw.limes.core.execution.planning.planner.IPlanner;
+import org.aksw.limes.core.execution.planning.planner.ExecutionPlannerFactory.ExecutionPlannerType;
+import org.aksw.limes.core.execution.rewriter.Rewriter;
+import org.aksw.limes.core.execution.rewriter.RewriterFactory;
 import org.aksw.limes.core.io.cache.ACache;
 import org.aksw.limes.core.io.ls.LinkSpecification;
 import org.aksw.limes.core.io.mapping.AMapping;
@@ -19,16 +26,11 @@ import org.aksw.limes.core.io.mapping.MappingFactory.MappingType;
 import org.aksw.limes.core.io.mapping.reader.AMappingReader;
 import org.aksw.limes.core.io.mapping.reader.CSVMappingReader;
 import org.aksw.limes.core.measures.mapper.MappingOperations;
-import org.aksw.limes.core.measures.measure.AMeasure;
-import org.aksw.limes.core.measures.measure.MeasureFactory;
-import org.aksw.limes.core.measures.measure.MeasureType;
-import org.aksw.limes.core.measures.measure.string.JaccardMeasure;
 import org.aksw.limes.core.ml.algorithm.classifier.ExtendedClassifier;
 import org.aksw.limes.core.ml.algorithm.wombat.AWombat;
 import org.aksw.limes.core.ml.algorithm.wombat.EnvRL;
 import org.aksw.limes.core.ml.algorithm.wombat.FrameRL;
 import org.aksw.limes.core.ml.algorithm.wombat.FullMappingEV;
-import org.aksw.limes.core.ml.algorithm.wombat.LinkEntropy;
 import org.aksw.limes.core.ml.algorithm.wombat.MappingEV;
 import org.aksw.limes.core.ml.algorithm.wombat.RefinementNode;
 import org.slf4j.Logger;
@@ -73,6 +75,7 @@ public class WombatSimpleRL extends AWombat {
     private int experienceCounter = -1;
     private double decisionBoundaryTheshold = 0.8;
     private double epsilon = 0.05;
+    private int numberOfPairs = 100;
     /**
      * WombatSimple constructor.
      */
@@ -499,7 +502,7 @@ public class WombatSimpleRL extends AWombat {
   
 //        AMapping results = executeLS(ls, sourceCache, targetCache); // getting mapping for the LS
         AMapping results = LSPipeline.execute(sourceCache, targetCache, ls);
-        AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon, this.trainingData);
+        AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon, this.trainingData, numberOfPairs);
         return subMapping;
 	}
 	
@@ -509,9 +512,9 @@ public class WombatSimpleRL extends AWombat {
         LinkSpecification ls = mlm.linkspec;
 //        ls.setThreshold(decisionBoundaryTheshold);
 	    AMapping results = LSPipeline.execute(sourceCache, targetCache, ls);
-	    AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon, this.trainingData);
+	    AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon, this.trainingData, numberOfPairs);
  
-        return subMapping.getRandomElementMap(experienceList,this.trainingData);
+        return subMapping.getRandomElementMap(experienceList);
 	}
 	
 	public double countFMeasure() {

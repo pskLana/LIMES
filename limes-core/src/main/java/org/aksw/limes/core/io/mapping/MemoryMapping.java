@@ -102,7 +102,7 @@ public class MemoryMapping extends AMapping{
      *         Similarity threshold for filtering
      * @return Mapping that contains all elements (s,t) with sim(s,t) between two thresholds
      */
-    public AMapping getSubMap(double thresholdLeft, double thresholdRight, AMapping trainingData) {
+    public AMapping getSubMap(double thresholdLeft, double thresholdRight, AMapping trainingData, int numberOfPairs) {
         AMapping m = MappingFactory.createDefaultMapping();
         HashMap<String, TreeSet<String>> pairs;
         if (reversedMap == null || reversedMap.size() == 0) {
@@ -116,7 +116,9 @@ public class MemoryMapping extends AMapping{
                     	// check whether pair already exists in training, if not then add
                     	HashMap<String, Double> itemTraining = trainingData.getMap().get(s);
                     	if (itemTraining == null || !itemTraining.containsKey(t)) {
-                    		m.add(s, t, d);
+                    		if(m.size < numberOfPairs) {
+                    			m.add(s, t, d);
+                    		}
                     	}                        
                     }
                 }
@@ -130,7 +132,7 @@ public class MemoryMapping extends AMapping{
      *
      * @return Mapping that contains one element (s,t) with sim(s,t)
      */
-    public AMapping getRandomElementMap(List<ExperienceRL> experienceList, AMapping trainingData) {
+    public AMapping getRandomElementMap(List<ExperienceRL> experienceList) {
         AMapping m = MappingFactory.createDefaultMapping();
         HashMap<String, TreeSet<String>> pairs;
         if (reversedMap == null || reversedMap.size() == 0) {
