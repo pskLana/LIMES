@@ -396,7 +396,7 @@ public class WombatSimpleRL extends AWombat {
 				e.printStackTrace();
 			}
 	        
-			
+	        logger.info("Current F-Measure: "+this.currentReward);
 	        if (experienceCounter/counterAL == size) { // if this is the last iteration of AL
 	        	firstIter = false; // preparation for the next episode of AL
 	        	return MappingFactory.createDefaultMapping();
@@ -504,7 +504,8 @@ public class WombatSimpleRL extends AWombat {
   
 //        AMapping results = executeLS(ls, sourceCache, targetCache); // getting mapping for the LS
         AMapping results = LSPipeline.execute(sourceCache, targetCache, ls);
-        AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon, this.trainingData, numberOfPairs);
+        AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon, this.trainingData, numberOfPairs, true);
+        System.out.println("Submapping: "+subMapping.size());
         return subMapping;
 	}
 	
@@ -514,7 +515,7 @@ public class WombatSimpleRL extends AWombat {
         LinkSpecification ls = mlm.linkspec;
 //        ls.setThreshold(decisionBoundaryTheshold);
 	    AMapping results = LSPipeline.execute(sourceCache, targetCache, ls);
-	    AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon, this.trainingData, numberOfPairs);
+	    AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon, this.trainingData, numberOfPairs, false);
  
         return subMapping.getRandomElementMap(experienceList);
 	}

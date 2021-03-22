@@ -57,7 +57,7 @@ public abstract class AMapping implements IMapping {
 
     public abstract AMapping getSubMap(double threshold);
     
-    public abstract AMapping getSubMap(double d, double e, AMapping trainingData, int numberOfPairs);
+    public abstract AMapping getSubMap(double d, double e, AMapping trainingData, int numberOfPairs, boolean importantNumberOfPairs);
     
     public abstract AMapping getRandomElementMap(List<ExperienceRL> experienceList);
 

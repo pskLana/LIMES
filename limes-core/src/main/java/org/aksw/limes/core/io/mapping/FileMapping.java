@@ -84,7 +84,7 @@ public class FileMapping extends AMapping {
 	}
 
 	@Override
-	public AMapping getSubMap(double d, double e, AMapping trainingData, int numberOfPairs) {
+	public AMapping getSubMap(double d, double e, AMapping trainingData, int numberOfPairs, boolean importantNumberOfPairs) {
 		// TODO Auto-generated method stub
 		return null;
 	}
