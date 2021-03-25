@@ -143,8 +143,11 @@ public class MemoryMapping extends AMapping{
         Double d = null;
         String s = null;
         String t = null;
+        
+        int attempts = 100;
         boolean done = false;
-        while (!done) {
+        while (!done && attempts != 0) {
+        	attempts--;
 	        Random generator = new Random();
 	        Object[] values = reversedMap.keySet().toArray();
 	        d = (Double) values[generator.nextInt(values.length)];
@@ -170,7 +173,10 @@ public class MemoryMapping extends AMapping{
 	
 	        }
         }
-        
+        System.out.println("Attempts: "+attempts);
+        if(attempts == 0 && done == false) {
+        	return null;
+        }
         m.add(s, t, d);
         return m;
     }
