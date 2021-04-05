@@ -180,6 +180,42 @@ public class MemoryMapping extends AMapping{
         m.add(s, t, d);
         return m;
     }
+    
+    /**
+     * Returns a mapping that contains size random elements of the current mapping.
+     *
+     * @return Mapping of the size that contains elements (s,t) with sim(s,t)
+     */
+    public AMapping getRandomMap(int size) {
+        AMapping m = MappingFactory.createDefaultMapping();
+        HashMap<String, TreeSet<String>> pairs;
+        if (reversedMap == null || reversedMap.size() == 0) {
+            initReversedMap();
+        }
+        assert reversedMap.size() == map.size();
+
+        Double d = null;
+        String s = null;
+        String t = null;
+//        for(int i=0; i<size; i++) {
+        while(m.size != size) {
+	        Random generator = new Random();
+	        Object[] values = reversedMap.keySet().toArray();
+	        d = (Double) values[generator.nextInt(values.length)];
+	        pairs = reversedMap.get(d);
+	        
+	        generator = new Random();
+	        values = pairs.keySet().toArray();
+	        s = (String) values[generator.nextInt(values.length)];
+	        
+	        generator = new Random();
+	        values = pairs.get(s).toArray();
+	        t = (String) values[generator.nextInt(values.length)];
+		        
+	        m.add(s, t, d);
+        }
+        return m;
+    }
 
     /**
      * Add a batch of similarities to the mapping

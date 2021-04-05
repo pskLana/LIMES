@@ -46,6 +46,22 @@ public class MLPipeline {
         }
         return result;
     }
+    
+    public static AMapping getDataMapFromGoldStandard() {
+    	String goldStandardDataFile = "src/main/resources/datasets/Abt-Buy/abt_buy_perfectMapping.csv";
+        AMapping goldStandardDataMap = MappingFactory.createDefaultMapping();
+        AMappingReader mappingReader;
+        mappingReader = new CSVMappingReader(goldStandardDataFile);
+        goldStandardDataMap = mappingReader.read();
+		return goldStandardDataMap;
+    }
+    
+    public static AMapping getRandomDataMapFromGoldStandard() {
+    	AMapping goldStandardDataMap = getDataMapFromGoldStandard();
+    	int size = 150;
+    	AMapping randomDataMap = goldStandardDataMap.getRandomMap(size);
+    	return randomDataMap;
+    }
 
     public static AMapping execute(
             ACache source,
@@ -71,6 +87,7 @@ public class MLPipeline {
         	}
             trainingDataMap = mappingReader.read();
         }
+        AMapping randomTrainingDataMap = MappingFactory.createDefaultMapping();
 
         switch (mlImplementationType) {
             case SUPERVISED_BATCH:
@@ -88,13 +105,15 @@ public class MLPipeline {
                 mla.getMl().setConfiguration(configuration);
                 AMapping nextExamplesMapping;
                 if(mlAlgorithmName.equals("WOMBAT Simple RL")){
-                	mlm = mla.learn(trainingDataMap);
+                	// get random trainingDataMap from the gold standard
+                	randomTrainingDataMap = getRandomDataMapFromGoldStandard();
+                	mlm = mla.learn(randomTrainingDataMap); // trainingDataMap
                 } else {
                 	mlm = mla.activeLearn();	
                 }
                 
                 if(mlAlgorithmName.equals("WOMBAT Simple RL")){ // RL version
-                	for(int iter=0; iter<10; iter++) {
+                	for(int iter=0; iter<50; iter++) {
                 		logger.info("Iteration:" + iter);
                     	nextExamplesMapping = null;
                     	oracle = new AsynchronousServerOracle();
@@ -110,11 +129,12 @@ public class MLPipeline {
 //                            AMapping classify = oracle.classify(activeLearningExamples);
                             
                             // temporary for oracle feedback
-                            String goldStandardDataFile = "src/main/resources/datasets/Abt-Buy/abt_buy_perfectMapping.csv";
-                            AMapping goldStandardDataMap = MappingFactory.createDefaultMapping();
-                            AMappingReader mappingReader;
-                            mappingReader = new CSVMappingReader(goldStandardDataFile);
-                            goldStandardDataMap = mappingReader.read();
+//                            String goldStandardDataFile = "src/main/resources/datasets/Abt-Buy/abt_buy_perfectMapping.csv";
+//                            AMapping goldStandardDataMap = MappingFactory.createDefaultMapping();
+//                            AMappingReader mappingReader;
+//                            mappingReader = new CSVMappingReader(goldStandardDataFile);
+//                            goldStandardDataMap = mappingReader.read();
+                            AMapping goldStandardDataMap = getDataMapFromGoldStandard();
                             AMapping classify = oracleFeedback(nextExamplesMapping,goldStandardDataMap);
                             /////////
                             logger.info(classify.toString());
@@ -124,12 +144,12 @@ public class MLPipeline {
                             	classify.getMap().forEach((k,v) -> {
                             		trainingDataMap1.add(k, v);
                             	});
-                            	trainingDataMap.getMap().forEach((k,v) -> {
+                            	randomTrainingDataMap.getMap().forEach((k,v) -> {
                             		trainingDataMap1.add(k, v);
                             	});
-                            	trainingDataMap = trainingDataMap1;
+                            	randomTrainingDataMap = trainingDataMap1;
                             }
-                            logger.info("Current TestK size: "+trainingDataMap.size());
+                            logger.info("Current TestK size: "+randomTrainingDataMap.size());
                         }
                         logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
                         

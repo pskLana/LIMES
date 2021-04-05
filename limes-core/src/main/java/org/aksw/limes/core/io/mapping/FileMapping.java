@@ -95,4 +95,10 @@ public class FileMapping extends AMapping {
 		return null;
 	}
 
+	@Override
+	public AMapping getRandomMap(int size) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

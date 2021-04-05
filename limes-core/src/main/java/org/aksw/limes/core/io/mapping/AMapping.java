@@ -60,6 +60,7 @@ public abstract class AMapping implements IMapping {
     public abstract AMapping getSubMap(double d, double e, AMapping trainingData, int numberOfPairs, boolean importantNumberOfPairs);
     
     public abstract AMapping getRandomElementMap(List<ExperienceRL> experienceList);
+    public abstract AMapping getRandomMap(int size);
 
     /**
      * Returns the best one to one mapping with a bias towards the source Should

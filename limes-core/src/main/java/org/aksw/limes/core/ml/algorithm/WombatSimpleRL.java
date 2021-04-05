@@ -505,6 +505,7 @@ public class WombatSimpleRL extends AWombat {
 //        AMapping results = executeLS(ls, sourceCache, targetCache); // getting mapping for the LS
         AMapping results = LSPipeline.execute(sourceCache, targetCache, ls);
         AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon, this.trainingData, numberOfPairs, true);
+        System.out.println("Results: "+results.size());
         System.out.println("Submapping: "+subMapping.size());
         return subMapping;
 	}
@@ -516,7 +517,8 @@ public class WombatSimpleRL extends AWombat {
 //        ls.setThreshold(decisionBoundaryTheshold);
 	    AMapping results = LSPipeline.execute(sourceCache, targetCache, ls);
 	    AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon, this.trainingData, numberOfPairs, false);
- 
+	    System.out.println("Results: "+results.size());
+        System.out.println("Submapping: "+subMapping.size());
         return subMapping.getRandomElementMap(experienceList);
 	}
 	
