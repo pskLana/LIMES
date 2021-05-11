@@ -107,13 +107,14 @@ public class MLPipeline {
                 if(mlAlgorithmName.equals("WOMBAT Simple RL")){
                 	// get random trainingDataMap from the gold standard
                 	randomTrainingDataMap = getRandomDataMapFromGoldStandard();
+//                	randomTrainingDataMap = MappingFactory.createDefaultMapping(); // if pseudoFMeasure
                 	mlm = mla.learn(randomTrainingDataMap); // trainingDataMap
                 } else {
                 	mlm = mla.activeLearn();	
                 }
                 
                 if(mlAlgorithmName.equals("WOMBAT Simple RL")){ // RL version
-                	for(int iter=0; iter<50; iter++) {
+                	for(int iter=0; iter<10; iter++) {
                 		logger.info("Iteration:" + iter);
                     	nextExamplesMapping = null;
                     	oracle = new AsynchronousServerOracle();

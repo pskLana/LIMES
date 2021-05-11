@@ -74,8 +74,9 @@ public class WombatSimpleRL extends AWombat {
     private int counterAL = 0;
     private int experienceCounter = -1;
     private double decisionBoundaryTheshold = 0.8;
-    private double epsilon = 0.05;
-    private int numberOfPairs = 100;
+    private double epsilon = 0.3;//0.05;
+    private int numberOfPairs = 40;
+    private boolean firstStep = true;
     /**
      * WombatSimple constructor.
      */
@@ -338,27 +339,11 @@ public class WombatSimpleRL extends AWombat {
 			// train NN and get examples to show to the user
 			exampleNums = trainNNandGetExamples(m.getStateEV(), false);
 			
-			AMapping result = MappingFactory.createDefaultMapping();
-	        for(Integer num: exampleNums){
-
-	        	MappingEV example = m.getMappingByNum(num);
-	            result.add(example.getSourceUri(), example.getTargetUri(), example.getSimilarity());  	
-	        }
-	        // save next state without chosen action and save experience
-	        // remove previous action from the state
-	        FullMappingEV m1;
-			try {
-				m1 = (FullMappingEV) m.clone();
-				FullMappingEV nextState = m1.remove(exampleNums);
-		        experienceList.add(new ExperienceRL(m, exampleNums, nextState, 0.0)); 
-		        experienceCounter++;
-				firstIter = true;
-			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}// implement clone()
-	        
+			AMapping result = getResultAndSaveExperience(m, exampleNums);
 			
+		    experienceCounter++;
+		    firstIter = true;
+	        			
 			return result;
 		} else {
 //			runNextEpisode(); 
@@ -378,23 +363,7 @@ public class WombatSimpleRL extends AWombat {
 				exampleNums = trainNNandGetExamples(m.getStateEV(), false);
 			}
 			
-			AMapping result = MappingFactory.createDefaultMapping();
-	        for(Integer num: exampleNums){
-
-	        	MappingEV example = m.getMappingByNum(num);
-	            result.add(example.getSourceUri(), example.getTargetUri(), example.getSimilarity());  	
-	        }
-	        
-	        // save next state without chosen action and save experience
-	        // remove previous action from the state
-	        try {
-				FullMappingEV m1 = (FullMappingEV) m.clone();
-				FullMappingEV nextState = m1.remove(exampleNums); // implement clone()
-		        experienceList.add(new ExperienceRL(m, exampleNums, nextState, this.currentReward));
-			} catch (CloneNotSupportedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			AMapping result = getResultAndSaveExperience(m, exampleNums);
 	        
 	        logger.info("Current F-Measure: "+this.currentReward);
 	        if (experienceCounter/counterAL == size) { // if this is the last iteration of AL
@@ -407,6 +376,30 @@ public class WombatSimpleRL extends AWombat {
 	        
 		}
 //		return null;
+	}
+	
+	public AMapping getResultAndSaveExperience(FullMappingEV m, List<Integer> exampleNums) {
+		AMapping result = MappingFactory.createDefaultMapping();
+        for(Integer num: exampleNums){
+
+        	MappingEV example = m.getMappingByNum(num);
+            result.add(example.getSourceUri(), example.getTargetUri(), example.getSimilarity());  	
+        }
+        
+        // save next state without chosen action and save experience
+        // remove previous action from the state
+        try {
+			FullMappingEV m1 = (FullMappingEV) m.clone();
+			FullMappingEV nextState = m1.remove(exampleNums); 
+//			if(!firstIter) {
+//				this.currentReward = 0.0;
+//			}
+	        experienceList.add(new ExperienceRL(m, exampleNums, nextState, this.currentReward));
+		} catch (CloneNotSupportedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        return result;
 	}
 	
 	public FullMappingEV getStateAsEV(AMapping state, List<Integer> exampleNums) {
@@ -497,7 +490,17 @@ public class WombatSimpleRL extends AWombat {
     }
 	
 	public AMapping getLSandState(int N) {
-		MLResults mlm = this.learn(this.trainingData);	
+		MLResults mlm;
+//		if (firstStep) {
+//			// using supervised learning
+//	        mlm = this.learn(new PseudoFMeasure());
+//	        firstStep = false;
+//		} else {
+			// using batch learning
+			mlm = this.learn(this.trainingData);	
+//		}
+		
+		
         LinkSpecification ls = mlm.getLinkSpecification();
 //        ls.setThreshold(decisionBoundaryTheshold);
         logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
@@ -511,7 +514,12 @@ public class WombatSimpleRL extends AWombat {
 	}
 	
 	public AMapping getLSandNextState(double e) { // K - amount of examples nearest to the decision boundary
-		MLResults mlm = this.learn(this.trainingData);
+		// using batch learning
+		 MLResults mlm = this.learn(this.trainingData);	
+		
+		// using supervised learning
+//        MLResults mlm = this.learn(new PseudoFMeasure());
+        
         logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
         LinkSpecification ls = mlm.linkspec;
 //        ls.setThreshold(decisionBoundaryTheshold);
