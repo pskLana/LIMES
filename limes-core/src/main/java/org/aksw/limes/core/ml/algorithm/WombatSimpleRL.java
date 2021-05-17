@@ -1,8 +1,11 @@
 package org.aksw.limes.core.ml.algorithm;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.*;
 import java.util.Map.Entry;
 
+import org.aksw.limes.core.controller.Controller;
 import org.aksw.limes.core.controller.LSPipeline;
 import org.aksw.limes.core.datastrutures.GoldStandard;
 import org.aksw.limes.core.datastrutures.LogicOperator;
@@ -33,6 +36,7 @@ import org.aksw.limes.core.ml.algorithm.wombat.FrameRL;
 import org.aksw.limes.core.ml.algorithm.wombat.FullMappingEV;
 import org.aksw.limes.core.ml.algorithm.wombat.MappingEV;
 import org.aksw.limes.core.ml.algorithm.wombat.RefinementNode;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,8 +108,16 @@ public class WombatSimpleRL extends AWombat {
         classifiers = null;
         try {
 			interp = new SharedInterpreter();
-			interp.runScript("src/main/resources/DQN.py");
+//			URL url = getClass().getResource("/DQN.py");//.toURI().getPath();//.getFile();
+//			String file = Paths.get(url.toURI()).toString();
+			InputStream stream = getClass().getResourceAsStream("/DQN.py");
+			String filestr = IOUtils.toString(stream, "UTF-8");
+//			interp.runScript(file);
+			interp.exec(filestr);
 		} catch (JepException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -409,7 +421,7 @@ public class WombatSimpleRL extends AWombat {
 	public FullMappingEV getStateAsEV(AMapping state, List<Integer> exampleNums) {
 		// get embedding vectors for source dataset
 		String fileName = configuration.getSourceInfo().getEndpoint().split("datasets")[1];
-		String dataPerson11Path = "src/main/resources/ConEx-vectors"+fileName;
+		String dataPerson11Path = Controller.conExPath+fileName;//"src/main/resources/ConEx-vectors"+fileName;
 		AMappingReader mappingReader;
     	mappingReader = new CSVMappingReader(dataPerson11Path);
     	HashMap<String, List<Double>> person11DataMap = new HashMap<String, List<Double>>();
@@ -417,7 +429,7 @@ public class WombatSimpleRL extends AWombat {
         
         // get embedding vectors for target dataset
         String fileName2 = configuration.getTargetInfo().getEndpoint().split("datasets")[1];
-        String dataPerson12Path = "src/main/resources/ConEx-vectors"+fileName2;
+        String dataPerson12Path = Controller.conExPath+fileName2;//"src/main/resources/ConEx-vectors"+fileName2;
 		AMappingReader mappingReader1;
     	mappingReader1 = new CSVMappingReader(dataPerson12Path);
     	HashMap<String, List<Double>> person12DataMap = new HashMap<String, List<Double>>();
@@ -541,7 +553,7 @@ public class WombatSimpleRL extends AWombat {
 	}
 	
 	public double countFMeasure() {
-		String goldStandardDataFile = "src/main/resources/datasets/Abt-Buy/abt_buy_perfectMapping.csv";
+		String goldStandardDataFile = Controller.goldFile;//"src/main/resources/datasets/Abt-Buy/abt_buy_perfectMapping.csv";
         AMapping goldStandardDataMap = MappingFactory.createDefaultMapping();
         AMappingReader mappingReader;
         mappingReader = new CSVMappingReader(goldStandardDataFile);

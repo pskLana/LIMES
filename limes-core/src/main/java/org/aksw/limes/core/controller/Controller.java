@@ -50,6 +50,8 @@ public class Controller {
     private static int defaultPort = 8080;
     private static int defaultLimit = -1;
     private static Options options = getOptions();
+    public static String goldFile = "";
+    public static String conExPath = "";
 
     /**
      * Take configuration file as argument and run the specified linking task.
@@ -77,6 +79,13 @@ public class Controller {
             if (cmd.hasOption('l')) limit = Integer.parseInt(cmd.getOptionValue('l'));
             Server.getInstance().run(port, limit);
         } else {
+        	if (cmd.hasOption('t')) {
+        		goldFile = cmd.getOptionValue('t');
+//        		String goldStandardDataFile = "src/main/resources/datasets/Abt-Buy/abt_buy_perfectMapping.csv";
+        	}
+        	if (cmd.hasOption('c')) {
+        		conExPath = cmd.getOptionValue('c');
+        	}
             // III. Has Arguments?
             if (cmd.getArgs().length < 1) {
                 logger.error("Error:\n\t Please specify a configuration file to use!");
@@ -264,6 +273,8 @@ public class Controller {
         options.addOption("l", true, "Optionally configure a limit for source and target resources processed by LIMES Server. Only effective if -s is specified. Default value is -1 (no limit).");
         options.addOption("1", false, "Force 1-to-1 mappings, i.e. for each source resource only keep the link with the highest probability.");
         options.addOption("d", true, "Configure path for the statistics JSON output file.");
+        options.addOption("t", true, "Gold standard file.");
+        options.addOption("c", true, "Path to conEx files.");
         // options.addOption("v", false, "Verbose run");
         return options;
     }

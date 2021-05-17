@@ -48,7 +48,7 @@ public class MLPipeline {
     }
     
     public static AMapping getDataMapFromGoldStandard() {
-    	String goldStandardDataFile = "src/main/resources/datasets/Abt-Buy/abt_buy_perfectMapping.csv";
+    	String goldStandardDataFile = Controller.goldFile;//"src/main/resources/datasets/Abt-Buy/abt_buy_perfectMapping.csv";
         AMapping goldStandardDataMap = MappingFactory.createDefaultMapping();
         AMappingReader mappingReader;
         mappingReader = new CSVMappingReader(goldStandardDataFile);
