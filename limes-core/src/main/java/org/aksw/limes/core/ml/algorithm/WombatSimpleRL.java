@@ -351,6 +351,11 @@ public class WombatSimpleRL extends AWombat {
 			// train NN and get examples to show to the user
 			exampleNums = trainNNandGetExamples(m.getStateEV(), false);
 			
+			if(exampleNums == null) {
+				System.out.println("Python Exception");
+				return null;
+			}
+			
 			AMapping result = getResultAndSaveExperience(m, exampleNums);
 			
 		    experienceCounter++;
@@ -377,6 +382,11 @@ public class WombatSimpleRL extends AWombat {
 				exampleNums = trainNNandGetExamples(m.getStateEV(), true);
 			} else {
 				exampleNums = trainNNandGetExamples(m.getStateEV(), false);
+			}
+			
+			if(exampleNums == null) {
+				System.out.println("Python Exception");
+				return null;
 			}
 			
 			AMapping result = getResultAndSaveExperience(m, exampleNums);
@@ -420,16 +430,16 @@ public class WombatSimpleRL extends AWombat {
 	
 	public FullMappingEV getStateAsEV(AMapping state, List<Integer> exampleNums) {
 		// get embedding vectors for source dataset
-		String fileName = configuration.getSourceInfo().getEndpoint().split("datasets")[1];
-		String dataPerson11Path = Controller.conExPath+fileName;//"src/main/resources/ConEx-vectors"+fileName;
+		String fileName = configuration.getSourceInfo().getEndpoint().split("datasets")[1].split("[.]")[0];
+		String dataPerson11Path = Controller.conExPath+fileName+".csv";//"src/main/resources/ConEx-vectors"+fileName;
 		AMappingReader mappingReader;
     	mappingReader = new CSVMappingReader(dataPerson11Path);
     	HashMap<String, List<Double>> person11DataMap = new HashMap<String, List<Double>>();
         person11DataMap = ((CSVMappingReader) mappingReader).readEV();
         
         // get embedding vectors for target dataset
-        String fileName2 = configuration.getTargetInfo().getEndpoint().split("datasets")[1];
-        String dataPerson12Path = Controller.conExPath+fileName2;//"src/main/resources/ConEx-vectors"+fileName2;
+        String fileName2 = configuration.getTargetInfo().getEndpoint().split("datasets")[1].split("[.]")[0];
+        String dataPerson12Path = Controller.conExPath+fileName2+".csv";//"src/main/resources/ConEx-vectors"+fileName2;
 		AMappingReader mappingReader1;
     	mappingReader1 = new CSVMappingReader(dataPerson12Path);
     	HashMap<String, List<Double>> person12DataMap = new HashMap<String, List<Double>>();
@@ -488,9 +498,10 @@ public class WombatSimpleRL extends AWombat {
         catch (JepException e) {
         	// TODO Auto-generated catch block
         	e.printStackTrace();
+        	return null;
         }
         
-		return null;
+//		return null;
 	}
 	
     public AMapping executeLS(LinkSpecification ls, ACache sCache, ACache tCache) {
