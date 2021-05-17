@@ -350,6 +350,10 @@ public class WombatSimpleRL extends AWombat {
 			
 			// add K=1 new examples nearest to the decision boundary	
 			AMapping newState = getLSandNextState(experienceList.get(experienceCounter).getActions().size()/2.0);
+			if(newState == null) {
+				System.out.println("Next state cannot be received");
+				return null;
+			}
 			// save state as embedding vectors in stateEV
 			FullMappingEV newM = getStateAsEV(newState, experienceList.get(experienceCounter).getActions());// contains mapping for later and EVs
 			// join K new examples with old from the previous iteration 
@@ -527,7 +531,13 @@ public class WombatSimpleRL extends AWombat {
 	    AMapping subMapping = results.getSubMap(decisionBoundaryTheshold - epsilon,decisionBoundaryTheshold + epsilon, this.trainingData, numberOfPairs, false);
 	    System.out.println("Results: "+results.size());
         System.out.println("Submapping: "+subMapping.size());
-        return subMapping.getRandomElementMap(experienceList);
+        AMapping elem = null;
+        try {
+        	elem = subMapping.getRandomElementMap(experienceList);
+        } catch(Exception er) {
+        	System.out.println("Something went wrong.");
+        }
+        return elem;
 	}
 	
 	public double countFMeasure() {

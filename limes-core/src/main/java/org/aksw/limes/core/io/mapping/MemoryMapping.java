@@ -116,7 +116,7 @@ public class MemoryMapping extends AMapping{
                     	// check whether pair already exists in training, if not then add
                     	HashMap<String, Double> itemTraining = trainingData.getMap().get(s);
                     	if (itemTraining == null || !itemTraining.containsKey(t)) {
-                    		if(m.size < numberOfPairs || importantNumberOfPairs == false) {
+                    		if(m.size < numberOfPairs) { // || importantNumberOfPairs == false
                     			m.add(s, t, d);
                     		}
                     	}                        

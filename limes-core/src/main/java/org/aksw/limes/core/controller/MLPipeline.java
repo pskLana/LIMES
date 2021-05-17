@@ -114,12 +114,18 @@ public class MLPipeline {
                 }
                 
                 if(mlAlgorithmName.equals("WOMBAT Simple RL")){ // RL version
-                	for(int iter=0; iter<10; iter++) {
+                	boolean finished = false;
+                	for(int iter=0; iter<100 && !finished; iter++) {
                 		logger.info("Iteration:" + iter);
                     	nextExamplesMapping = null;
                     	oracle = new AsynchronousServerOracle();
                         while (!oracle.isStopped()) {
                         	nextExamplesMapping = mla.getNextExamples(maxIt);
+                            if (nextExamplesMapping == null) {
+                                oracle.stop();
+                                finished = true;
+                                break;
+                            }
                             if (nextExamplesMapping.getMap().isEmpty()) {
                                 oracle.stop();
                                 break;
