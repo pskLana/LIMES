@@ -272,7 +272,7 @@ def initializeRL():
 # 	pydevDebug()
 	dic['ema'] = EnvManager(dic['device'], None)
 
-	target_net = dic['target_net'] #DQN()
+	target_net = dic['target_net']
 	target_net.load_state_dict(dic['policy_net'].state_dict())
 	target_net.eval()
 	
@@ -282,37 +282,6 @@ def initializeRL():
 
 #### MAIN PART ########
 def mainFun(newExamples, isLastIterationOfAL):
-	# newExamples = []
-	# newExamples.append(FrameRL("s1", "t1", 0.1, "sProp", "tProp", -1))
-	# newExamples.append(FrameRL("s2", "t2", 0.2, "sProp", "tProp", -1))
-	# newExamples.append(FrameRL("s3", "t3", 0.3, "sProp", "tProp", -1))
-	# newExamples.append(FrameRL("s4", "t4", 0.4, "sProp", "tProp", -1))
-	# newExamples.append(FrameRL("s5", "t5", 0.6, "sProp", "tProp", 1))
-	
-	# t = torch.tensor(newExamples);
-	# t = torch.as_tensor(newExamples);
-
-	# t = torch.zeros(5,2)
-	# t = torch.tensor([
-	# 		[0,0],
-	# 		[0,2],
-	# 		[0,0],
-	# 		[0,3],
-	# 		[0,0],
-	# 	], dtype=torch.float32)
-	# # print(t)
-	# examples = newExamples
-	# aa = examples[0].getSource()
-
-	# network = DQN()
-	# pred = network(t)
-	# print(pred)
-	# return aa
-
-	# dic['test']=dic['test']+1
-	# return dic['test']
-	
-	pydevDebug()
 
 	batch_size = 256
 	gamma = 0.999
@@ -324,20 +293,16 @@ def mainFun(newExamples, isLastIterationOfAL):
 	lr = 0.001
 	num_episodes = 2
 
-	device = dic['device']#torch.device("cuda" if torch.cuda.is_available() else "cpu")
-	# em = CartPoleEnvManager(device)
+	device = dic['device']
 	em = dic['ema']
 	em.initializeCurrentState(newExamples)
-	strategy = dic['strategy'] #EpsilonGreedyStrategy(eps_start, eps_end, eps_decay)
-	agent = Agent(strategy, em.num_actions_available(), device) #change class -> Wombat in Java
+	strategy = dic['strategy']
+	agent = Agent(strategy, em.num_actions_available(), device)
 	memory = dic['memory']
-# 	ReplayMemory(memory_size) #change class -> move to java
-	policy_net = dic['policy_net'] #DQN()
-	target_net = dic['target_net'] #DQN()
-	optimizer = dic['optimizer']#optim.Adam(params=policy_net.parameters(), lr=lr)
+	policy_net = dic['policy_net']
+	target_net = dic['target_net']
+	optimizer = dic['optimizer']
 
-	episode_durations = []
-# 		em.reset()
 	if em.state_num == 0:
 		state = em.get_state() #starting state
 		action = agent.select_action(state, policy_net)
@@ -350,23 +315,16 @@ def mainFun(newExamples, isLastIterationOfAL):
 			state = em.currentState
 			action = em.currentAction
 			reward = em.currentReward
-			
 			next_state = em.get_state()
 			next_action = agent.select_action(next_state, policy_net)
 			next_reward = em.take_action(next_action, isLastIterationOfAL)
-		# 	return next_state
 			memory.push(Experience(state, action, next_state, reward))
 			
-			# return policy_net.out.weight
-			
-			batch_size = 20 # at least 1 experiences should be done
-		
+			batch_size = 10 # at least 1 experiences should be done
 			if memory.can_provide_sample(batch_size):
+# 				pydevDebug()
 				experiences = memory.sample(batch_size)
 				states, actions, rewards, next_states = extract_tensors(experiences)
-# 				pydevDebug()
-	# 				pydevDebug()
-	# 				s = processStates(states) # just example change states
 				current_q_values = QValues.get_current(policy_net, states, actions)
 				next_q_values = QValues.get_next(target_net, next_states)
 				target_q_values = (next_q_values * gamma) + rewards
@@ -376,7 +334,7 @@ def mainFun(newExamples, isLastIterationOfAL):
 				loss.backward()
 				optimizer.step()
 				
-			
+			target_net.load_state_dict(policy_net.state_dict())
 			return next_action.item()
 
 # 	if em.done:
