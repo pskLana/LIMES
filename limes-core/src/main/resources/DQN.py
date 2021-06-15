@@ -26,6 +26,7 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 import torchvision.transforms as T 
+from pathlib import Path
 
 # is_ipython = 'inline' in matplotlib.get_backend()
 # if is_ipython: from IPython import display
@@ -282,6 +283,12 @@ def initializeRL():
 
 #### MAIN PART ########
 def mainFun(newExamples, isLastIterationOfAL):
+	
+	trainedModePath = "rl_policy_net.pt"
+	trainedModelExists = False
+	nn_file = Path(trainedModePath)
+	if nn_file.is_file():
+		trainedModelExists = True
 
 	batch_size = 256
 	gamma = 0.999
@@ -302,6 +309,10 @@ def mainFun(newExamples, isLastIterationOfAL):
 	policy_net = dic['policy_net']
 	target_net = dic['target_net']
 	optimizer = dic['optimizer']
+	if trainedModelExists:
+		policy_net = DQN()
+		policy_net.load_state_dict(torch.load(trainedModePath))
+		policy_net.eval()
 
 	if em.state_num == 0:
 		state = em.get_state() #starting state
@@ -320,21 +331,24 @@ def mainFun(newExamples, isLastIterationOfAL):
 			next_reward = em.take_action(next_action, isLastIterationOfAL)
 			memory.push(Experience(state, action, next_state, reward))
 			
-			batch_size = 10 # at least 1 experiences should be done
-			if memory.can_provide_sample(batch_size):
-# 				pydevDebug()
-				experiences = memory.sample(batch_size)
-				states, actions, rewards, next_states = extract_tensors(experiences)
-				current_q_values = QValues.get_current(policy_net, states, actions)
-				next_q_values = QValues.get_next(target_net, next_states)
-				target_q_values = (next_q_values * gamma) + rewards
-		
-				loss = F.mse_loss(current_q_values, target_q_values.unsqueeze(1))
-				optimizer.zero_grad()
-				loss.backward()
-				optimizer.step()
-				
-			target_net.load_state_dict(policy_net.state_dict())
+			if not trainedModelExists: 
+				batch_size = 10 # at least 1 experiences should be done
+				if memory.can_provide_sample(batch_size):
+	# 				pydevDebug()
+					experiences = memory.sample(batch_size)
+					states, actions, rewards, next_states = extract_tensors(experiences)
+					current_q_values = QValues.get_current(policy_net, states, actions)
+					next_q_values = QValues.get_next(target_net, next_states)
+					target_q_values = (next_q_values * gamma) + rewards
+			
+					loss = F.mse_loss(current_q_values, target_q_values.unsqueeze(1))
+					optimizer.zero_grad()
+					loss.backward()
+					optimizer.step()
+					
+				target_net.load_state_dict(policy_net.state_dict())
+				if isLastIterationOfAL:
+					torch.save(policy_net.state_dict(),"rl_policy_net.pt")
 			return next_action.item()
 
 # 	if em.done:

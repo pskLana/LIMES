@@ -79,7 +79,7 @@ public class WombatSimpleRL extends AWombat {
     private int experienceCounter = -1;
     private double decisionBoundaryTheshold = 0.8;
     private double epsilon = 0.3;//0.05;
-    private int numberOfPairs = 40;
+    private int numberOfPairs = 30;//40
     private boolean firstStep = true;
     /**
      * WombatSimple constructor.

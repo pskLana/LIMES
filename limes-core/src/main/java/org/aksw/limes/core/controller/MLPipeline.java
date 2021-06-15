@@ -58,7 +58,7 @@ public class MLPipeline {
     
     public static AMapping getRandomDataMapFromGoldStandard() {
     	AMapping goldStandardDataMap = getDataMapFromGoldStandard();
-    	int size = 150;
+    	int size = 80;//150;
     	AMapping randomDataMap = goldStandardDataMap.getRandomMap(size);
     	return randomDataMap;
     }
