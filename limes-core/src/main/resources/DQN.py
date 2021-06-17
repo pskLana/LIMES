@@ -285,7 +285,7 @@ def saveModel():
 # 	pydevDebug()
 	trainedModePath = "rl_policy_net.pt"
 	nn_file = Path(trainedModePath)
-	if nn_file.is_file():
+	if not nn_file.is_file():
 		torch.save(dic['policy_net'].state_dict(),"rl_policy_net.pt")
 
 #### MAIN PART ########
