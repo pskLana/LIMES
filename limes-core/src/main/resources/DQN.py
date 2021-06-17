@@ -280,10 +280,17 @@ def initializeRL():
 	lr = 0.001
 	optimizer = optim.Adam(params=dic['policy_net'].parameters(), lr=lr)
 	dic['optimizer'] = optimizer
+	
+def saveModel():
+# 	pydevDebug()
+	trainedModePath = "rl_policy_net.pt"
+	nn_file = Path(trainedModePath)
+	if nn_file.is_file():
+		torch.save(dic['policy_net'].state_dict(),"rl_policy_net.pt")
 
 #### MAIN PART ########
 def mainFun(newExamples, isLastIterationOfAL):
-	
+# 	pydevDebug()
 	trainedModePath = "rl_policy_net.pt"
 	trainedModelExists = False
 	nn_file = Path(trainedModePath)
@@ -309,6 +316,7 @@ def mainFun(newExamples, isLastIterationOfAL):
 	policy_net = dic['policy_net']
 	target_net = dic['target_net']
 	optimizer = dic['optimizer']
+	
 	if trainedModelExists:
 		policy_net = DQN()
 		policy_net.load_state_dict(torch.load(trainedModePath))
@@ -347,8 +355,7 @@ def mainFun(newExamples, isLastIterationOfAL):
 					optimizer.step()
 					
 				target_net.load_state_dict(policy_net.state_dict())
-				if isLastIterationOfAL:
-					torch.save(policy_net.state_dict(),"rl_policy_net.pt")
+				
 			return next_action.item()
 
 # 	if em.done:

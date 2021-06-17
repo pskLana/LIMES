@@ -159,7 +159,7 @@ public class MLPipeline {
                             logger.info("Current TestK size: "+randomTrainingDataMap.size());
                         }
                         logger.info("Learned: " + mlm.getLinkSpecification().getFullExpression() + " with threshold: " + mlm.getLinkSpecification().getThreshold());
-                        
+                        logger.info("Iteration: " + iter);
                     	}
                 } else { // old version
                         while (!oracle.isStopped()) {

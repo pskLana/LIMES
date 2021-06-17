@@ -108,16 +108,19 @@ public class WombatSimpleRL extends AWombat {
         classifiers = null;
         try {
 			interp = new SharedInterpreter();
-//			URL url = getClass().getResource("/DQN.py");//.toURI().getPath();//.getFile();
-//			String file = Paths.get(url.toURI()).toString();
-			InputStream stream = getClass().getResourceAsStream("/DQN.py");
-			String filestr = IOUtils.toString(stream, "UTF-8");
-//			interp.runScript(file);
-			interp.exec(filestr);
+			
+//			interp.runScript("src/main/resources/DQN.py");
+			
+			InputStream stream = getClass().getResourceAsStream("/DQN.py");//!!
+			String filestr = IOUtils.toString(stream, "UTF-8");//!!
+			
+			
+			interp.exec(filestr); //!!
 		} catch (JepException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
+		}
+			catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -369,6 +372,12 @@ public class WombatSimpleRL extends AWombat {
 			AMapping newState = getLSandNextState(experienceList.get(experienceCounter).getActions().size()/2.0);
 			if(newState == null) {
 				System.out.println("Next state cannot be received");
+				try {
+					interp.exec("saveModel()");
+				} catch (JepException e) {
+					e.printStackTrace();
+				}
+				logger.info("Current F-Measure: "+this.currentReward);
 				return null;
 			}
 			// save state as embedding vectors in stateEV
@@ -386,6 +395,12 @@ public class WombatSimpleRL extends AWombat {
 			
 			if(exampleNums == null) {
 				System.out.println("Python Exception");
+				try {
+					interp.exec("saveModel()");
+				} catch (JepException e) {
+					e.printStackTrace();
+				}
+				logger.info("Current F-Measure: "+this.currentReward);
 				return null;
 			}
 			
